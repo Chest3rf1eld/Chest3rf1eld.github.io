@@ -296,6 +296,28 @@ Required traits:
 
 Do not copy the reference's full visual clutter. The portfolio must remain readable and professional.
 
+Approved redesign direction after MVP review:
+- The first screen stays strict and hiring-oriented: name, role, short value statement, primary CTA, and core links must be immediately clear.
+- Below the hero, the site may use a mixed classic-system-app metaphor rather than identical generic windows.
+- The proof/metrics section should feel like technical output: terminal/status/diagnostics language is appropriate for infrastructure credibility.
+- Project cards are the main visual upgrade target and should feel like distinct project windows, files, or system panels rather than plain cards.
+- Supporting sections can borrow from classic system apps: Control Panel/System Properties for stack, Notepad/PDF dialog for CV, and system dialog/address-book patterns for contact.
+- Interaction level should be light: tabs, active/focused window states, hover/focus affordances, toolbar-like language buttons, and status bars are allowed.
+- Do not add draggable windows, fake OS boot flows, modal traps, sound effects, or interactions that slow down reading.
+- Visual density should stay sparse: each section gets a few strong retro details, not a dense desktop simulation.
+
+Recommended section mapping:
+- Hero: strict modern portfolio content inside a restrained active system window or clean desktop shell.
+- Proof: terminal/diagnostics output with concise metrics and a status line.
+- Work: project windows with title bars, file/status metadata, short proof text, and clear GitHub links.
+- Stack: Control Panel/System Properties-style grouped capabilities.
+- CV: Notepad/PDF download dialog with EN/RU files.
+- Contact: small system dialog or address-book style panel with Telegram as primary action.
+
+Primary tradeoff:
+- Optimize for memorability in the lower sections while preserving recruiter/technical-lead trust on the first screen.
+- If design work must be cut, prioritize stronger Work/project-window treatment before decorative app details elsewhere.
+
 ### 5.4 Empty States
 
 - Missing hero photo: show a retro placeholder/system dialog style area, not a broken image.
