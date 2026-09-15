@@ -1,19 +1,19 @@
 # Design Reference
 
-Primary reference: `FireShot Capture 001 - Old Win UI Kit __ Behance - www.behance.net.png`.
+Primary direction: dark terminal / Hybrid Ops Desk (terminal session, health/log output, service manifests, status lines).
+
+Secondary reference: `FireShot Capture 001 - Old Win UI Kit __ Behance - www.behance.net.png` — window chrome, title bars, status bars, and bevel restraint only. The Win95 palette (teal desktop, grey panels, blue title bars) is deprecated as primary styling.
 
 # Visual Language
 
-The portfolio should borrow from old Windows 95/98 desktop UI:
-- desktop-like teal or dark backgrounds
-- layered system windows
-- grey panels
-- blue active title bars
-- thin black, white, and grey borders
-- bevel and inset effects
-- compact system fonts
-- toolbar, menu, tab, scrollbar, and status-bar patterns
-- small pixel-style UI details
+The portfolio should read as an engineer's ops desk:
+- graphite/black terminal-first backgrounds
+- green OK accents, amber warning highlights, restrained blue links
+- monospace accents for commands, metrics, and manifests
+- thin borders and minimal window chrome
+- compact system typography
+- menu, toolbar, tab, scrollbar, and status-bar patterns reused as real navigation
+- small status badges and file metadata instead of decorative controls
 
 # Mood
 
@@ -27,12 +27,12 @@ The site should feel:
 
 # Application To Portfolio
 
-Use the old Windows language as structure:
-- sections can look like windows
-- project cards can look like app or dialog windows
-- the contact block can look like a system dialog
-- navigation can borrow from menu bars, toolbar buttons, or tabs
-- accent visuals can use tiny pixel icons, palettes, and system controls
+Use terminal/session language as structure:
+- hero reads as a shell session (`./whoami`) with real CTA commands
+- proof reads as log-style health events with `[OK]`/status prefixes
+- project cards read as YAML/service manifests with metadata keys
+- the contact block reads as an escalation-channel endpoint list
+- navigation reuses menu/toolbar patterns as real anchor links
 
 Keep content highly readable. The portfolio must still communicate quickly:
 - who I am
@@ -53,4 +53,4 @@ Do not overuse:
 
 # Design Principle
 
-Treat the reference as an interface language, not a layout to copy. The final site should combine retro desktop character with modern clarity and short, high-signal copy.
+Treat the terminal/ops-desk language as the interface, not a full desktop simulation. The final site should combine engineer-native character with modern clarity and short, high-signal copy.

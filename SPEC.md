@@ -285,14 +285,15 @@ The MVP is a single page with these sections:
 
 Use the reference in `DESIGN_REFERENCE.md`.
 
-Required traits:
-- strict, clear first screen
-- teal/dark desktop-like background
-- grey system-window panels
-- blue active title bars
-- thin borders and bevel effects
+Required traits (terminal-primary, decided):
+- dark terminal-first background: graphite/black, not teal desktop
+- green OK accents, amber warning highlights, restrained blue links
+- monospace accents for commands, metrics, and manifests
+- thin borders and minimal window chrome
 - compact system typography
-- restrained pixel/toolbar/icon details
+- sparse status lines, badges, and file metadata instead of decorative controls
+
+Win95/98 traits (teal desktop, grey panels, blue title bars) are secondary chrome only and must not override the terminal palette. Where the older mixed-app mapping below conflicts with the terminal direction, the terminal direction wins.
 
 Do not copy the reference's full visual clutter. The portfolio must remain readable and professional.
 
@@ -305,18 +306,44 @@ Approved redesign direction after MVP review:
 - Interaction level should be light: tabs, active/focused window states, hover/focus affordances, toolbar-like language buttons, and status bars are allowed.
 - Do not add draggable windows, fake OS boot flows, modal traps, sound effects, or interactions that slow down reading.
 - Visual density should stay sparse: each section gets a few strong retro details, not a dense desktop simulation.
+- No dead controls: any UI element that looks like a button, menu item, tab, toolbar action, or selectable file must perform a real action such as navigating to a section, switching language, opening a repository/profile link, or downloading a file.
+- Purely decorative chrome is allowed only when it clearly reads as non-interactive framing, not as a clickable control.
 
-Recommended section mapping:
-- Hero: strict modern portfolio content inside a restrained active system window or clean desktop shell.
-- Proof: terminal/diagnostics output with concise metrics and a status line.
-- Work: project windows with title bars, file/status metadata, short proof text, and clear GitHub links.
-- Stack: Control Panel/System Properties-style grouped capabilities.
-- CV: Notepad/PDF download dialog with EN/RU files.
-- Contact: small system dialog or address-book style panel with Telegram as primary action.
+Recommended section mapping (terminal/session style, supersedes the older app-window mapping):
+- Hero: full shell-session presentation (`./whoami`), but name, role, value statement, and primary CTAs stay immediately clear.
+- Proof: log-style health events with `[OK]`/status patterns.
+- Work: readable YAML/service manifests with `problem`, `action`, `result`, `stack`, `repo`, and `status` keys.
+- Stack: capability manifest / config-style block.
+- CV: file-listing style download block with EN/RU PDFs.
+- Contact: escalation-channel style endpoint list with Telegram as primary action.
+
+Log prefix location:
+- `[OK]`/status prefixes live in the UI render layer, not in Markdown content, so content files stay clean and bilingual.
+
+Engineer-native language guardrail (decided):
+- Labels, statuses, and section chrome may use engineer-native CLI/log language.
+- Headings, value statements, and CTAs must stay human-readable so recruiters and non-technical visitors understand the page without terminal knowledge.
+- Primary CTA (Telegram) must remain obvious regardless of terminal styling.
+
+Control rules:
+- Main menu items should be real anchor links to page sections.
+- Toolbar-like items should be real links or removed.
+- Project cards should emphasize metadata and proof rather than fake window buttons.
+- Avoid close/minimize/maximize icons unless they perform real actions; prefer status text, badges, or file metadata instead.
 
 Primary tradeoff:
 - Optimize for memorability in the lower sections while preserving recruiter/technical-lead trust on the first screen.
 - If design work must be cut, prioritize stronger Work/project-window treatment before decorative app details elsewhere.
+
+Updated terminal/infrastructure direction:
+- The preferred visual language is `Hybrid Ops Desk`: terminal session, infrastructure diagnostics, service records, and runbook/status patterns.
+- The hero uses a full shell-session presentation, but primary CTAs must remain obvious and real.
+- Command-like controls must be real anchors or real outbound/download links.
+- Proof metrics read like log output or health events, using concise `[OK]`/status patterns (no dynamic timestamps, to keep builds deterministic and tests stable).
+- Work cards should move toward readable YAML/service manifests with clear keys such as `problem`, `action`, `result`, `stack`, `repo`, and `status`.
+- Palette should be dark terminal first: graphite/black background, green OK accents, amber warning highlights, and restrained blue links. Avoid cyberpunk neon density.
+- Mobile must wrap cleanly with no horizontal scrolling; code/manifest styling should adapt to readable blocks instead of forcing side-scroll.
+- First terminal pass should prioritize Hero, Proof, and Work; Stack, CV, and Contact can be lightly adapted until a later pass.
 
 ### 5.4 Empty States
 
