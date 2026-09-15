@@ -1,0 +1,42 @@
+{
+  "name": "nikchester-portfolio",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "prebuild": "npm run content:build && npm run cv:build && npm run validate:config",
+    "build": "tsc -b && vite build && npm run validate:links",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "typecheck": "tsc -b --noEmit",
+    "content:build": "node scripts/build-content.mjs",
+    "cv:build": "node scripts/build-cv.mjs",
+    "validate:config": "node scripts/validate-config.mjs",
+    "validate:links": "node scripts/validate-links.mjs",
+    "test:e2e": "playwright test",
+    "lighthouse": "node scripts/run-lighthouse.mjs"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "gray-matter": "latest",
+    "marked": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "typescript": "latest",
+    "vite": "latest"
+  },
+  "devDependencies": {
+    "@eslint/js": "latest",
+    "@playwright/test": "latest",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "eslint": "latest",
+    "eslint-plugin-react-hooks": "latest",
+    "eslint-plugin-react-refresh": "latest",
+    "globals": "latest",
+    "lighthouse": "^13.4.1",
+    "typescript-eslint": "latest"
+  }
+}
