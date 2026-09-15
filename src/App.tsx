@@ -109,19 +109,17 @@ function Window({
   className = '',
   id,
   status,
-  toolbar,
 }: {
   title: string;
   children: React.ReactNode;
   className?: string;
   id?: string;
   status?: string;
-  toolbar?: React.ReactNode;
 }) {
   return (
     <section id={id} className={`window ${className}`} aria-labelledby={`${title.replace(/\W+/g, '-').toLowerCase()}-title`}>
       <TitleBar title={title} lang="en" />
-      {toolbar ? <div className="toolbar">{toolbar}</div> : null}
+      {children}
       <div className="window-body" id={`${title.replace(/\W+/g, '-').toLowerCase()}-title`}>{children}</div>
       {status ? <div className="statusbar">{status}</div> : null}
     </section>
@@ -172,7 +170,7 @@ function WorkGrid({ content, lang }: { content: PageContent; lang: Language }) {
       title={text.work}
       id="work"
       className="work-window explorer-window"
-      toolbar={<><a href="#work">{text.repositories}</a><a href={siteConfig.githubUrl}>{text.githubProfile}</a><a href="#cv">{text.cv}</a><a href="#contact">{text.contact}</a></>}
+      
       status={`${content.work.length} objects selected`}
     >
       <div className="work-grid">
@@ -296,7 +294,7 @@ export function App() {
         <Window title={content.proof.title} id="proof" className="proof-window terminal-window log-window" status={text.terminalReady}>
           <HtmlBlock html={content.proof.html} />
         </Window>
-        <Window title={text.stack} id="stack" className="stack-window control-panel-window" toolbar={<><a href="#stack">{text.stackTab}</a><a href="#proof">{text.proof}</a><a href="#work">{text.work}</a></>}>
+        <Window title={text.stack} id="stack" className="stack-window control-panel-window" >
           <HtmlBlock html={content.stack.html} />
         </Window>
       </div>
