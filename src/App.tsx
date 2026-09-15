@@ -15,15 +15,30 @@ const labels = {
     github: 'GitHub',
     linkedin: 'LinkedIn',
     openProject: 'Open project',
-    photoTitle: 'PHOTO.EXE',
+    photoTitle: 'photo.jpg',
     photoFallback: 'Hero photo is not attached yet.',
-    dialogTitle: 'SYSTEM MESSAGE',
+    dialogTitle: '404 / photo not found',
     start: 'Start',
     terminalReady: 'diagnostics complete / ready for contact',
     explorerMeta: 'Repository file',
     stackTab: 'System properties',
     cvStatus: '2 public PDF files available',
     contactStatus: 'Primary channel: Telegram',
+    profile: 'Profile',
+    proof: 'Proof',
+    repositories: 'Repositories',
+    githubProfile: 'GitHub profile',
+    commandProfile: './whoami',
+    commandProof: './healthcheck --summary',
+    commandWork: 'ls services/*.yaml',
+    commandStack: 'cat stack.md',
+    shellReady: 'session ready / production infrastructure profile loaded',
+    statusOk: 'OK',
+    yamlProblem: 'problem',
+    yamlAction: 'action',
+    yamlResult: 'result',
+    yamlStack: 'stack',
+    yamlRepo: 'repo',
   },
   ru: {
     work: 'Работы',
@@ -36,20 +51,42 @@ const labels = {
     github: 'GitHub',
     linkedin: 'LinkedIn',
     openProject: 'Открыть проект',
-    photoTitle: 'PHOTO.EXE',
+    photoTitle: 'photo.jpg',
     photoFallback: 'Hero photo пока не добавлено.',
-    dialogTitle: 'SYSTEM MESSAGE',
+    dialogTitle: '404 / фото не найдено',
     start: 'Пуск',
     terminalReady: 'diagnostics complete / готов к контакту',
     explorerMeta: 'Файл репозитория',
     stackTab: 'Свойства системы',
     cvStatus: '2 публичных PDF-файла доступны',
     contactStatus: 'Основной канал: Telegram',
+    profile: 'Профиль',
+    proof: 'Факты',
+    repositories: 'Репозитории',
+    githubProfile: 'GitHub профиль',
+    commandProfile: './whoami',
+    commandProof: './healthcheck --summary',
+    commandWork: 'ls services/*.yaml',
+    commandStack: 'cat stack.md',
+    shellReady: 'session ready / профиль production infrastructure загружен',
+    statusOk: 'OK',
+    yamlProblem: 'problem',
+    yamlAction: 'action',
+    yamlResult: 'result',
+    yamlStack: 'stack',
+    yamlRepo: 'repo',
   },
 } as const;
 
 function HtmlBlock({ html }: { html: string }) {
   return <div className="html-block" dangerouslySetInnerHTML={{ __html: html }} />;
+}
+
+function extractParagraphs(html: string) {
+  return [...html.matchAll(/<p><strong>([^<:]+):<\/strong>\s*([\s\S]*?)<\/p>/g)].map((match) => ({
+    label: match[1].toLowerCase(),
+    text: match[2].replace(/<[^>]+>/g, '').trim(),
+  }));
 }
 
 function TitleBar({ title, lang, setLang }: { title: string; lang: Language; setLang?: (lang: Language) => void }) {
@@ -62,7 +99,7 @@ function TitleBar({ title, lang, setLang }: { title: string; lang: Language; set
           <button className={lang === 'ru' ? 'active' : ''} onClick={() => setLang('ru')} type="button">RU</button>
         </div>
       ) : (
-        <div className="window-buttons" aria-hidden="true"><span /><span /><span /></div>
+        <span className="titlebar-status">Ready</span>
       )}
     </div>
   );
@@ -72,17 +109,19 @@ function Window({
   title,
   children,
   className = '',
+  id,
   status,
   toolbar,
 }: {
   title: string;
   children: React.ReactNode;
   className?: string;
+  id?: string;
   status?: string;
   toolbar?: React.ReactNode;
 }) {
   return (
-    <section className={`window ${className}`} aria-labelledby={`${title.replace(/\W+/g, '-').toLowerCase()}-title`}>
+    <section id={id} className={`window ${className}`} aria-labelledby={`${title.replace(/\W+/g, '-').toLowerCase()}-title`}>
       <TitleBar title={title} lang="en" />
       {toolbar ? <div className="toolbar">{toolbar}</div> : null}
       <div className="window-body" id={`${title.replace(/\W+/g, '-').toLowerCase()}-title`}>{children}</div>
@@ -95,17 +134,25 @@ function Hero({ content, lang, setLang }: { content: PageContent; lang: Language
   const text = labels[lang];
 
   return (
-    <section className="hero window" aria-labelledby="hero-title">
-      <TitleBar title="NIKCHESTER.EXE" lang={lang} setLang={setLang} />
-      <div className="menu-bar" aria-hidden="true">
-        <span>{text.start}</span><span>Profile</span><span>Work</span><span>Contact</span>
-      </div>
+    <section id="profile" className="hero window" aria-labelledby="hero-title">
+      <TitleBar title="nikchester@portfolio:~" lang={lang} setLang={setLang} />
+      <nav className="menu-bar" aria-label="Page sections">
+        <a className="start-link" href="#profile">{text.start}</a>
+        <a href="#profile">{text.commandProfile}</a>
+        <a href="#proof">{text.commandProof}</a>
+        <a href="#work">{text.commandWork}</a>
+        <a href="#stack">{text.commandStack}</a>
+        <a href="#cv">{text.cv}</a>
+        <a href="#contact">{text.contact}</a>
+      </nav>
       <div className="hero-grid window-body">
         <div>
+          <p className="shell-line"><span>$</span> {text.commandProfile}</p>
           <p className="eyebrow">{content.hero.eyebrow}</p>
           <h1 id="hero-title">{content.hero.name}</h1>
           <p className="role">{content.hero.role}</p>
           <HtmlBlock html={content.hero.html} />
+          <p className="shell-status">[{text.statusOk}] {text.shellReady}</p>
           <div className="actions">
             <a className="button primary" href={siteConfig.telegramUrl}>{content.hero.ctaLabel}</a>
             <a className="button" href={siteConfig.githubUrl}>{content.hero.secondaryLabel}</a>
@@ -128,8 +175,9 @@ function WorkGrid({ content, lang }: { content: PageContent; lang: Language }) {
   return (
     <Window
       title={text.work}
+      id="work"
       className="work-window explorer-window"
-      toolbar={<><span>File</span><span>Edit</span><span>View</span><span>Repository</span></>}
+      toolbar={<><a href="#work">{text.repositories}</a><a href={siteConfig.githubUrl}>{text.githubProfile}</a><a href="#cv">{text.cv}</a><a href="#contact">{text.contact}</a></>}
       status={`${content.work.length} objects selected`}
     >
       <div className="work-grid">
@@ -137,15 +185,30 @@ function WorkGrid({ content, lang }: { content: PageContent; lang: Language }) {
           <article className="project-card" key={item.slug}>
             <div className="project-titlebar">
               <span className="file-icon" aria-hidden="true" />
-              <span>{`PROJECT_${String(index + 1).padStart(2, '0')}.SYS`}</span>
+              <span>{`services/${String(index + 1).padStart(2, '0')}-${item.slug}.yaml`}</span>
               <span className="project-priority">{item.priority}</span>
             </div>
-            <div className="project-head">
+            <div className="manifest-head">
               <span className="project-meta">{text.explorerMeta}</span>
               <h3>{item.title}</h3>
+              <code>status: {text.statusOk.toLowerCase()}</code>
             </div>
-            <HtmlBlock html={item.html} />
-            <p className="stack-line">{item.stack}</p>
+            <dl className="manifest-body">
+              {extractParagraphs(item.html).map((entry) => (
+                <div key={entry.label}>
+                  <dt>{entry.label}:</dt>
+                  <dd>{entry.text}</dd>
+                </div>
+              ))}
+              <div>
+                <dt>{text.yamlStack}:</dt>
+                <dd>{item.stack}</dd>
+              </div>
+              <div>
+                <dt>{text.yamlRepo}:</dt>
+                <dd>{item.url.replace('https://github.com/', 'github:')}</dd>
+              </div>
+            </dl>
             <div className="project-footer">
               <a className="button small" href={item.url}>{text.openProject}</a>
             </div>
@@ -159,7 +222,7 @@ function WorkGrid({ content, lang }: { content: PageContent; lang: Language }) {
 function CvPanel({ lang }: { lang: Language }) {
   const text = labels[lang];
   return (
-    <Window title={text.cv} className="cv-window">
+    <Window title={text.cv} id="cv" className="cv-window">
       <div className="notepad-lines">
         <p>{lang === 'en' ? 'Public CV without phone number.' : 'Публичное CV без телефона.'}</p>
         <p className="muted-line">{text.cvStatus}</p>
@@ -176,7 +239,7 @@ function ContactPanel({ content, lang }: { content: PageContent; lang: Language 
   const text = labels[lang];
   return (
     <>
-      <div className="dialog-badge" aria-hidden="true">?</div>
+      <div className="dialog-badge" aria-hidden="true">&gt;_</div>
       <HtmlBlock html={content.contact.html} />
       <div className="link-list">
         <a href={siteConfig.telegramUrl}>Telegram</a>
@@ -235,17 +298,17 @@ export function App() {
     <main className="desktop-shell">
       <Hero content={content} lang={lang} setLang={setLang} />
       <div className="window-row">
-        <Window title={content.proof.title} className="proof-window terminal-window" status={text.terminalReady}>
+        <Window title={content.proof.title} id="proof" className="proof-window terminal-window log-window" status={text.terminalReady}>
           <HtmlBlock html={content.proof.html} />
         </Window>
-        <Window title={text.stack} className="stack-window control-panel-window" toolbar={<><span>{text.stackTab}</span><span>Hardware</span><span>Network</span></>}>
+        <Window title={text.stack} id="stack" className="stack-window control-panel-window" toolbar={<><a href="#stack">{text.stackTab}</a><a href="#proof">{text.proof}</a><a href="#work">{text.work}</a></>}>
           <HtmlBlock html={content.stack.html} />
         </Window>
       </div>
       <WorkGrid content={content} lang={lang} />
       <div className="window-row bottom-row">
         <CvPanel lang={lang} />
-        <Window title={text.contact} className="contact-window" status={text.contactStatus}>
+        <Window title={text.contact} id="contact" className="contact-window" status={text.contactStatus}>
           <ContactPanel content={content} lang={lang} />
         </Window>
       </div>

@@ -16,13 +16,13 @@ test('renders English portfolio by default and switches to Russian', async ({ pa
   await expect(page.getByRole('heading', { name: 'Nikita Chaturov' })).toBeVisible();
   await expect(page.getByText('Infrastructure Engineer').first()).toBeVisible();
   await expect(page.getByText('15+')).toBeVisible();
-  await expect(page.getByText('Selected work')).toBeVisible();
+  await expect(page.locator('#work').getByText('Selected work')).toBeVisible();
   await expect(page.getByText('Monitoring Stack as Code')).toBeVisible();
   await expect(page.getByText('Public CV without phone number.')).toBeVisible();
 
   await page.getByRole('button', { name: 'RU' }).click();
   await expect(page.getByRole('heading', { name: 'Никита Чатуров' })).toBeVisible();
-  await expect(page.getByText('Контакты')).toBeVisible();
+  await expect(page.locator('#contact').getByText('Контакты')).toBeVisible();
 });
 
 test('has required public links and CV downloads', async ({ page }) => {
@@ -30,6 +30,10 @@ test('has required public links and CV downloads', async ({ page }) => {
 
   for (const href of publicLinks) {
     await expect(page.locator(`a[href="${href}"]`).first()).toBeVisible();
+  }
+
+  for (const href of ['#profile', '#proof', '#work', '#stack', '#cv', '#contact']) {
+    await expect(page.locator(`nav a[href="${href}"]`).first()).toBeVisible();
   }
 
   await expect(page.locator('a[href="/assets/cv/nikita-chaturov-cv.en.pdf"]')).toBeVisible();
