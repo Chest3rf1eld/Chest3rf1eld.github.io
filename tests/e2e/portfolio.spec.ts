@@ -20,6 +20,7 @@ test('renders English portfolio by default and switches to Russian', async ({ pa
   await expect(page.getByText('Monitoring Stack as Code')).toBeVisible();
   await expect(page.getByText('Public CV without phone number.')).toBeVisible();
 
+  await expect(page.getByRole('img', { name: 'Nikita Chaturov, Infrastructure Engineer' })).toBeVisible();
   await page.getByRole('button', { name: 'RU' }).click();
   await expect(page.getByRole('heading', { name: 'Никита Чатуров' })).toBeVisible();
   await expect(page.locator('#contact').getByText('Контакты')).toBeVisible();

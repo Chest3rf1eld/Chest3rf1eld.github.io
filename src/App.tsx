@@ -16,8 +16,7 @@ const labels = {
     linkedin: 'LinkedIn',
     openProject: 'Open project',
     photoTitle: 'photo.jpg',
-    photoFallback: 'Hero photo is not attached yet.',
-    dialogTitle: '404 / photo not found',
+    photoAlt: 'Nikita Chaturov, Infrastructure Engineer',
     start: 'Start',
     terminalReady: 'diagnostics complete / ready for contact',
     explorerMeta: 'Repository file',
@@ -52,8 +51,7 @@ const labels = {
     linkedin: 'LinkedIn',
     openProject: 'Открыть проект',
     photoTitle: 'photo.jpg',
-    photoFallback: 'Hero photo пока не добавлено.',
-    dialogTitle: '404 / фото не найдено',
+    photoAlt: 'Никита Чатуров, Infrastructure Engineer',
     start: 'Пуск',
     terminalReady: 'diagnostics complete / готов к контакту',
     explorerMeta: 'Файл репозитория',
@@ -158,13 +156,10 @@ function Hero({ content, lang, setLang }: { content: PageContent; lang: Language
             <a className="button" href={siteConfig.githubUrl}>{content.hero.secondaryLabel}</a>
           </div>
         </div>
-        <div className="photo-window" role="img" aria-label={text.photoFallback}>
-          <div className="mini-titlebar">{text.photoTitle}</div>
-          <div className="photo-fallback">
-            <strong>{text.dialogTitle}</strong>
-            <span>{text.photoFallback}</span>
-          </div>
-        </div>
+        <figure className="photo-window">
+          <figcaption className="mini-titlebar">{text.photoTitle}</figcaption>
+          <img src={siteConfig.photo} alt={text.photoAlt} width={480} height={480} />
+        </figure>
       </div>
     </section>
   );
