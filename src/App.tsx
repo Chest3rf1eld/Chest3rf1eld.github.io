@@ -20,13 +20,8 @@ const labels = {
     start: 'Start',
     terminalReady: 'diagnostics complete / ready for contact',
     explorerMeta: 'Repository file',
-    stackTab: 'System properties',
     cvStatus: '2 public PDF files available',
     contactStatus: 'Primary channel: Telegram',
-    profile: 'Profile',
-    proof: 'Proof',
-    repositories: 'Repositories',
-    githubProfile: 'GitHub profile',
     commandProfile: './whoami',
     commandProof: './healthcheck --summary',
     commandWork: 'ls services/*.yaml',
@@ -55,13 +50,8 @@ const labels = {
     start: 'Пуск',
     terminalReady: 'diagnostics complete / готов к контакту',
     explorerMeta: 'Файл репозитория',
-    stackTab: 'Свойства системы',
     cvStatus: '2 публичных PDF-файла доступны',
     contactStatus: 'Основной канал: Telegram',
-    profile: 'Профиль',
-    proof: 'Факты',
-    repositories: 'Репозитории',
-    githubProfile: 'GitHub профиль',
     commandProfile: './whoami',
     commandProof: './healthcheck --summary',
     commandWork: 'ls services/*.yaml',
@@ -119,7 +109,6 @@ function Window({
   return (
     <section id={id} className={`window ${className}`} aria-labelledby={`${title.replace(/\W+/g, '-').toLowerCase()}-title`}>
       <TitleBar title={title} lang="en" />
-      {children}
       <div className="window-body" id={`${title.replace(/\W+/g, '-').toLowerCase()}-title`}>{children}</div>
       {status ? <div className="statusbar">{status}</div> : null}
     </section>
@@ -170,7 +159,6 @@ function WorkGrid({ content, lang }: { content: PageContent; lang: Language }) {
       title={text.work}
       id="work"
       className="work-window explorer-window"
-      
       status={`${content.work.length} objects selected`}
     >
       <div className="work-grid">
@@ -294,7 +282,7 @@ export function App() {
         <Window title={content.proof.title} id="proof" className="proof-window terminal-window log-window" status={text.terminalReady}>
           <HtmlBlock html={content.proof.html} />
         </Window>
-        <Window title={text.stack} id="stack" className="stack-window control-panel-window" >
+        <Window title={text.stack} id="stack" className="stack-window control-panel-window">
           <HtmlBlock html={content.stack.html} />
         </Window>
       </div>

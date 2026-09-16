@@ -92,7 +92,7 @@ code { font-family: var(--mono); }
 
 .window-body { padding: clamp(14px, 3vw, 26px); }
 
-.menu-bar, .toolbar, .statusbar {
+.menu-bar, .statusbar {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
@@ -105,7 +105,7 @@ code { font-family: var(--mono); }
   padding: 2px 7px;
 }
 
-.menu-bar a, .toolbar a {
+.menu-bar a {
   border: 1px solid transparent;
   color: var(--muted);
   font-family: var(--mono);
@@ -115,7 +115,7 @@ code { font-family: var(--mono); }
   overflow-wrap: anywhere;
 }
 
-.menu-bar a:hover, .toolbar a:hover { color: var(--green); border-color: var(--line); }
+.menu-bar a:hover { color: var(--green); border-color: var(--line); }
 
 .menu-bar .start-link {
   border: 1px solid var(--amber);
@@ -123,14 +123,6 @@ code { font-family: var(--mono); }
   font-weight: 700;
   margin-right: 5px;
 }
-
-.toolbar {
-  background: var(--panel-2);
-  border-bottom: 1px solid var(--line);
-  padding: 5px 7px;
-}
-
-.toolbar a { border: 1px solid var(--line); }
 
 .statusbar {
   border-top: 1px solid var(--line);
