@@ -106,6 +106,7 @@ The Work section should use these public repositories as concrete proof. Keep co
 | Primary | Monitoring Stack as Code | `https://github.com/Chest3rf1eld/grafana-prometheus-loki-ansible` | Main infrastructure/SRE proof | Ansible-based distributed monitoring stack with Grafana, Prometheus, Loki, blackbox checks, TLS, and firewall rules |
 | Primary | Bulk Web Infrastructure Automation | `https://github.com/Chest3rf1eld/HestiaCP_scripts` | Main automation proof for 170+ site operations | Bash tooling for HestiaCP/WordPress operations: SSL, migrations, redirects, permissions, backups, cache/plugin maintenance |
 | Supporting | Portfolio Delivery Pipeline | `https://github.com/Chest3rf1eld/Chest3rf1eld.github.io` | Delivery/CI proof for this portfolio | Static bilingual portfolio with Markdown content, generated CV PDFs, production config validation, link checks, Playwright, Lighthouse, GitHub Actions, GitHub Pages, and custom domain deployment |
+| Supporting | Freelance Brief Intake Automation | `https://github.com/Chest3rf1eld/kwork-jobs-parser` | Lightweight automation proof | Google Apps Script workflow that collects freelance marketplace listings into Google Sheets for faster review and triage |
 | Supporting | Linux Troubleshooting Runbook | `https://github.com/Chest3rf1eld/pi-linux-troubleshooting` | Reliability/troubleshooting/process proof | Safety-first Linux incident triage workflow for load, memory, disk, network, DNS, systemd, SSH, and post-incident notes |
 | Supporting | Linux Desktop / Dotfiles | `https://github.com/Chest3rf1eld/my-i3-dotfiles` | Personal Linux/open-source signal | i3/X11 desktop environment managed with GNU Stow, shell scripts, tmux, rofi, polybar, and user systemd services |
 
@@ -113,7 +114,6 @@ Do not include these repositories in the primary MVP Work section unless they ar
 - `https://github.com/Chest3rf1eld/k8s-study-project` - currently a study project; may be mentioned as Kubernetes lab/study level, not production proof.
 - `https://github.com/Chest3rf1eld/backup_yandex_objective_storage` - useful but better folded into the HestiaCP/backups automation story.
 - `https://github.com/Chest3rf1eld/nikchester.ansible-role.hestiacp` - fork; only show later if improvements are documented clearly.
-- `https://github.com/Chest3rf1eld/kwork-jobs-parser` - useful automation but less aligned with Infrastructure Engineer positioning.
 - `https://github.com/Chest3rf1eld/Spotify-Likes-Downloader` - personal utility, not relevant enough for the main professional proof.
 - `https://github.com/Chest3rf1eld/nikchester-blog` - can be linked separately later, not as project proof.
 

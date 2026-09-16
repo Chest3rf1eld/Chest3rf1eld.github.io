@@ -14,10 +14,10 @@ const labels = {
     email: 'Email',
     github: 'GitHub',
     linkedin: 'LinkedIn',
+    kwork: 'Kwork',
     openProject: 'Open project',
     photoTitle: 'photo.jpg',
     photoAlt: 'Nikita Chaturov, Infrastructure Engineer',
-    start: 'Start',
     terminalReady: 'diagnostics complete / ready for contact',
     explorerMeta: 'Repository file',
     cvStatus: '2 public PDF files available',
@@ -44,10 +44,10 @@ const labels = {
     email: 'Email',
     github: 'GitHub',
     linkedin: 'LinkedIn',
+    kwork: 'Kwork',
     openProject: 'Открыть проект',
     photoTitle: 'photo.jpg',
     photoAlt: 'Никита Чатуров, Infrastructure Engineer',
-    start: 'Пуск',
     terminalReady: 'diagnostics complete / готов к контакту',
     explorerMeta: 'Файл репозитория',
     cvStatus: '2 публичных PDF-файла доступны',
@@ -122,8 +122,7 @@ function Hero({ content, lang, setLang }: { content: PageContent; lang: Language
     <section id="profile" className="hero window" aria-labelledby="hero-title">
       <TitleBar title="nikchester@portfolio:~" lang={lang} setLang={setLang} />
       <nav className="menu-bar" aria-label="Page sections">
-        <a className="start-link" href="#profile">{text.start}</a>
-        <a href="#profile">{text.commandProfile}</a>
+        <a className="start-link" href="#profile">{text.commandProfile}</a>
         <a href="#proof">{text.commandProof}</a>
         <a href="#work">{text.commandWork}</a>
         <a href="#stack">{text.commandStack}</a>
@@ -227,6 +226,7 @@ function ContactPanel({ content, lang }: { content: PageContent; lang: Language 
         <a href={`mailto:${siteConfig.email}`}>{text.email}</a>
         <a href={siteConfig.githubUrl}>{text.github}</a>
         <a href={siteConfig.linkedinUrl}>{text.linkedin}</a>
+        <a href={siteConfig.kworkUrl}>{text.kwork}</a>
       </div>
     </>
   );

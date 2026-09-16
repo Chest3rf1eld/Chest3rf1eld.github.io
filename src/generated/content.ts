@@ -20,7 +20,7 @@ export const siteContent = {
     },
     "contact": {
       "title": "Contact",
-      "html": "<p>Best way to reach me: Telegram.</p>\n<p>For hiring context, use LinkedIn, GitHub, or email.</p>"
+      "html": "<p>Best way to reach me: Telegram.</p>\n<p>For hiring context, use LinkedIn, GitHub, Kwork, or email.</p>"
     },
     "work": [
       {
@@ -38,6 +38,14 @@ export const siteContent = {
         "url": "https://github.com/Chest3rf1eld/grafana-prometheus-loki-ansible",
         "stack": "Ansible, Prometheus, Grafana, Loki, Promtail, blackbox_exporter, nginx, nftables",
         "html": "<p><strong>Problem:</strong> monitoring should be reproducible, not hand-built on every server.</p>\n<p><strong>Action:</strong> built Ansible playbooks and roles for a distributed monitoring stack with Grafana, Prometheus, Loki, blackbox checks, TLS, and firewall rules.</p>\n<p><strong>Result:</strong> monitoring setup can be reviewed, repeated, and changed through code.</p>"
+      },
+      {
+        "slug": "freelance-brief-intake-automation",
+        "title": "Freelance Brief Intake Automation",
+        "priority": "supporting",
+        "url": "https://github.com/Chest3rf1eld/kwork-jobs-parser",
+        "stack": "Google Apps Script, JavaScript, Google Sheets, HTTP fetch, parsing, workflow automation",
+        "html": "<p><strong>Problem:</strong> freelance briefs are easy to miss when monitoring marketplace listings manually.</p>\n<p><strong>Action:</strong> built a Google Apps Script automation that collects relevant listings into Google Sheets for faster review and triage.</p>\n<p><strong>Result:</strong> incoming opportunities can be scanned in one structured place instead of repeatedly checking the marketplace by hand.</p>"
       },
       {
         "slug": "i3-dotfiles",
@@ -84,7 +92,7 @@ export const siteContent = {
     },
     "contact": {
       "title": "Контакты",
-      "html": "<p>Самый быстрый способ связи - Telegram.</p>\n<p>Для найма и технического контекста есть LinkedIn, GitHub и email.</p>"
+      "html": "<p>Самый быстрый способ связи - Telegram.</p>\n<p>Для найма и технического контекста есть LinkedIn, GitHub, Kwork и email.</p>"
     },
     "work": [
       {
@@ -102,6 +110,14 @@ export const siteContent = {
         "url": "https://github.com/Chest3rf1eld/grafana-prometheus-loki-ansible",
         "stack": "Ansible, Prometheus, Grafana, Loki, Promtail, blackbox_exporter, nginx, nftables",
         "html": "<p><strong>Проблема:</strong> мониторинг не должен собираться руками на каждом сервере.</p>\n<p><strong>Действие:</strong> сделал Ansible playbooks и роли для distributed monitoring stack: Grafana, Prometheus, Loki, blackbox checks, TLS и firewall rules.</p>\n<p><strong>Результат:</strong> мониторинг можно повторить, проверить и менять через код.</p>"
+      },
+      {
+        "slug": "freelance-brief-intake-automation",
+        "title": "Freelance Brief Intake Automation",
+        "priority": "supporting",
+        "url": "https://github.com/Chest3rf1eld/kwork-jobs-parser",
+        "stack": "Google Apps Script, JavaScript, Google Sheets, HTTP fetch, parsing, workflow automation",
+        "html": "<p><strong>Проблема:</strong> фриланс-заказы легко пропустить, если вручную проверять новые публикации на бирже.</p>\n<p><strong>Действие:</strong> сделал Google Apps Script-автоматизацию, которая собирает релевантные объявления в Google Sheets для быстрого просмотра и triage.</p>\n<p><strong>Результат:</strong> входящие возможности можно просматривать в одном структурированном месте вместо повторной ручной проверки биржи.</p>"
       },
       {
         "slug": "i3-dotfiles",

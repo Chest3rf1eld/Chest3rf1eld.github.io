@@ -4,11 +4,13 @@ const publicLinks = [
   'https://t.me/Chesterf1ld',
   'https://github.com/Chest3rf1eld',
   'https://www.linkedin.com/in/nikita-chaturov-8625a5281/',
+  'https://kwork.ru/user/nikchester',
   'https://github.com/Chest3rf1eld/grafana-prometheus-loki-ansible',
   'https://github.com/Chest3rf1eld/HestiaCP_scripts',
   'https://github.com/Chest3rf1eld/pi-linux-troubleshooting',
   'https://github.com/Chest3rf1eld/my-i3-dotfiles',
   'https://github.com/Chest3rf1eld/Chest3rf1eld.github.io',
+  'https://github.com/Chest3rf1eld/kwork-jobs-parser',
 ];
 
 test('renders English portfolio by default and switches to Russian', async ({ page }) => {
@@ -37,6 +39,8 @@ test('has required public links and CV downloads', async ({ page }) => {
   for (const href of ['#profile', '#proof', '#work', '#stack', '#cv', '#contact']) {
     await expect(page.locator(`nav a[href="${href}"]`).first()).toBeVisible();
   }
+  await expect(page.locator('nav a[href="#profile"]')).toHaveCount(1);
+  await expect(page.getByRole('link', { name: 'Start' })).toHaveCount(0);
 
   await expect(page.locator('a[href="/assets/cv/nikita-chaturov-cv.en.pdf"]')).toBeVisible();
   await expect(page.locator('a[href="/assets/cv/nikita-chaturov-cv.ru.pdf"]')).toBeVisible();
