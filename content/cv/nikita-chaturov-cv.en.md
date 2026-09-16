@@ -29,7 +29,7 @@ Jan 2024 - Present, Kazan
 - Administer Docker and Docker Compose services, Nginx/HAProxy reverse proxies, DNS, GitLab, GitLab CI/CD pipelines, PostgreSQL, MySQL/MariaDB, Redis, VPN, and Proxmox VE.
 - Maintain monitoring and alerting with Prometheus, Grafana, Loki, Promtail, exporters, and Zabbix. Tune alert thresholds and reduce noisy alerts.
 - Manage backups to Object Storage with retention policies, failed-backup alerts, test restores, log rotation, and runbooks.
-- Support security controls: SSH keys, fail2ban, nftables/iptables, database access restrictions, IP allowlists, rate limiting, and captcha-based abuse protection.
+- Support security controls: SSH keys, fail2ban, nftables/iptables, dynamic firewall sets, database access restrictions, IP allowlists, rate limiting, and captcha-based abuse protection.
 - Document infrastructure in Wiki.js: architecture diagrams, runbooks, troubleshooting notes, and operational procedures.
 
 ## Selected Work
@@ -48,7 +48,7 @@ Deployed an internal Proxmox VE server and migrated GitLab, WireGuard VPN, Wiki.
 
 ### Production Incident Mitigation
 
-Investigated abusive traffic against a public service that exhausted external API limits. Added request and IP correlation, captcha, rate limiting, a request queue, and fail2ban. The abuse stopped and diagnostics became clearer.
+Investigated abusive traffic against a public service that exhausted external API limits. Added request/IP correlation, captcha, nginx rate limiting, a request queue, and fail2ban escalation. Then implemented subnet-level containment with nftables: interval sets for manual /24 blocking and an in-kernel meter that detects flood by subnet and bans abusive IPs through dynamic sets with timeouts. The abuse stopped, manual blocking decreased, and diagnostics became clearer.
 
 ## Education
 

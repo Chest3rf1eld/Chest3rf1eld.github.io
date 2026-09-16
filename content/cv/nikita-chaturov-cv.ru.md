@@ -29,7 +29,7 @@ Linux, Debian, Ubuntu, Proxmox VE, Docker, Docker Compose, Ansible, Bash, Python
 - Администрирую Docker и Docker Compose сервисы, Nginx/HAProxy reverse proxy, DNS, GitLab, GitLab CI/CD пайплайны, PostgreSQL, MySQL/MariaDB, Redis, VPN и Proxmox VE.
 - Поддерживаю мониторинг и алертинг на Prometheus, Grafana, Loki, Promtail, экспортерах и Zabbix. Настраиваю пороги и уменьшаю шум от ложных алертов.
 - Веду резервные копии в Object Storage: политики хранения, алерты на сбой, тестовое восстановление, ротация логов и runbook.
-- Закрываю базовые задачи безопасности: SSH-ключи, fail2ban, nftables/iptables, ограничение доступа к БД, whitelist IP, rate limiting и captcha-защита от злоупотреблений.
+- Закрываю базовые задачи безопасности: SSH-ключи, fail2ban, nftables/iptables, dynamic sets, ограничение доступа к БД, whitelist IP, rate limiting и captcha-защита от злоупотреблений.
 - Документирую инфраструктуру в Wiki.js: схемы, регламенты, runbook, заметки по troubleshooting и операционные инструкции.
 
 ## Выбранные проекты
@@ -48,7 +48,7 @@ Linux, Debian, Ubuntu, Proxmox VE, Docker, Docker Compose, Ansible, Bash, Python
 
 ### Разбор production-инцидента
 
-Разобрал злоупотребления трафиком против публичного сервиса, из-за которых расходовались лимиты внешнего API. Добавил корреляцию запросов и IP, captcha, rate limiting, очередь запросов и fail2ban. Инциденты прекратились, а диагностика стала понятнее.
+Разобрал злоупотребления трафиком против публичного сервиса, из-за которых расходовались лимиты внешнего API. Добавил корреляцию запросов и IP, captcha, nginx rate limiting, очередь запросов и эскалацию fail2ban. Затем сделал сдерживание на уровне подсетей через nftables: interval-наборы для ручной блокировки /24 и in-kernel meter, который детектит флуд по подсети и банит проблемные IP через dynamic sets с timeout. Инциденты прекратились, ручной блокировки стало меньше, а диагностика стала понятнее.
 
 ## Образование
 
