@@ -15,7 +15,7 @@
   --green: #4ade80;
   --amber: #e3b341;
   --link: #6ea8fe;
-  --mono: Consolas, "Courier New", monospace;
+  --mono: "JetBrains Mono", Consolas, "Courier New", monospace;
 }
 
 * { box-sizing: border-box; }
