@@ -284,11 +284,7 @@ code { font-family: var(--mono); }
   flex-direction: column;
   min-height: 290px;
   padding: 0;
-  transition: border-color 120ms ease, transform 120ms ease;
 }
-
-.project-card:hover { border-color: var(--green); transform: translateY(-1px); }
-.project-card:hover .button { border-color: var(--green); color: var(--green); }
 
 .project-titlebar {
   align-items: center;
@@ -346,7 +342,7 @@ code { font-family: var(--mono); }
 
 .manifest-body dt { color: var(--green); }
 .manifest-body dd { color: var(--text); margin: 0; min-width: 0; overflow-wrap: anywhere; }
-.project-footer { margin-top: auto; padding: 0 14px 14px; }
+.project-footer { display: flex; flex-wrap: wrap; gap: 10px; margin-top: auto; padding: 0 14px 14px; }
 
 .cv-window .window-body { background: var(--panel-2); }
 
