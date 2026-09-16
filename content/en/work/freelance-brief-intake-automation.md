@@ -1,12 +1,13 @@
 ---
-title: Freelance Brief Intake Automation
+title: Freelance Email-to-Telegram Monitor
 priority: supporting
 url: https://github.com/Chest3rf1eld/kwork-jobs-parser
-stack: Google Apps Script, JavaScript, Google Sheets, HTTP fetch, parsing, workflow automation
+redditUrl: https://www.reddit.com/r/RuProgrammers/s/O6DUeSJ1W3
+stack: Google Apps Script, JavaScript, Gmail API, Telegram Bot API, clasp, parsing, workflow automation
 ---
 
-**Problem:** freelance briefs are easy to miss when monitoring marketplace listings manually.
+**Problem:** relevant freelance leads can be missed when Kwork email notifications stay buried in Gmail.
 
-**Action:** built a Google Apps Script automation that collects relevant listings into Google Sheets for faster review and triage.
+**Action:** built a Google Apps Script workflow that reads labeled Gmail messages, parses Kwork order cards, filters by budget and keywords, sends Telegram digests, marks processed messages, and retries Telegram `429` rate limits.
 
-**Result:** incoming opportunities can be scanned in one structured place instead of repeatedly checking the marketplace by hand.
+**Result:** matching leads are delivered to Telegram with enough context for quick triage, while processed emails are tracked safely by Gmail labels.

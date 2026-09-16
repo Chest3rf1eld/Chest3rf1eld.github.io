@@ -11,6 +11,7 @@ const publicLinks = [
   'https://github.com/Chest3rf1eld/my-i3-dotfiles',
   'https://github.com/Chest3rf1eld/Chest3rf1eld.github.io',
   'https://github.com/Chest3rf1eld/kwork-jobs-parser',
+  'https://www.reddit.com/r/RuProgrammers/s/O6DUeSJ1W3',
 ];
 
 test('renders English portfolio by default and switches to Russian', async ({ page }) => {

@@ -16,6 +16,7 @@ const labels = {
     linkedin: 'LinkedIn',
     kwork: 'Kwork',
     openProject: 'Open project',
+    openRedditPost: 'Reddit post',
     photoTitle: 'photo.jpg',
     photoAlt: 'Nikita Chaturov, Infrastructure Engineer',
     terminalReady: 'diagnostics complete / ready for contact',
@@ -46,6 +47,7 @@ const labels = {
     linkedin: 'LinkedIn',
     kwork: 'Kwork',
     openProject: 'Открыть проект',
+    openRedditPost: 'Пост на Reddit',
     photoTitle: 'photo.jpg',
     photoAlt: 'Никита Чатуров, Infrastructure Engineer',
     terminalReady: 'diagnostics complete / готов к контакту',
@@ -191,6 +193,7 @@ function WorkGrid({ content, lang }: { content: PageContent; lang: Language }) {
             </dl>
             <div className="project-footer">
               <a className="button small" href={item.url}>{text.openProject}</a>
+              {item.redditUrl ? <a className="button small" href={item.redditUrl}>{text.openRedditPost}</a> : null}
             </div>
           </article>
         ))}
