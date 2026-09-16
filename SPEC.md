@@ -105,6 +105,7 @@ The Work section should use these public repositories as concrete proof. Keep co
 |----------|---------|-----|----------------|------------|
 | Primary | Monitoring Stack as Code | `https://github.com/Chest3rf1eld/grafana-prometheus-loki-ansible` | Main infrastructure/SRE proof | Ansible-based distributed monitoring stack with Grafana, Prometheus, Loki, blackbox checks, TLS, and firewall rules |
 | Primary | Bulk Web Infrastructure Automation | `https://github.com/Chest3rf1eld/HestiaCP_scripts` | Main automation proof for 170+ site operations | Bash tooling for HestiaCP/WordPress operations: SSL, migrations, redirects, permissions, backups, cache/plugin maintenance |
+| Supporting | Portfolio Delivery Pipeline | `https://github.com/Chest3rf1eld/Chest3rf1eld.github.io` | Delivery/CI proof for this portfolio | Static bilingual portfolio with Markdown content, generated CV PDFs, production config validation, link checks, Playwright, Lighthouse, GitHub Actions, GitHub Pages, and custom domain deployment |
 | Supporting | Linux Troubleshooting Runbook | `https://github.com/Chest3rf1eld/pi-linux-troubleshooting` | Reliability/troubleshooting/process proof | Safety-first Linux incident triage workflow for load, memory, disk, network, DNS, systemd, SSH, and post-incident notes |
 | Supporting | Linux Desktop / Dotfiles | `https://github.com/Chest3rf1eld/my-i3-dotfiles` | Personal Linux/open-source signal | i3/X11 desktop environment managed with GNU Stow, shell scripts, tmux, rofi, polybar, and user systemd services |
 
@@ -127,6 +128,8 @@ Required for selected repos:
 - No secrets, real private IPs, private domains, tokens, credentials, or customer data are committed.
 - Repository description is filled in GitHub.
 - Topics are added where useful.
+
+For `Portfolio Delivery Pipeline`, the Work card must stay supporting, not primary. It proves delivery discipline and CI/CD quality gates, but must not displace stronger infrastructure proof projects.
 
 Recommended topics:
 - `linux`
@@ -160,8 +163,7 @@ Recommended license work:
 
 - Add Kubernetes/Terraform/SRE lab project once real proof exists.
 - Add web cluster case when architecture details are provided and sanitized.
-- Add hero photo when suitable image is available.
-- Add Open Graph preview image matching the retro desktop aesthetic.
+- Add Open Graph preview image matching the current dark terminal / engineer-native aesthetic.
 
 ---
 

@@ -54,6 +54,14 @@ export const siteContent = {
         "url": "https://github.com/Chest3rf1eld/pi-linux-troubleshooting",
         "stack": "Linux, incident response, systemd, networking, DNS, storage, SRE references",
         "html": "<p><strong>Problem:</strong> incident response gets worse when diagnostics start with risky actions.</p>\n<p><strong>Action:</strong> wrote a structured safety-first troubleshooting skill/runbook for Linux server issues.</p>\n<p><strong>Result:</strong> triage starts with read-only checks and moves toward fixes only after the cause is clearer.</p>"
+      },
+      {
+        "slug": "portfolio-delivery-pipeline",
+        "title": "Portfolio Delivery Pipeline",
+        "priority": "supporting",
+        "url": "https://github.com/Chest3rf1eld/Chest3rf1eld.github.io",
+        "stack": "Vite, React, TypeScript, Markdown, GitHub Actions, GitHub Pages, Playwright, Lighthouse",
+        "html": "<p><strong>Problem:</strong> a public portfolio should be reliable enough to share professionally, not just visually finished.</p>\n<p><strong>Action:</strong> built a static bilingual portfolio with Markdown content, generated CV PDFs, production config validation, link checks, Playwright smoke tests, Lighthouse gates, and GitHub Pages deployment.</p>\n<p><strong>Result:</strong> every production deploy is gated by automated checks and published on GitHub Pages with a custom domain at zero hosting cost.</p>"
       }
     ]
   },
@@ -110,6 +118,14 @@ export const siteContent = {
         "url": "https://github.com/Chest3rf1eld/pi-linux-troubleshooting",
         "stack": "Linux, incident response, systemd, networking, DNS, storage, SRE references",
         "html": "<p><strong>Проблема:</strong> разбор инцидента становится хуже, если начинать сразу с рискованных действий.</p>\n<p><strong>Действие:</strong> написал safety-first troubleshooting skill/runbook для проблем Linux-серверов.</p>\n<p><strong>Результат:</strong> диагностика начинается с read-only проверок и переходит к исправлениям только после уточнения причины.</p>"
+      },
+      {
+        "slug": "portfolio-delivery-pipeline",
+        "title": "Portfolio Delivery Pipeline",
+        "priority": "supporting",
+        "url": "https://github.com/Chest3rf1eld/Chest3rf1eld.github.io",
+        "stack": "Vite, React, TypeScript, Markdown, GitHub Actions, GitHub Pages, Playwright, Lighthouse",
+        "html": "<p><strong>Проблема:</strong> публичное портфолио должно быть не только визуально готовым, но и достаточно надежным, чтобы отправлять его работодателям и техническим контактам.</p>\n<p><strong>Действие:</strong> собрал статическое bilingual-портфолио с Markdown-контентом, генерацией PDF CV, проверкой production-конфига, link checks, Playwright smoke tests, Lighthouse gates и деплоем на GitHub Pages.</p>\n<p><strong>Результат:</strong> каждый production deploy проходит автоматические проверки и публикуется на GitHub Pages с custom domain без затрат на хостинг.</p>"
       }
     ]
   }

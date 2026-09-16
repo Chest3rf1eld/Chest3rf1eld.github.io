@@ -8,6 +8,7 @@ const publicLinks = [
   'https://github.com/Chest3rf1eld/HestiaCP_scripts',
   'https://github.com/Chest3rf1eld/pi-linux-troubleshooting',
   'https://github.com/Chest3rf1eld/my-i3-dotfiles',
+  'https://github.com/Chest3rf1eld/Chest3rf1eld.github.io',
 ];
 
 test('renders English portfolio by default and switches to Russian', async ({ page }) => {
