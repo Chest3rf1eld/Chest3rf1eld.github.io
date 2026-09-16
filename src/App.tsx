@@ -254,17 +254,23 @@ function installAnalytics() {
   const id = import.meta.env.VITE_GA_MEASUREMENT_ID;
   if (!id || document.querySelector(`[src*="${id}"]`)) return;
 
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function gtag(...args: unknown[]) {
+    window.dataLayer.push(args);
+  };
+
   const script = document.createElement('script');
   script.async = true;
   script.src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
   document.head.append(script);
 
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = function gtag(...args: unknown[]) {
-    window.dataLayer.push(args);
-  };
   window.gtag('js', new Date());
-  window.gtag('config', id);
+  window.gtag('config', id, { send_page_view: false });
+  window.gtag('event', 'page_view', {
+    page_location: window.location.href,
+    page_path: window.location.pathname,
+    page_title: document.title,
+  });
 }
 
 export function App() {
