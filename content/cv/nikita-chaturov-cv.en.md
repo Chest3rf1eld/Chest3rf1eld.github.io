@@ -52,9 +52,9 @@ Investigated abusive traffic against a public service that exhausted external AP
 
 ## Education
 
-Kazan National Research Technical University named after A. N. Tupolev - KAI, Information Systems and Technologies, part-time bachelor's degree, expected 2028.
+Kazan National Research Technical University named after A. N. Tupolev - KAI, Information Systems and Technologies, part-time bachelor's degree, expected graduation in 2028.
 
-KTK KNITU, Applied Informatics, Programmer Technician, 2023.
+KTK KNITU, Applied Informatics, Programmer Technician, graduated in 2023.
 
 ## Languages
 
