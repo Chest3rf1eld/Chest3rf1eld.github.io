@@ -32,6 +32,7 @@ async function readWork(lang) {
         title: String(item.meta.title ?? slug),
         priority: String(item.meta.priority ?? 'supporting'),
         url: String(item.meta.url ?? ''),
+        redditUrl: item.meta.redditUrl ? String(item.meta.redditUrl) : '',
         stack: String(item.meta.stack ?? ''),
         html: item.html,
       };

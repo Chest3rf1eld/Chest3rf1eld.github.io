@@ -6,6 +6,7 @@ export const siteConfig = {
   telegramUrl: 'https://t.me/Chesterf1ld',
   githubUrl: 'https://github.com/Chest3rf1eld',
   linkedinUrl: 'https://www.linkedin.com/in/nikita-chaturov-8625a5281/',
+  kworkUrl: 'https://kwork.ru/user/nikchester',
   email: 'nikchester01@gmail.com',
   photo: '/assets/hero-photo.jpg',
   cv: {

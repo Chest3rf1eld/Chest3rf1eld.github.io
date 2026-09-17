@@ -1,6 +1,6 @@
 ---
 name: Nikita Chaturov
-title: Infrastructure Engineer
+title: Infrastructure Engineer / Linux System Administrator
 location: Kazan, Russia
 email: nikchester01@gmail.com
 telegram: https://t.me/Chesterf1ld
@@ -10,13 +10,13 @@ linkedin: https://www.linkedin.com/in/nikita-chaturov-8625a5281/
 
 ## Profile
 
-Infrastructure Engineer with hands-on ownership of Linux production infrastructure: servers, virtualization, networking, deployments, monitoring, backups, security hardening, incident troubleshooting, and documentation.
+Linux System Administrator and Infrastructure Engineer focused on production Linux infrastructure, virtualization, automation, monitoring, backups, networking, incident troubleshooting, and technical documentation.
 
-Currently the only infrastructure engineer in the company, managing 15+ servers and VMs across 4 providers, an internal Proxmox VE environment, and infrastructure for 170+ websites.
+Currently the only infrastructure engineer in the company. I manage around 15 servers and virtual machines across 4 providers, an internal Proxmox VE environment, and infrastructure for 170+ websites.
 
 ## Core Stack
 
-Linux, Debian, Ubuntu, Proxmox VE, Docker, Docker Compose, Ansible, Bash, Python, Nginx, HAProxy, MikroTik, WireGuard, DNS, Prometheus, Grafana, Loki, Zabbix, MySQL/MariaDB, PostgreSQL, GitLab CI/CD, Yandex Cloud.
+Linux, Debian, Ubuntu, Proxmox VE, Docker, Docker Compose, Ansible, Bash, Python, Nginx, HAProxy, MikroTik, WireGuard, OpenVPN, DNS, Bind9, Prometheus, Grafana, Loki, Zabbix, MySQL/MariaDB, PostgreSQL, Redis, GitLab CI/CD, Yandex Cloud, Object Storage.
 
 ## Experience
 
@@ -24,28 +24,38 @@ Linux, Debian, Ubuntu, Proxmox VE, Docker, Docker Compose, Ansible, Bash, Python
 
 Jan 2024 - Present, Kazan
 
-- Own Linux servers, VMs, networking, monitoring, backups, access control, and documentation.
-- Build Ansible playbooks and Bash scripts for provisioning, SSL, domain setup, migrations, permissions, and routine operations.
-- Maintain monitoring and alerting with Prometheus, Grafana, Loki, exporters, and Zabbix.
-- Administer Docker services, Nginx/HAProxy reverse proxies, GitLab, GitLab CI/CD, PostgreSQL, MySQL/MariaDB, DNS, VPN, and Proxmox VE.
-- Investigate incidents from symptoms to root cause and document recovery steps.
+- Own Linux servers, VMs, networking, monitoring, backups, access control, security hardening, documentation, and incident troubleshooting.
+- Build idempotent Ansible playbooks and Bash scripts for server provisioning, HestiaCP/nginx/PHP-FPM setup, exporters, SSL, domain setup, migrations, permissions, and routine operations.
+- Administer Docker and Docker Compose services, Nginx/HAProxy reverse proxies, DNS, GitLab, GitLab CI/CD pipelines, PostgreSQL, MySQL/MariaDB, Redis, VPN, and Proxmox VE.
+- Maintain monitoring and alerting with Prometheus, Grafana, Loki, Promtail, exporters, and Zabbix. Tune alert thresholds and reduce noisy alerts.
+- Manage backups to Object Storage with retention policies, failed-backup alerts, test restores, log rotation, and runbooks.
+- Support security controls: SSH keys, fail2ban, nftables/iptables, dynamic firewall sets, database access restrictions, IP allowlists, rate limiting, and captcha-based abuse protection.
+- Document infrastructure in Wiki.js: architecture diagrams, runbooks, troubleshooting notes, and operational procedures.
 
 ## Selected Work
 
-### Monitoring Stack as Code
+### Monitoring and Alerting From Scratch
 
-Ansible roles and playbooks for a small distributed monitoring stack: Grafana, Prometheus, Loki, Promtail, blackbox_exporter, nginx TLS, and nftables firewall rules.
+Designed and implemented monitoring for servers, websites, backups, and application services. Set up Prometheus, Grafana, Loki, Promtail, exporters, and alerts for availability, HTTP status codes, SSL expiration, load, service failures, and backup failures.
 
-### Bulk Web Infrastructure Automation
+### Automation for 170+ Websites
 
-Bash tooling for operating many HestiaCP/WordPress sites: SSL, redirects, migrations, permissions, plugin/cache maintenance, PHP backend changes, and backups.
+Created Ansible playbooks and Bash tooling for a web hosting platform: server provisioning with HestiaCP, domain creation with DNS zones and databases, website migrations, mass SSL issuing, reCAPTCHA setup, MariaDB tuning, and backups to Object Storage. Recovery became hours instead of days.
+
+### Proxmox VE Infrastructure and Service Migration
+
+Deployed an internal Proxmox VE server and migrated GitLab, WireGuard VPN, Wiki.js, Vaultwarden, GLPI, monitoring, remote desktops, Bitrix24, and FreePBX between cloud providers and local infrastructure without data loss.
 
 ### Production Incident Mitigation
 
-Investigated abusive traffic against a public service that exhausted external API limits. Added request/IP correlation, SmartCaptcha, rate limiting, queueing, and fail2ban. The abuse stopped and diagnostics became clearer.
+Investigated abusive traffic against a public service that exhausted external API limits. Added request/IP correlation, captcha, nginx rate limiting, a request queue, and fail2ban escalation. Then implemented subnet-level containment with nftables: interval sets for manual /24 blocking and an in-kernel meter that detects flood by subnet and bans abusive IPs through dynamic sets with timeouts. The abuse stopped, manual blocking decreased, and diagnostics became clearer.
 
 ## Education
 
-Kazan National Research Technical University named after A. N. Tupolev - KAI, Information Systems and Technologies, expected 2028.
+Kazan National Research Technical University named after A. N. Tupolev - KAI, Information Systems and Technologies, part-time bachelor's degree, expected graduation in 2028.
 
-KTK KNITU, Applied Informatics, Programmer Technician, 2023.
+KTK KNITU, Applied Informatics, Programmer Technician, graduated in 2023.
+
+## Languages
+
+Russian - native. English - A2.

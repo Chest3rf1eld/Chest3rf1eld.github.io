@@ -106,6 +106,7 @@ The Work section should use these public repositories as concrete proof. Keep co
 | Primary | Monitoring Stack as Code | `https://github.com/Chest3rf1eld/grafana-prometheus-loki-ansible` | Main infrastructure/SRE proof | Ansible-based distributed monitoring stack with Grafana, Prometheus, Loki, blackbox checks, TLS, and firewall rules |
 | Primary | Bulk Web Infrastructure Automation | `https://github.com/Chest3rf1eld/HestiaCP_scripts` | Main automation proof for 170+ site operations | Bash tooling for HestiaCP/WordPress operations: SSL, migrations, redirects, permissions, backups, cache/plugin maintenance |
 | Supporting | Portfolio Delivery Pipeline | `https://github.com/Chest3rf1eld/Chest3rf1eld.github.io` | Delivery/CI proof for this portfolio | Static bilingual portfolio with Markdown content, generated CV PDFs, production config validation, link checks, Playwright, Lighthouse, GitHub Actions, GitHub Pages, and custom domain deployment |
+| Supporting | Freelance Email-to-Telegram Monitor | `https://github.com/Chest3rf1eld/kwork-jobs-parser` | Lightweight automation proof | Google Apps Script workflow that parses labeled Kwork emails in Gmail, filters by budget and keywords, sends Telegram digests, marks processed messages, and handles Telegram rate-limit retries |
 | Supporting | Linux Troubleshooting Runbook | `https://github.com/Chest3rf1eld/pi-linux-troubleshooting` | Reliability/troubleshooting/process proof | Safety-first Linux incident triage workflow for load, memory, disk, network, DNS, systemd, SSH, and post-incident notes |
 | Supporting | Linux Desktop / Dotfiles | `https://github.com/Chest3rf1eld/my-i3-dotfiles` | Personal Linux/open-source signal | i3/X11 desktop environment managed with GNU Stow, shell scripts, tmux, rofi, polybar, and user systemd services |
 
@@ -113,7 +114,6 @@ Do not include these repositories in the primary MVP Work section unless they ar
 - `https://github.com/Chest3rf1eld/k8s-study-project` - currently a study project; may be mentioned as Kubernetes lab/study level, not production proof.
 - `https://github.com/Chest3rf1eld/backup_yandex_objective_storage` - useful but better folded into the HestiaCP/backups automation story.
 - `https://github.com/Chest3rf1eld/nikchester.ansible-role.hestiacp` - fork; only show later if improvements are documented clearly.
-- `https://github.com/Chest3rf1eld/kwork-jobs-parser` - useful automation but less aligned with Infrastructure Engineer positioning.
 - `https://github.com/Chest3rf1eld/Spotify-Likes-Downloader` - personal utility, not relevant enough for the main professional proof.
 - `https://github.com/Chest3rf1eld/nikchester-blog` - can be linked separately later, not as project proof.
 
@@ -153,11 +153,42 @@ Recommended license work:
 ### 3.4 Phase 2 Features
 
 - Detailed case pages after sanitized materials are available.
+- Freelance availability block after Work for scoped ops tasks, with Kwork and Telegram CTAs.
 - More project links and diagrams.
 - GitHub issues for iterative improvements.
 - Optional privacy-friendly analytics replacement if needed.
 - Better accessibility pass.
 - Optional blog only if it supports hiring or proof.
+
+### 3.4.1 Planned Feature: Freelance Availability Block
+
+Goal: add a secondary, hiring-safe block that signals the owner is available for scoped freelance ops work without turning the portfolio into a sales page.
+
+Positioning decisions:
+- Hiring remains the primary site purpose. The freelance block must not overtake the hero, proof, or selected work.
+- The block appears after Work and before the later supporting sections.
+- The block is included in hero navigation as `Freelance` / `Фриланс`, but the first screen must remain compact.
+- The block title should be `Available for ops work` in English and a concise Russian equivalent such as `Доступен для ops-задач`.
+- Tone is client-friendly: understandable to non-technical freelance clients while still credible to technical leads.
+
+Content requirements:
+- Explain in 1 short paragraph that the owner takes scoped ops/infrastructure tasks as freelance work.
+- Present the work as problem-solving, not as generic outsourcing.
+- Cover these safe service categories: Linux troubleshooting, monitoring setup, automation scripts, and web infrastructure operations.
+- Use an incident-intake style UI pattern: symptoms/scope/channel/next step, adapted to the existing Hybrid Ops Desk visual language.
+- Do not publish prices, SLA promises, 24/7 support claims, emergency rescue claims, private client details, private infrastructure details, or fixed availability guarantees.
+
+CTA requirements:
+- Include two visually equal CTAs: `Contact via Kwork` and Telegram.
+- Kwork URL is `https://kwork.ru/user/nikchester`.
+- Telegram URL remains `https://t.me/Chesterf1ld`.
+- Kwork click-through is the primary success signal, even though Telegram remains an equal visible option.
+
+Technical requirements:
+- Source EN/RU copy from Markdown files, not hardcoded React copy.
+- Extend the build-time content pipeline with a `freelance` section.
+- Add Playwright coverage for the new section anchor, Kwork CTA, Telegram CTA, and bilingual visible copy.
+- Link validation must include the Kwork URL, accepting known marketplace bot/protection behavior as a warning rather than a false broken-link failure.
 
 ### 3.5 Future Considerations
 
@@ -219,6 +250,16 @@ WorkItem
 - githubUrl?
 - visible
 
+FreelanceSection
+- language
+- title
+- summary
+- workTypes[]
+- intakeLabels[]
+- kworkUrl
+- telegramUrl
+- boundaries[] (implementation guardrails, not necessarily shown verbatim in UI)
+
 SkillGroup
 - title
 - skills[]
@@ -272,13 +313,15 @@ The MVP is a single page with these sections:
 1. **Hero**: name, `Infrastructure Engineer`, concise Linux production ownership statement, primary Telegram CTA, secondary links.
 2. **Proof**: short metrics: `15 servers`, `170+ sites`, `4 providers`, `Proxmox`, `recovery hours not days`.
 3. **Work**: selected sanitized work cards.
-4. **Stack**: grouped technologies and confidence level by real experience.
-5. **CV**: RU and EN PDF download buttons.
-6. **Contact**: Telegram, email, GitHub, LinkedIn.
+4. **Freelance**: secondary availability block for scoped ops work, with Kwork and Telegram CTAs.
+5. **Stack**: grouped technologies and confidence level by real experience.
+6. **CV**: RU and EN PDF download buttons.
+7. **Contact**: Telegram, email, GitHub, LinkedIn, Kwork.
 
 ### 5.2 Navigation Flow
 
 - Main navigation is minimal and can use a retro menu/titlebar pattern.
+- Add a real `Freelance` / `Фриланс` anchor link once the freelance availability block exists.
 - Language switch is visible as EN/RU titlebar-style buttons.
 - Primary CTA goes directly to Telegram.
 - External profile/project links open normally and must be valid before release.
@@ -315,6 +358,7 @@ Recommended section mapping (terminal/session style, supersedes the older app-wi
 - Hero: full shell-session presentation (`./whoami`), but name, role, value statement, and primary CTAs stay immediately clear.
 - Proof: log-style health events with `[OK]`/status patterns.
 - Work: readable YAML/service manifests with `problem`, `action`, `result`, `stack`, `repo`, and `status` keys.
+- Freelance: incident-intake style panel that communicates scoped ops help without emergency/SLA promises.
 - Stack: capability manifest / config-style block.
 - CV: file-listing style download block with EN/RU PDFs.
 - Contact: escalation-channel style endpoint list with Telegram as primary action.
@@ -399,6 +443,7 @@ MVP accessibility target is minimal but responsible:
 | Telegram | Primary contact CTA | External URL | Telegram / Owner |
 | GitHub profile | Proof and source links | External URL | GitHub / Owner |
 | LinkedIn | Professional profile | External URL | LinkedIn / Owner |
+| Kwork | Freelance profile and scoped task intake | External URL | Kwork / Owner |
 
 ### 6.2 Data Flows
 
@@ -406,7 +451,7 @@ MVP accessibility target is minimal but responsible:
 Markdown content -> Vite build -> static site -> GitHub Pages
 CV Markdown -> PDF generation -> public downloadable PDF assets
 Visitor browser -> GA script -> Google Analytics
-Visitor click -> Telegram/GitHub/LinkedIn/email/project links
+Visitor click -> Telegram/GitHub/LinkedIn/Kwork/email/project links
 ```
 
 ### 6.3 Failure Handling
@@ -420,6 +465,7 @@ Visitor click -> Telegram/GitHub/LinkedIn/email/project links
 | GA script | Blocked by browser/adblock | Site remains fully usable |
 | Hero photo | Missing/unavailable | Show system-dialog style fallback |
 | Public link | Broken during validation | Release is blocked or link is hidden before release |
+| Kwork | Marketplace blocks CI/browser bot checks | Treat known protection as link-validation warning; UI link remains usable |
 
 ---
 
@@ -445,6 +491,7 @@ Visitor click -> Telegram/GitHub/LinkedIn/email/project links
 | Hero photo not added yet | Placeholder/fallback shown |
 | Only one public GitHub project is available | Work section remains compact and honest |
 | Project code cannot be shown | Show sanitized case card without code link |
+| Freelance client wants emergency/24/7 support | UI must not imply SLA or emergency availability; Kwork/Telegram conversation defines scope |
 | Very small mobile viewport | Window panels stack vertically; no content overflow |
 
 ### 7.3 Partial Failure Handling
@@ -475,6 +522,7 @@ No runtime authorization. Repository write access is controlled by GitHub permis
 | Email | Public | HTTPS in transit | Until removed from site |
 | GitHub URL | Public | HTTPS in transit | Until removed from site |
 | LinkedIn URL | Public | HTTPS in transit | Until removed from site |
+| Kwork URL | Public | HTTPS in transit | Until removed from site |
 | Phone number | Sensitive personal | Not published | Must not be committed to public site |
 | CV PDF | Public professional | HTTPS in transit | Until replaced/removed |
 | Hero photo | Public personal | HTTPS in transit | Until replaced/removed |
@@ -610,6 +658,7 @@ MVP is done when:
 - all six sections are present
 - Telegram CTA works
 - GitHub, LinkedIn, email, and public project links work
+- Kwork links work or are handled as known protected-host warnings in automated link validation
 - RU and EN CV PDFs exist and contain no phone number
 - Lighthouse scores are >= 90 for Performance, Accessibility, Best Practices, SEO
 - Playwright smoke passes in Chromium, WebKit, Firefox

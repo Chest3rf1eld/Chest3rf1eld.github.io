@@ -5,6 +5,7 @@ export type WorkItem = {
   title: string;
   priority: string;
   url: string;
+  redditUrl?: string;
   stack: string;
   html: string;
 };

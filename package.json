@@ -18,6 +18,8 @@
     "lighthouse": "node scripts/run-lighthouse.mjs"
   },
   "dependencies": {
+    "@fontsource/inter": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
     "@vitejs/plugin-react": "latest",
     "gray-matter": "latest",
     "marked": "latest",

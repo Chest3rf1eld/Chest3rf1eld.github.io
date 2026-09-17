@@ -20,7 +20,7 @@ export const siteContent = {
     },
     "contact": {
       "title": "Contact",
-      "html": "<p>Best way to reach me: Telegram.</p>\n<p>For hiring context, use LinkedIn, GitHub, or email.</p>"
+      "html": "<p>Best way to reach me: Telegram.</p>\n<p>For hiring context, use LinkedIn, GitHub, Kwork, or email.</p>"
     },
     "work": [
       {
@@ -28,6 +28,7 @@ export const siteContent = {
         "title": "Bulk Web Infrastructure Automation",
         "priority": "primary",
         "url": "https://github.com/Chest3rf1eld/HestiaCP_scripts",
+        "redditUrl": "",
         "stack": "Bash, HestiaCP, WordPress, WP-CLI, SSL, DNS, Yandex Object Storage",
         "html": "<p><strong>Problem:</strong> operating many hosted websites creates repetitive and risky manual work.</p>\n<p><strong>Action:</strong> built standalone Bash scripts for SSL, redirects, migrations, permissions, cache/plugin maintenance, PHP backend changes, and backups.</p>\n<p><strong>Result:</strong> routine operations across many sites became faster and more predictable.</p>"
       },
@@ -36,14 +37,25 @@ export const siteContent = {
         "title": "Monitoring Stack as Code",
         "priority": "primary",
         "url": "https://github.com/Chest3rf1eld/grafana-prometheus-loki-ansible",
+        "redditUrl": "",
         "stack": "Ansible, Prometheus, Grafana, Loki, Promtail, blackbox_exporter, nginx, nftables",
         "html": "<p><strong>Problem:</strong> monitoring should be reproducible, not hand-built on every server.</p>\n<p><strong>Action:</strong> built Ansible playbooks and roles for a distributed monitoring stack with Grafana, Prometheus, Loki, blackbox checks, TLS, and firewall rules.</p>\n<p><strong>Result:</strong> monitoring setup can be reviewed, repeated, and changed through code.</p>"
+      },
+      {
+        "slug": "freelance-brief-intake-automation",
+        "title": "Freelance Email-to-Telegram Monitor",
+        "priority": "supporting",
+        "url": "https://github.com/Chest3rf1eld/kwork-jobs-parser",
+        "redditUrl": "https://www.reddit.com/r/RuProgrammers/s/O6DUeSJ1W3",
+        "stack": "Google Apps Script, JavaScript, Gmail API, Telegram Bot API, clasp, parsing, workflow automation",
+        "html": "<p><strong>Problem:</strong> relevant freelance leads can be missed when Kwork email notifications stay buried in Gmail.</p>\n<p><strong>Action:</strong> built a Google Apps Script workflow that reads labeled Gmail messages, parses Kwork order cards, filters by budget and keywords, sends Telegram digests, marks processed messages, and retries Telegram <code>429</code> rate limits.</p>\n<p><strong>Result:</strong> matching leads are delivered to Telegram with enough context for quick triage, while processed emails are tracked safely by Gmail labels.</p>"
       },
       {
         "slug": "i3-dotfiles",
         "title": "Linux Desktop / Dotfiles",
         "priority": "supporting",
         "url": "https://github.com/Chest3rf1eld/my-i3-dotfiles",
+        "redditUrl": "",
         "stack": "i3, X11, GNU Stow, Shell, tmux, rofi, polybar, systemd user services",
         "html": "<p><strong>Problem:</strong> a daily Linux workspace should be reproducible instead of living only in local configs.</p>\n<p><strong>Action:</strong> organized an i3/X11 desktop environment with Stow-compatible configs and helper scripts.</p>\n<p><strong>Result:</strong> desktop tooling, terminal workflow, scripts, and user services can be restored and reviewed from git.</p>"
       },
@@ -52,6 +64,7 @@ export const siteContent = {
         "title": "Linux Troubleshooting Runbook",
         "priority": "supporting",
         "url": "https://github.com/Chest3rf1eld/pi-linux-troubleshooting",
+        "redditUrl": "",
         "stack": "Linux, incident response, systemd, networking, DNS, storage, SRE references",
         "html": "<p><strong>Problem:</strong> incident response gets worse when diagnostics start with risky actions.</p>\n<p><strong>Action:</strong> wrote a structured safety-first troubleshooting skill/runbook for Linux server issues.</p>\n<p><strong>Result:</strong> triage starts with read-only checks and moves toward fixes only after the cause is clearer.</p>"
       },
@@ -60,6 +73,7 @@ export const siteContent = {
         "title": "Portfolio Delivery Pipeline",
         "priority": "supporting",
         "url": "https://github.com/Chest3rf1eld/Chest3rf1eld.github.io",
+        "redditUrl": "",
         "stack": "Vite, React, TypeScript, Markdown, GitHub Actions, GitHub Pages, Playwright, Lighthouse",
         "html": "<p><strong>Problem:</strong> a public portfolio should be reliable enough to share professionally, not just visually finished.</p>\n<p><strong>Action:</strong> built a static bilingual portfolio with Markdown content, generated CV PDFs, production config validation, link checks, Playwright smoke tests, Lighthouse gates, and GitHub Pages deployment.</p>\n<p><strong>Result:</strong> every production deploy is gated by automated checks and published on GitHub Pages with a custom domain at zero hosting cost.</p>"
       }
@@ -84,7 +98,7 @@ export const siteContent = {
     },
     "contact": {
       "title": "Контакты",
-      "html": "<p>Самый быстрый способ связи - Telegram.</p>\n<p>Для найма и технического контекста есть LinkedIn, GitHub и email.</p>"
+      "html": "<p>Самый быстрый способ связи - Telegram.</p>\n<p>Для найма и технического контекста есть LinkedIn, GitHub, Kwork и email.</p>"
     },
     "work": [
       {
@@ -92,6 +106,7 @@ export const siteContent = {
         "title": "Bulk Web Infrastructure Automation",
         "priority": "primary",
         "url": "https://github.com/Chest3rf1eld/HestiaCP_scripts",
+        "redditUrl": "",
         "stack": "Bash, HestiaCP, WordPress, WP-CLI, SSL, DNS, Yandex Object Storage",
         "html": "<p><strong>Проблема:</strong> сопровождение большого числа сайтов быстро превращается в ручную рутину и риск ошибок.</p>\n<p><strong>Действие:</strong> собрал Bash-скрипты для SSL, редиректов, миграций, прав, cache/plugin maintenance, смены PHP backend и бэкапов.</p>\n<p><strong>Результат:</strong> типовые операции по многим сайтам стали быстрее и предсказуемее.</p>"
       },
@@ -100,14 +115,25 @@ export const siteContent = {
         "title": "Monitoring Stack as Code",
         "priority": "primary",
         "url": "https://github.com/Chest3rf1eld/grafana-prometheus-loki-ansible",
+        "redditUrl": "",
         "stack": "Ansible, Prometheus, Grafana, Loki, Promtail, blackbox_exporter, nginx, nftables",
         "html": "<p><strong>Проблема:</strong> мониторинг не должен собираться руками на каждом сервере.</p>\n<p><strong>Действие:</strong> сделал Ansible playbooks и роли для distributed monitoring stack: Grafana, Prometheus, Loki, blackbox checks, TLS и firewall rules.</p>\n<p><strong>Результат:</strong> мониторинг можно повторить, проверить и менять через код.</p>"
+      },
+      {
+        "slug": "freelance-brief-intake-automation",
+        "title": "Freelance Email-to-Telegram Monitor",
+        "priority": "supporting",
+        "url": "https://github.com/Chest3rf1eld/kwork-jobs-parser",
+        "redditUrl": "https://www.reddit.com/r/RuProgrammers/s/O6DUeSJ1W3",
+        "stack": "Google Apps Script, JavaScript, Gmail API, Telegram Bot API, clasp, parsing, workflow automation",
+        "html": "<p><strong>Проблема:</strong> релевантные фриланс-заказы легко пропустить, когда уведомления Kwork остаются в Gmail.</p>\n<p><strong>Действие:</strong> сделал Google Apps Script workflow, который читает письма с Gmail-меткой, парсит карточки заказов Kwork, фильтрует по бюджету и ключевым словам, отправляет Telegram-дайджесты, помечает обработанные письма и повторяет отправку при Telegram <code>429</code> rate limit.</p>\n<p><strong>Результат:</strong> подходящие заказы приходят в Telegram с контекстом для быстрого triage, а обработанные письма безопасно отслеживаются через Gmail labels.</p>"
       },
       {
         "slug": "i3-dotfiles",
         "title": "Linux Desktop / Dotfiles",
         "priority": "supporting",
         "url": "https://github.com/Chest3rf1eld/my-i3-dotfiles",
+        "redditUrl": "",
         "stack": "i3, X11, GNU Stow, Shell, tmux, rofi, polybar, systemd user services",
         "html": "<p><strong>Проблема:</strong> рабочее Linux-окружение не должно жить только в локальных конфигах.</p>\n<p><strong>Действие:</strong> оформил i3/X11 desktop environment в Stow-compatible структуру с helper scripts.</p>\n<p><strong>Результат:</strong> терминал, window manager, scripts и user services можно восстановить и проверить из git.</p>"
       },
@@ -116,6 +142,7 @@ export const siteContent = {
         "title": "Linux Troubleshooting Runbook",
         "priority": "supporting",
         "url": "https://github.com/Chest3rf1eld/pi-linux-troubleshooting",
+        "redditUrl": "",
         "stack": "Linux, incident response, systemd, networking, DNS, storage, SRE references",
         "html": "<p><strong>Проблема:</strong> разбор инцидента становится хуже, если начинать сразу с рискованных действий.</p>\n<p><strong>Действие:</strong> написал safety-first troubleshooting skill/runbook для проблем Linux-серверов.</p>\n<p><strong>Результат:</strong> диагностика начинается с read-only проверок и переходит к исправлениям только после уточнения причины.</p>"
       },
@@ -124,6 +151,7 @@ export const siteContent = {
         "title": "Portfolio Delivery Pipeline",
         "priority": "supporting",
         "url": "https://github.com/Chest3rf1eld/Chest3rf1eld.github.io",
+        "redditUrl": "",
         "stack": "Vite, React, TypeScript, Markdown, GitHub Actions, GitHub Pages, Playwright, Lighthouse",
         "html": "<p><strong>Проблема:</strong> публичное портфолио должно быть не только визуально готовым, но и достаточно надежным, чтобы отправлять его работодателям и техническим контактам.</p>\n<p><strong>Действие:</strong> собрал статическое bilingual-портфолио с Markdown-контентом, генерацией PDF CV, проверкой production-конфига, link checks, Playwright smoke tests, Lighthouse gates и деплоем на GitHub Pages.</p>\n<p><strong>Результат:</strong> каждый production deploy проходит автоматические проверки и публикуется на GitHub Pages с custom domain без затрат на хостинг.</p>"
       }

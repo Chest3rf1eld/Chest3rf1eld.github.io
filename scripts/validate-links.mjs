@@ -29,15 +29,15 @@ for (const cvPath of ['public/assets/cv/nikita-chaturov-cv.en.pdf', 'public/asse
 for (const url of urls) {
   if (url.startsWith('mailto:')) continue;
   if (url === 'https://nikchester.ru') continue;
-  const protectedHost = /https:\/\/(t\.me|www\.linkedin\.com)\//.test(url);
+  const protectedHost = /https:\/\/(t\.me|www\.linkedin\.com|kwork\.ru|www\.reddit\.com)\//.test(url);
 
   try {
     let response = await fetch(url, { method: 'HEAD', redirect: 'follow' });
     if (response.status === 405 || response.status === 403) {
       response = await fetch(url, { method: 'GET', redirect: 'follow' });
     }
-    if (response.status === 999 && url.includes('linkedin.com')) {
-      warnings.push(`${url} -> LinkedIn bot protection (${response.status})`);
+    if (!response.ok && protectedHost) {
+      warnings.push(`${url} -> network/protection warning (${response.status})`);
     } else if (!response.ok) {
       failures.push(`${url} -> ${response.status}`);
     }
