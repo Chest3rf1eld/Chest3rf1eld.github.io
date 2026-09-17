@@ -3,16 +3,20 @@
 export const siteContent = {
   "en": {
     "hero": {
-      "eyebrow": "Linux production infrastructure",
+      "eyebrow": "Infrastructure diagnostics",
       "name": "Nikita Chaturov",
       "role": "Infrastructure Engineer",
       "ctaLabel": "Write in Telegram",
       "secondaryLabel": "View GitHub",
-      "html": "<p>I own and improve Linux production infrastructure: servers, automation, monitoring, backups, networking, and incident troubleshooting.</p>\n<p>I like systems that are reproducible, observable, and documented - playbooks instead of manual steps, alerts instead of guessing, runbooks instead of tribal knowledge.</p>"
+      "html": "<p>I keep infrastructure understandable: servers, automation, monitoring, backups, networking, and incident troubleshooting.</p>\n<p>I like systems that are reproducible, observable, and documented - playbooks instead of manual steps, alerts instead of guessing, runbooks instead of tribal knowledge.</p>"
     },
     "proof": {
-      "title": "Proof in numbers",
+      "title": "Operational scope",
       "html": "<ul>\n<li><strong>15+</strong> servers and virtual machines</li>\n<li><strong>170+</strong> websites operated and automated</li>\n<li><strong>4</strong> infrastructure providers</li>\n<li><strong>Proxmox VE</strong> home and office virtualization experience</li>\n<li><strong>Hours, not days</strong> for rebuild and recovery workflows</li>\n</ul>"
+    },
+    "freelance": {
+      "title": "Freelance infrastructure tasks",
+      "html": "<p>I take scoped freelance work around Linux troubleshooting, monitoring setup, automation scripts, web infrastructure operations, and infrastructure design.</p>"
     },
     "stack": {
       "title": "Stack",
@@ -24,19 +28,34 @@ export const siteContent = {
     },
     "work": [
       {
+        "slug": "anti-flood-mitigation",
+        "title": "Proverka-cheka.ru Abuse Mitigation",
+        "priority": "primary",
+        "order": 1,
+        "url": "",
+        "caseUrl": "/en/cases/proverka-cheka/",
+        "redditUrl": "",
+        "stack": "nginx, fail2ban, nftables, captcha, request queue, incident diagnostics",
+        "html": "<p><strong>Problem:</strong> abusive traffic against proverka-cheka.ru was exhausting external API limits and creating repeated manual response work.</p>\n<p><strong>Action:</strong> added request/IP correlation, captcha, nginx rate limiting, a request queue, fail2ban escalation, and nftables subnet containment with interval sets, in-kernel meter checks, and dynamic sets with timeouts.</p>\n<p><strong>Result:</strong> abuse stopped, manual blocking decreased, and incident diagnostics became clearer.</p>"
+      },
+      {
         "slug": "hestiacp-automation",
         "title": "Bulk Web Infrastructure Automation",
         "priority": "primary",
+        "order": 2,
         "url": "https://github.com/Chest3rf1eld/HestiaCP_scripts",
+        "caseUrl": "/en/cases/web-cluster/",
         "redditUrl": "",
         "stack": "Bash, HestiaCP, WordPress, WP-CLI, SSL, DNS, Yandex Object Storage",
-        "html": "<p><strong>Problem:</strong> operating many hosted websites creates repetitive and risky manual work.</p>\n<p><strong>Action:</strong> built standalone Bash scripts for SSL, redirects, migrations, permissions, cache/plugin maintenance, PHP backend changes, and backups.</p>\n<p><strong>Result:</strong> routine operations across many sites became faster and more predictable.</p>"
+        "html": "<p><strong>Problem:</strong> operating 170+ hosted websites creates repetitive manual work and recovery risk.</p>\n<p><strong>Action:</strong> built repeatable Bash and Ansible workflows for provisioning, SSL, redirects, migrations, permissions, cache/plugin maintenance, PHP backend changes, and backups.</p>\n<p><strong>Result:</strong> routine operations became faster and more predictable, recovery moved toward hours instead of days, and scaling new sites became safer.</p>"
       },
       {
         "slug": "monitoring-stack",
         "title": "Monitoring Stack as Code",
         "priority": "primary",
+        "order": 50,
         "url": "https://github.com/Chest3rf1eld/grafana-prometheus-loki-ansible",
+        "caseUrl": "",
         "redditUrl": "",
         "stack": "Ansible, Prometheus, Grafana, Loki, Promtail, blackbox_exporter, nginx, nftables",
         "html": "<p><strong>Problem:</strong> monitoring should be reproducible, not hand-built on every server.</p>\n<p><strong>Action:</strong> built Ansible playbooks and roles for a distributed monitoring stack with Grafana, Prometheus, Loki, blackbox checks, TLS, and firewall rules.</p>\n<p><strong>Result:</strong> monitoring setup can be reviewed, repeated, and changed through code.</p>"
@@ -45,7 +64,9 @@ export const siteContent = {
         "slug": "freelance-brief-intake-automation",
         "title": "Freelance Email-to-Telegram Monitor",
         "priority": "supporting",
+        "order": 50,
         "url": "https://github.com/Chest3rf1eld/kwork-jobs-parser",
+        "caseUrl": "",
         "redditUrl": "https://www.reddit.com/r/RuProgrammers/s/O6DUeSJ1W3",
         "stack": "Google Apps Script, JavaScript, Gmail API, Telegram Bot API, clasp, parsing, workflow automation",
         "html": "<p><strong>Problem:</strong> relevant freelance leads can be missed when Kwork email notifications stay buried in Gmail.</p>\n<p><strong>Action:</strong> built a Google Apps Script workflow that reads labeled Gmail messages, parses Kwork order cards, filters by budget and keywords, sends Telegram digests, marks processed messages, and retries Telegram <code>429</code> rate limits.</p>\n<p><strong>Result:</strong> matching leads are delivered to Telegram with enough context for quick triage, while processed emails are tracked safely by Gmail labels.</p>"
@@ -54,7 +75,9 @@ export const siteContent = {
         "slug": "i3-dotfiles",
         "title": "Linux Desktop / Dotfiles",
         "priority": "supporting",
+        "order": 50,
         "url": "https://github.com/Chest3rf1eld/my-i3-dotfiles",
+        "caseUrl": "",
         "redditUrl": "",
         "stack": "i3, X11, GNU Stow, Shell, tmux, rofi, polybar, systemd user services",
         "html": "<p><strong>Problem:</strong> a daily Linux workspace should be reproducible instead of living only in local configs.</p>\n<p><strong>Action:</strong> organized an i3/X11 desktop environment with Stow-compatible configs and helper scripts.</p>\n<p><strong>Result:</strong> desktop tooling, terminal workflow, scripts, and user services can be restored and reviewed from git.</p>"
@@ -63,7 +86,9 @@ export const siteContent = {
         "slug": "linux-troubleshooting",
         "title": "Linux Troubleshooting Runbook",
         "priority": "supporting",
+        "order": 50,
         "url": "https://github.com/Chest3rf1eld/pi-linux-troubleshooting",
+        "caseUrl": "",
         "redditUrl": "",
         "stack": "Linux, incident response, systemd, networking, DNS, storage, SRE references",
         "html": "<p><strong>Problem:</strong> incident response gets worse when diagnostics start with risky actions.</p>\n<p><strong>Action:</strong> wrote a structured safety-first troubleshooting skill/runbook for Linux server issues.</p>\n<p><strong>Result:</strong> triage starts with read-only checks and moves toward fixes only after the cause is clearer.</p>"
@@ -72,88 +97,153 @@ export const siteContent = {
         "slug": "portfolio-delivery-pipeline",
         "title": "Portfolio Delivery Pipeline",
         "priority": "supporting",
+        "order": 50,
         "url": "https://github.com/Chest3rf1eld/Chest3rf1eld.github.io",
+        "caseUrl": "",
         "redditUrl": "",
         "stack": "Vite, React, TypeScript, Markdown, GitHub Actions, GitHub Pages, Playwright, Lighthouse",
         "html": "<p><strong>Problem:</strong> a public portfolio should be reliable enough to share professionally, not just visually finished.</p>\n<p><strong>Action:</strong> built a static bilingual portfolio with Markdown content, generated CV PDFs, production config validation, link checks, Playwright smoke tests, Lighthouse gates, and GitHub Pages deployment.</p>\n<p><strong>Result:</strong> every production deploy is gated by automated checks and published on GitHub Pages with a custom domain at zero hosting cost.</p>"
+      }
+    ],
+    "cases": [
+      {
+        "slug": "proverka-cheka",
+        "title": "Proverka-cheka.ru Abuse Mitigation",
+        "summary": "Incident mitigation for abusive traffic exhausting external API limits.",
+        "relatedWorkSlug": "anti-flood-mitigation",
+        "stack": "nginx, fail2ban, nftables, captcha, request queue, diagnostics",
+        "html": "<pre><code class=\"language-text\">public traffic\n  -&gt; request and IP correlation\n  -&gt; captcha / queue / rate controls\n  -&gt; nginx and fail2ban escalation\n  -&gt; nftables containment layer\n  -&gt; clearer incident signals\n</code></pre>\n<h2>Context</h2>\n<p>Abusive traffic against proverka-cheka.ru was exhausting external API limits and creating repeated manual response work.</p>\n<h2>Constraints</h2>\n<p>The public case can name the domain, but it cannot publish exact firewall rules, thresholds, regular expressions, jail internals, IPs, attacker network labels, allowlists, logs, provider details, or exact defensive configuration.</p>\n<h2>Architecture Summary</h2>\n<p>The mitigation used multiple layers rather than a single block rule: application-facing controls, nginx-side rate limiting, fail2ban escalation, nftables containment, and clearer diagnostics.</p>\n<h2>Actions</h2>\n<ul>\n<li>Added request/IP correlation to understand abusive patterns.</li>\n<li>Added captcha, request queueing, and nginx rate limiting.</li>\n<li>Added fail2ban escalation and nftables subnet containment.</li>\n<li>Used dynamic containment behavior to reduce repeated manual blocking.</li>\n</ul>\n<h2>Results</h2>\n<ul>\n<li>Abuse stopped or was strongly reduced.</li>\n<li>External API limit usage became controlled.</li>\n<li>Manual blocking decreased.</li>\n<li>Diagnostics became clearer for future incidents.</li>\n</ul>\n<h2>Safety Note</h2>\n<p>This case intentionally avoids exact defensive configuration, rules, thresholds, expressions, private topology, logs, and attacker network details.</p>"
+      },
+      {
+        "slug": "web-cluster",
+        "title": "Web Cluster Operations",
+        "summary": "Repeatable operations for a 170+ site web platform.",
+        "relatedWorkSlug": "hestiacp-automation",
+        "stack": "Nginx/HAProxy, HestiaCP, WordPress/PHP-FPM, MySQL/MariaDB, DNS, Bash, Ansible, WP-CLI, Object Storage",
+        "html": "<pre><code class=\"language-text\">request path\n  -&gt; edge routing / reverse proxy\n  -&gt; web platform services\n  -&gt; database and storage layer\n  -&gt; backup and restore workflow\n\noperations path\n  -&gt; scripted provisioning\n  -&gt; SSL / DNS / migration tasks\n  -&gt; permissions and cache maintenance\n  -&gt; backup checks and recovery runbooks\n</code></pre>\n<h2>Context</h2>\n<p>The platform supports 170+ websites where manual changes quickly become slow, inconsistent, and risky.</p>\n<h2>Constraints</h2>\n<p>The public case does not expose provider mapping, topology, IP addresses, private hostnames, customer names, or operational logs.</p>\n<h2>Architecture Summary</h2>\n<p>The public architecture is a standard web operations stack: Nginx/HAProxy, HestiaCP, WordPress/PHP-FPM, MySQL/MariaDB, DNS, and backups to Object Storage.</p>\n<h2>Actions</h2>\n<ul>\n<li>Built Bash and Ansible workflows for provisioning and routine operations.</li>\n<li>Automated SSL, DNS/domain setup, migrations, permissions, cache/plugin maintenance, PHP backend changes, and backup workflows.</li>\n<li>Standardized recovery and repeatable setup steps through scripts and runbooks.</li>\n</ul>\n<h2>Results</h2>\n<ul>\n<li>Routine operations became faster and more predictable.</li>\n<li>Manual risk decreased through repeatable scripts and playbooks.</li>\n<li>Recovery and redeploy workflows moved toward hours instead of days.</li>\n<li>New sites, domains, and backups became easier to scale through a standard process.</li>\n</ul>\n<h2>Safety Note</h2>\n<p>This case intentionally omits private infrastructure layout, exact provider setup, IPs, hostnames, customer data, allowlists, credentials, and logs.</p>"
       }
     ]
   },
   "ru": {
     "hero": {
-      "eyebrow": "Linux production infrastructure",
+      "eyebrow": "Диагностика инфраструктуры",
       "name": "Никита Чатуров",
       "role": "Infrastructure Engineer",
       "ctaLabel": "Написать в Telegram",
       "secondaryLabel": "Открыть GitHub",
-      "html": "<p>Веду и улучшаю Linux production-инфраструктуру: серверы, автоматизацию, мониторинг, бэкапы, сети и разбор инцидентов.</p>\n<p>Люблю системы, которые можно повторить, наблюдать и передать другому человеку: плейбуки вместо ручных шагов, алерты вместо догадок, runbook вместо знаний в голове.</p>"
+      "html": "<p>Держу инфраструктуру понятной: серверы, автоматизацию, мониторинг, бэкапы, сети и разбор инцидентов.</p>\n<p>Люблю системы, которые можно повторить, наблюдать и передать другому человеку: плейбуки вместо ручных шагов, алерты вместо догадок, runbook вместо знаний в голове.</p>"
     },
     "proof": {
-      "title": "Цифры по делу",
-      "html": "<ul>\n<li><strong>15+</strong> серверов и виртуальных машин</li>\n<li><strong>170+</strong> сайтов в сопровождении и автоматизации</li>\n<li><strong>4</strong> инфраструктурных провайдера</li>\n<li><strong>Proxmox VE</strong> для виртуализации и миграций</li>\n<li><strong>Часы вместо дней</strong> на восстановление и повторное развертывание</li>\n</ul>"
+      "title": "Масштаб эксплуатации",
+      "html": "<ul>\n<li><strong>15+</strong> серверов и виртуальных машин</li>\n<li><strong>170+</strong> сайтов в сопровождении и автоматизации</li>\n<li><strong>4</strong> инфраструктурных провайдера</li>\n<li><strong>Proxmox VE</strong> для виртуализации и миграций</li>\n<li><strong>Часы вместо дней</strong> на восстановление и повторное развертывание</li>\n</ul>"
+    },
+    "freelance": {
+      "title": "Фриланс-задачи по инфраструктуре",
+      "html": "<p>Беру ограниченные фриланс-задачи по обслуживанию, администрированию и проектированию инфраструктуры: Linux troubleshooting, мониторинг, скрипты автоматизации и web-операции.</p>"
     },
     "stack": {
       "title": "Стек",
-      "html": "<p><strong>Сильный production-опыт:</strong> Linux, Debian/Ubuntu, Docker, Docker Compose, Ansible, Bash, Nginx, Prometheus, Grafana, Proxmox VE, бэкапы, troubleshooting.</p>\n<p><strong>Регулярная работа:</strong> GitLab CI/CD, Loki, Zabbix, HAProxy, PostgreSQL, MySQL/MariaDB, DNS, WireGuard, MikroTik, Yandex Cloud, Python.</p>\n<p><strong>Честно добираю:</strong> Kubernetes в домашней лаборатории. Пока не продаю это как глубокий production K8s.</p>"
+      "html": "<p><strong>Сильный production-опыт:</strong> Linux, Debian/Ubuntu, Docker, Docker Compose, Ansible, Bash, Nginx, Prometheus, Grafana, Proxmox VE, бэкапы, troubleshooting.</p>\n<p><strong>Регулярная работа:</strong> GitLab CI/CD, Loki, Zabbix, HAProxy, PostgreSQL, MySQL/MariaDB, DNS, WireGuard, MikroTik, Yandex Cloud, Python.</p>\n<p><strong>Честно добираю:</strong> Kubernetes в домашней лаборатории. Пока не продаю это как глубокий production K8s.</p>"
     },
     "contact": {
       "title": "Контакты",
-      "html": "<p>Самый быстрый способ связи - Telegram.</p>\n<p>Для найма и технического контекста есть LinkedIn, GitHub, Kwork и email.</p>"
+      "html": "<p>Самый быстрый способ связи - Telegram.</p>\n<p>Для найма и технического контекста есть LinkedIn, GitHub, Kwork и email.</p>"
     },
     "work": [
+      {
+        "slug": "anti-flood-mitigation",
+        "title": "Proverka-cheka.ru Abuse Mitigation",
+        "priority": "primary",
+        "order": 1,
+        "url": "",
+        "caseUrl": "/ru/cases/proverka-cheka/",
+        "redditUrl": "",
+        "stack": "nginx, fail2ban, nftables, captcha, request queue, диагностика инцидентов",
+        "html": "<p><strong>Проблема:</strong> злоупотребление трафиком против proverka-cheka.ru расходовало лимиты внешнего API и требовало повторяющихся ручных действий.</p>\n<p><strong>Действие:</strong> добавил корреляцию запросов и IP, captcha, nginx rate limiting, очередь запросов, эскалацию fail2ban и сдерживание подсетей через nftables: interval sets, in-kernel meter и dynamic sets с timeout.</p>\n<p><strong>Результат:</strong> злоупотребления прекратились, ручной блокировки стало меньше, диагностика инцидентов стала понятнее.</p>"
+      },
       {
         "slug": "hestiacp-automation",
         "title": "Bulk Web Infrastructure Automation",
         "priority": "primary",
+        "order": 2,
         "url": "https://github.com/Chest3rf1eld/HestiaCP_scripts",
+        "caseUrl": "/ru/cases/web-cluster/",
         "redditUrl": "",
         "stack": "Bash, HestiaCP, WordPress, WP-CLI, SSL, DNS, Yandex Object Storage",
-        "html": "<p><strong>Проблема:</strong> сопровождение большого числа сайтов быстро превращается в ручную рутину и риск ошибок.</p>\n<p><strong>Действие:</strong> собрал Bash-скрипты для SSL, редиректов, миграций, прав, cache/plugin maintenance, смены PHP backend и бэкапов.</p>\n<p><strong>Результат:</strong> типовые операции по многим сайтам стали быстрее и предсказуемее.</p>"
+        "html": "<p><strong>Проблема:</strong> сопровождение 170+ сайтов быстро превращается в ручную рутину и риск при восстановлении.</p>\n<p><strong>Действие:</strong> собрал повторяемые Bash и Ansible workflows для подготовки, SSL, редиректов, миграций, прав, cache/plugin maintenance, смены PHP backend и бэкапов.</p>\n<p><strong>Результат:</strong> типовые операции стали быстрее и предсказуемее, восстановление приблизилось к часам вместо дней, а подключение новых сайтов стало безопаснее.</p>"
       },
       {
         "slug": "monitoring-stack",
         "title": "Monitoring Stack as Code",
         "priority": "primary",
+        "order": 50,
         "url": "https://github.com/Chest3rf1eld/grafana-prometheus-loki-ansible",
+        "caseUrl": "",
         "redditUrl": "",
         "stack": "Ansible, Prometheus, Grafana, Loki, Promtail, blackbox_exporter, nginx, nftables",
-        "html": "<p><strong>Проблема:</strong> мониторинг не должен собираться руками на каждом сервере.</p>\n<p><strong>Действие:</strong> сделал Ansible playbooks и роли для distributed monitoring stack: Grafana, Prometheus, Loki, blackbox checks, TLS и firewall rules.</p>\n<p><strong>Результат:</strong> мониторинг можно повторить, проверить и менять через код.</p>"
+        "html": "<p><strong>Проблема:</strong> мониторинг не должен собираться руками на каждом сервере.</p>\n<p><strong>Действие:</strong> сделал Ansible playbooks и роли для distributed monitoring stack: Grafana, Prometheus, Loki, blackbox checks, TLS и firewall rules.</p>\n<p><strong>Результат:</strong> мониторинг можно повторить, проверить и менять через код.</p>"
       },
       {
         "slug": "freelance-brief-intake-automation",
         "title": "Freelance Email-to-Telegram Monitor",
         "priority": "supporting",
+        "order": 50,
         "url": "https://github.com/Chest3rf1eld/kwork-jobs-parser",
+        "caseUrl": "",
         "redditUrl": "https://www.reddit.com/r/RuProgrammers/s/O6DUeSJ1W3",
         "stack": "Google Apps Script, JavaScript, Gmail API, Telegram Bot API, clasp, parsing, workflow automation",
-        "html": "<p><strong>Проблема:</strong> релевантные фриланс-заказы легко пропустить, когда уведомления Kwork остаются в Gmail.</p>\n<p><strong>Действие:</strong> сделал Google Apps Script workflow, который читает письма с Gmail-меткой, парсит карточки заказов Kwork, фильтрует по бюджету и ключевым словам, отправляет Telegram-дайджесты, помечает обработанные письма и повторяет отправку при Telegram <code>429</code> rate limit.</p>\n<p><strong>Результат:</strong> подходящие заказы приходят в Telegram с контекстом для быстрого triage, а обработанные письма безопасно отслеживаются через Gmail labels.</p>"
+        "html": "<p><strong>Проблема:</strong> релевантные фриланс-заказы легко пропустить, когда уведомления Kwork остаются в Gmail.</p>\n<p><strong>Действие:</strong> сделал Google Apps Script workflow, который читает письма с Gmail-меткой, парсит карточки заказов Kwork, фильтрует по бюджету и ключевым словам, отправляет Telegram-дайджесты, помечает обработанные письма и повторяет отправку при Telegram <code>429</code> rate limit.</p>\n<p><strong>Результат:</strong> подходящие заказы приходят в Telegram с контекстом для быстрого triage, а обработанные письма безопасно отслеживаются через Gmail labels.</p>"
       },
       {
         "slug": "i3-dotfiles",
         "title": "Linux Desktop / Dotfiles",
         "priority": "supporting",
+        "order": 50,
         "url": "https://github.com/Chest3rf1eld/my-i3-dotfiles",
+        "caseUrl": "",
         "redditUrl": "",
         "stack": "i3, X11, GNU Stow, Shell, tmux, rofi, polybar, systemd user services",
-        "html": "<p><strong>Проблема:</strong> рабочее Linux-окружение не должно жить только в локальных конфигах.</p>\n<p><strong>Действие:</strong> оформил i3/X11 desktop environment в Stow-compatible структуру с helper scripts.</p>\n<p><strong>Результат:</strong> терминал, window manager, scripts и user services можно восстановить и проверить из git.</p>"
+        "html": "<p><strong>Проблема:</strong> рабочее Linux-окружение не должно жить только в локальных конфигах.</p>\n<p><strong>Действие:</strong> оформил i3/X11 desktop environment в Stow-compatible структуру с helper scripts.</p>\n<p><strong>Результат:</strong> терминал, window manager, scripts и user services можно восстановить и проверить из git.</p>"
       },
       {
         "slug": "linux-troubleshooting",
         "title": "Linux Troubleshooting Runbook",
         "priority": "supporting",
+        "order": 50,
         "url": "https://github.com/Chest3rf1eld/pi-linux-troubleshooting",
+        "caseUrl": "",
         "redditUrl": "",
         "stack": "Linux, incident response, systemd, networking, DNS, storage, SRE references",
-        "html": "<p><strong>Проблема:</strong> разбор инцидента становится хуже, если начинать сразу с рискованных действий.</p>\n<p><strong>Действие:</strong> написал safety-first troubleshooting skill/runbook для проблем Linux-серверов.</p>\n<p><strong>Результат:</strong> диагностика начинается с read-only проверок и переходит к исправлениям только после уточнения причины.</p>"
+        "html": "<p><strong>Проблема:</strong> разбор инцидента становится хуже, если начинать сразу с рискованных действий.</p>\n<p><strong>Действие:</strong> написал safety-first troubleshooting skill/runbook для проблем Linux-серверов.</p>\n<p><strong>Результат:</strong> диагностика начинается с read-only проверок и переходит к исправлениям только после уточнения причины.</p>"
       },
       {
         "slug": "portfolio-delivery-pipeline",
         "title": "Portfolio Delivery Pipeline",
         "priority": "supporting",
+        "order": 50,
         "url": "https://github.com/Chest3rf1eld/Chest3rf1eld.github.io",
+        "caseUrl": "",
         "redditUrl": "",
         "stack": "Vite, React, TypeScript, Markdown, GitHub Actions, GitHub Pages, Playwright, Lighthouse",
-        "html": "<p><strong>Проблема:</strong> публичное портфолио должно быть не только визуально готовым, но и достаточно надежным, чтобы отправлять его работодателям и техническим контактам.</p>\n<p><strong>Действие:</strong> собрал статическое bilingual-портфолио с Markdown-контентом, генерацией PDF CV, проверкой production-конфига, link checks, Playwright smoke tests, Lighthouse gates и деплоем на GitHub Pages.</p>\n<p><strong>Результат:</strong> каждый production deploy проходит автоматические проверки и публикуется на GitHub Pages с custom domain без затрат на хостинг.</p>"
+        "html": "<p><strong>Проблема:</strong> публичное портфолио должно быть не только визуально готовым, но и достаточно надежным, чтобы отправлять его работодателям и техническим контактам.</p>\n<p><strong>Действие:</strong> собрал статическое bilingual-портфолио с Markdown-контентом, генерацией PDF CV, проверкой production-конфига, link checks, Playwright smoke tests, Lighthouse gates и деплоем на GitHub Pages.</p>\n<p><strong>Результат:</strong> каждый production deploy проходит автоматические проверки и публикуется на GitHub Pages с custom domain без затрат на хостинг.</p>"
+      }
+    ],
+    "cases": [
+      {
+        "slug": "proverka-cheka",
+        "title": "Proverka-cheka.ru Abuse Mitigation",
+        "summary": "Сдерживание злоупотребления трафиком, которое расходовало лимиты внешнего API.",
+        "relatedWorkSlug": "anti-flood-mitigation",
+        "stack": "nginx, fail2ban, nftables, captcha, request queue, diagnostics",
+        "html": "<pre><code class=\"language-text\">public traffic\n  -&gt; request and IP correlation\n  -&gt; captcha / queue / rate controls\n  -&gt; nginx and fail2ban escalation\n  -&gt; nftables containment layer\n  -&gt; clearer incident signals\n</code></pre>\n<h2>Контекст</h2>\n<p>Злоупотребление трафиком против proverka-cheka.ru расходовало лимиты внешнего API и требовало повторяющихся ручных действий.</p>\n<h2>Ограничения</h2>\n<p>Публичный кейс может называть домен, но не раскрывает точные firewall rules, thresholds, regular expressions, jail internals, IP, attacker network labels, allowlists, logs, provider details или exact defensive configuration.</p>\n<h2>Архитектура</h2>\n<p>Сдерживание построено несколькими слоями, а не одним block rule: application-facing controls, nginx-side rate limiting, fail2ban escalation, nftables containment и более понятная диагностика.</p>\n<h2>Действия</h2>\n<ul>\n<li>Добавил request/IP correlation, чтобы понять паттерны злоупотребления.</li>\n<li>Добавил captcha, request queueing и nginx rate limiting.</li>\n<li>Добавил fail2ban escalation и nftables subnet containment.</li>\n<li>Использовал dynamic containment behavior, чтобы уменьшить повторяющуюся ручную блокировку.</li>\n</ul>\n<h2>Результаты</h2>\n<ul>\n<li>Abuse stopped или был сильно снижен.</li>\n<li>Расход внешних API limits стал контролируемым.</li>\n<li>Ручной блокировки стало меньше.</li>\n<li>Diagnostics стали понятнее для будущих incidents.</li>\n</ul>\n<h2>Safety Note</h2>\n<p>Кейс намеренно не раскрывает exact defensive configuration, rules, thresholds, expressions, private topology, logs и attacker network details.</p>"
+      },
+      {
+        "slug": "web-cluster",
+        "title": "Web Cluster Operations",
+        "summary": "Повторяемые операции для web-платформы на 170+ сайтов.",
+        "relatedWorkSlug": "hestiacp-automation",
+        "stack": "Nginx/HAProxy, HestiaCP, WordPress/PHP-FPM, MySQL/MariaDB, DNS, Bash, Ansible, WP-CLI, Object Storage",
+        "html": "<pre><code class=\"language-text\">request path\n  -&gt; edge routing / reverse proxy\n  -&gt; web platform services\n  -&gt; database and storage layer\n  -&gt; backup and restore workflow\n\noperations path\n  -&gt; scripted provisioning\n  -&gt; SSL / DNS / migration tasks\n  -&gt; permissions and cache maintenance\n  -&gt; backup checks and recovery runbooks\n</code></pre>\n<h2>Контекст</h2>\n<p>Платформа обслуживает 170+ сайтов, где ручные изменения быстро становятся медленными, непоследовательными и рискованными.</p>\n<h2>Ограничения</h2>\n<p>Публичный кейс не раскрывает карту провайдеров, топологию, IP-адреса, приватные hostnames, клиентов или операционные логи.</p>\n<h2>Архитектура</h2>\n<p>Публично безопасное описание: стандартный web operations stack на Nginx/HAProxy, HestiaCP, WordPress/PHP-FPM, MySQL/MariaDB, DNS и бэкапах в Object Storage.</p>\n<h2>Действия</h2>\n<ul>\n<li>Собрал Bash и Ansible workflows для подготовки и типовых операций.</li>\n<li>Автоматизировал SSL, DNS/domain setup, миграции, права, cache/plugin maintenance, смену PHP backend и backup workflows.</li>\n<li>Стандартизировал восстановление и повторяемую подготовку через scripts и runbooks.</li>\n</ul>\n<h2>Результаты</h2>\n<ul>\n<li>Типовые операции стали быстрее и предсказуемее.</li>\n<li>Риск ручных ошибок снизился за счет повторяемых scripts и playbooks.</li>\n<li>Recovery и redeploy workflows приблизились к часам вместо дней.</li>\n<li>Новые сайты, домены и бэкапы стало проще масштабировать по стандартному процессу.</li>\n</ul>\n<h2>Safety Note</h2>\n<p>Кейс намеренно не раскрывает приватную схему инфраструктуры, точную карту провайдеров, IP, hostnames, данные клиентов, allowlists, credentials и логи.</p>"
       }
     ]
   }

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Сдерживание злоупотребления трафиком, которое расходовало лимиты внешнего API." />
+    <meta name="theme-color" content="#050807" />
+    <link rel="canonical" href="https://nikchester.ru/ru/cases/proverka-cheka/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Proverka-cheka.ru Abuse Mitigation" />
+    <meta property="og:description" content="Сдерживание злоупотребления трафиком, которое расходовало лимиты внешнего API." />
+    <meta property="og:url" content="https://nikchester.ru/ru/cases/proverka-cheka/" />
+    <meta property="og:image" content="https://nikchester.ru/og-image.svg" />
+    <title>Proverka-cheka.ru Abuse Mitigation - Nikita Chaturov</title>
+    <style>
+      :root { color: #e6edf3; background: #0b0e13; font-family: Inter, Segoe UI, Arial, sans-serif; --terminal: #05070b; --panel: #131720; --line: #2a3342; --green: #4ade80; --amber: #e3b341; --muted: #9aa4b2; --mono: "JetBrains Mono", Consolas, monospace; }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-width: 320px; background: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px), #0b0e13; background-size: 32px 32px; }
+      main { width: min(920px, calc(100% - 28px)); margin: 0 auto; padding: 28px 0 40px; }
+      article { background: var(--panel); border: 1px solid var(--line); box-shadow: 3px 3px 0 #000; }
+      header { border-bottom: 1px solid var(--line); padding: clamp(18px, 4vw, 34px); }
+      .prompt, pre, code { font-family: var(--mono); }
+      .prompt { color: var(--green); font-size: .85rem; margin-bottom: 14px; }
+      h1 { font-size: clamp(2rem, 6vw, 4rem); line-height: .95; letter-spacing: -.06em; margin: 0 0 12px; }
+      .summary { color: var(--muted); font-size: 1.05rem; max-width: 70ch; }
+      .stack { color: var(--amber); font-family: var(--mono); font-size: .82rem; margin-top: 18px; overflow-wrap: anywhere; }
+      .body { padding: clamp(18px, 4vw, 34px); }
+      h2 { color: var(--green); font-family: var(--mono); font-size: 1rem; margin-top: 28px; }
+      p, li { line-height: 1.55; }
+      pre { background: var(--terminal); border: 1px solid var(--line); color: var(--green); overflow-x: auto; padding: 16px; }
+      a { color: #6ea8fe; font-weight: 700; }
+      .back { display: inline-flex; margin-bottom: 12px; text-decoration: none; }
+      .badge { color: var(--amber); font-family: var(--mono); font-size: .78rem; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <a class="back" href="/#work">&lt; Назад к портфолио</a>
+      <article>
+        <header>
+          <div class="prompt">RU case :: proverka-cheka</div>
+          <h1>Proverka-cheka.ru Abuse Mitigation</h1>
+          <p class="summary">Сдерживание злоупотребления трафиком, которое расходовало лимиты внешнего API.</p>
+          <div class="stack">stack: nginx, fail2ban, nftables, captcha, request queue, diagnostics</div>
+        </header>
+        <div class="body"><pre><code class="language-text">public traffic
+  -&gt; request and IP correlation
+  -&gt; captcha / queue / rate controls
+  -&gt; nginx and fail2ban escalation
+  -&gt; nftables containment layer
+  -&gt; clearer incident signals
+</code></pre>
+<h2>Контекст</h2>
+<p>Злоупотребление трафиком против proverka-cheka.ru расходовало лимиты внешнего API и требовало повторяющихся ручных действий.</p>
+<h2>Ограничения</h2>
+<p>Публичный кейс может называть домен, но не раскрывает точные firewall rules, thresholds, regular expressions, jail internals, IP, attacker network labels, allowlists, logs, provider details или exact defensive configuration.</p>
+<h2>Архитектура</h2>
+<p>Сдерживание построено несколькими слоями, а не одним block rule: application-facing controls, nginx-side rate limiting, fail2ban escalation, nftables containment и более понятная диагностика.</p>
+<h2>Действия</h2>
+<ul>
+<li>Добавил request/IP correlation, чтобы понять паттерны злоупотребления.</li>
+<li>Добавил captcha, request queueing и nginx rate limiting.</li>
+<li>Добавил fail2ban escalation и nftables subnet containment.</li>
+<li>Использовал dynamic containment behavior, чтобы уменьшить повторяющуюся ручную блокировку.</li>
+</ul>
+<h2>Результаты</h2>
+<ul>
+<li>Abuse stopped или был сильно снижен.</li>
+<li>Расход внешних API limits стал контролируемым.</li>
+<li>Ручной блокировки стало меньше.</li>
+<li>Diagnostics стали понятнее для будущих incidents.</li>
+</ul>
+<h2>Safety Note</h2>
+<p>Кейс намеренно не раскрывает exact defensive configuration, rules, thresholds, expressions, private topology, logs и attacker network details.</p></div>
+      </article>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Повторяемые операции для web-платформы на 170+ сайтов." />
+    <meta name="theme-color" content="#050807" />
+    <link rel="canonical" href="https://nikchester.ru/ru/cases/web-cluster/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Web Cluster Operations" />
+    <meta property="og:description" content="Повторяемые операции для web-платформы на 170+ сайтов." />
+    <meta property="og:url" content="https://nikchester.ru/ru/cases/web-cluster/" />
+    <meta property="og:image" content="https://nikchester.ru/og-image.svg" />
+    <title>Web Cluster Operations - Nikita Chaturov</title>
+    <style>
+      :root { color: #e6edf3; background: #0b0e13; font-family: Inter, Segoe UI, Arial, sans-serif; --terminal: #05070b; --panel: #131720; --line: #2a3342; --green: #4ade80; --amber: #e3b341; --muted: #9aa4b2; --mono: "JetBrains Mono", Consolas, monospace; }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-width: 320px; background: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px), #0b0e13; background-size: 32px 32px; }
+      main { width: min(920px, calc(100% - 28px)); margin: 0 auto; padding: 28px 0 40px; }
+      article { background: var(--panel); border: 1px solid var(--line); box-shadow: 3px 3px 0 #000; }
+      header { border-bottom: 1px solid var(--line); padding: clamp(18px, 4vw, 34px); }
+      .prompt, pre, code { font-family: var(--mono); }
+      .prompt { color: var(--green); font-size: .85rem; margin-bottom: 14px; }
+      h1 { font-size: clamp(2rem, 6vw, 4rem); line-height: .95; letter-spacing: -.06em; margin: 0 0 12px; }
+      .summary { color: var(--muted); font-size: 1.05rem; max-width: 70ch; }
+      .stack { color: var(--amber); font-family: var(--mono); font-size: .82rem; margin-top: 18px; overflow-wrap: anywhere; }
+      .body { padding: clamp(18px, 4vw, 34px); }
+      h2 { color: var(--green); font-family: var(--mono); font-size: 1rem; margin-top: 28px; }
+      p, li { line-height: 1.55; }
+      pre { background: var(--terminal); border: 1px solid var(--line); color: var(--green); overflow-x: auto; padding: 16px; }
+      a { color: #6ea8fe; font-weight: 700; }
+      .back { display: inline-flex; margin-bottom: 12px; text-decoration: none; }
+      .badge { color: var(--amber); font-family: var(--mono); font-size: .78rem; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <a class="back" href="/#work">&lt; Назад к портфолио</a>
+      <article>
+        <header>
+          <div class="prompt">RU case :: web-cluster</div>
+          <h1>Web Cluster Operations</h1>
+          <p class="summary">Повторяемые операции для web-платформы на 170+ сайтов.</p>
+          <div class="stack">stack: Nginx/HAProxy, HestiaCP, WordPress/PHP-FPM, MySQL/MariaDB, DNS, Bash, Ansible, WP-CLI, Object Storage</div>
+        </header>
+        <div class="body"><pre><code class="language-text">request path
+  -&gt; edge routing / reverse proxy
+  -&gt; web platform services
+  -&gt; database and storage layer
+  -&gt; backup and restore workflow
+
+operations path
+  -&gt; scripted provisioning
+  -&gt; SSL / DNS / migration tasks
+  -&gt; permissions and cache maintenance
+  -&gt; backup checks and recovery runbooks
+</code></pre>
+<h2>Контекст</h2>
+<p>Платформа обслуживает 170+ сайтов, где ручные изменения быстро становятся медленными, непоследовательными и рискованными.</p>
+<h2>Ограничения</h2>
+<p>Публичный кейс не раскрывает карту провайдеров, топологию, IP-адреса, приватные hostnames, клиентов или операционные логи.</p>
+<h2>Архитектура</h2>
+<p>Публично безопасное описание: стандартный web operations stack на Nginx/HAProxy, HestiaCP, WordPress/PHP-FPM, MySQL/MariaDB, DNS и бэкапах в Object Storage.</p>
+<h2>Действия</h2>
+<ul>
+<li>Собрал Bash и Ansible workflows для подготовки и типовых операций.</li>
+<li>Автоматизировал SSL, DNS/domain setup, миграции, права, cache/plugin maintenance, смену PHP backend и backup workflows.</li>
+<li>Стандартизировал восстановление и повторяемую подготовку через scripts и runbooks.</li>
+</ul>
+<h2>Результаты</h2>
+<ul>
+<li>Типовые операции стали быстрее и предсказуемее.</li>
+<li>Риск ручных ошибок снизился за счет повторяемых scripts и playbooks.</li>
+<li>Recovery и redeploy workflows приблизились к часам вместо дней.</li>
+<li>Новые сайты, домены и бэкапы стало проще масштабировать по стандартному процессу.</li>
+</ul>
+<h2>Safety Note</h2>
+<p>Кейс намеренно не раскрывает приватную схему инфраструктуры, точную карту провайдеров, IP, hostnames, данные клиентов, allowlists, credentials и логи.</p></div>
+      </article>
+    </main>
+  </body>
+</html>

@@ -15,25 +15,30 @@ const labels = {
     github: 'GitHub',
     linkedin: 'LinkedIn',
     kwork: 'Kwork',
+    freelance: 'Freelance',
+    contactViaKwork: 'Contact via Kwork',
+    contactViaTelegram: 'Contact via Telegram',
+    caseDetails: 'Case details',
+    personal: 'Personal',
     openProject: 'Open project',
     openRedditPost: 'Reddit post',
     photoTitle: 'photo.jpg',
     photoAlt: 'Nikita Chaturov, Infrastructure Engineer',
     terminalReady: 'diagnostics complete / ready for contact',
-    explorerMeta: 'Repository file',
-    cvStatus: '2 public PDF files available',
     contactStatus: 'Primary channel: Telegram',
     commandProfile: './whoami',
     commandProof: './healthcheck --summary',
     commandWork: 'ls services/*.yaml',
     commandStack: 'cat stack.md',
-    shellReady: 'session ready / production infrastructure profile loaded',
+    shellReady: 'profile loaded / automation, monitoring, incidents',
+    commandRole: 'cat role.txt',
+    commandContact: './healthcheck --contact',
     statusOk: 'OK',
     yamlProblem: 'problem',
     yamlAction: 'action',
     yamlResult: 'result',
     yamlStack: 'stack',
-    yamlRepo: 'repo',
+    internalCase: 'Internal case',
   },
   ru: {
     work: 'Работы',
@@ -46,25 +51,30 @@ const labels = {
     github: 'GitHub',
     linkedin: 'LinkedIn',
     kwork: 'Kwork',
+    freelance: 'Фриланс',
+    contactViaKwork: 'Написать через Kwork',
+    contactViaTelegram: 'Написать в Telegram',
+    caseDetails: 'Подробнее',
+    personal: 'Личное',
     openProject: 'Открыть проект',
     openRedditPost: 'Пост на Reddit',
     photoTitle: 'photo.jpg',
     photoAlt: 'Никита Чатуров, Infrastructure Engineer',
     terminalReady: 'diagnostics complete / готов к контакту',
-    explorerMeta: 'Файл репозитория',
-    cvStatus: '2 публичных PDF-файла доступны',
     contactStatus: 'Основной канал: Telegram',
     commandProfile: './whoami',
     commandProof: './healthcheck --summary',
     commandWork: 'ls services/*.yaml',
     commandStack: 'cat stack.md',
-    shellReady: 'session ready / профиль production infrastructure загружен',
+    shellReady: 'profile loaded / автоматизация, мониторинг, инциденты',
+    commandRole: 'cat role.txt',
+    commandContact: './healthcheck --contact',
     statusOk: 'OK',
     yamlProblem: 'problem',
     yamlAction: 'action',
     yamlResult: 'result',
     yamlStack: 'stack',
-    yamlRepo: 'repo',
+    internalCase: 'Внутренний кейс',
   },
 } as const;
 
@@ -119,6 +129,7 @@ function Window({
 
 function Hero({ content, lang, setLang }: { content: PageContent; lang: Language; setLang: (lang: Language) => void }) {
   const text = labels[lang];
+  const [showAnsi, setShowAnsi] = useState(false);
 
   return (
     <section id="profile" className="hero window" aria-labelledby="hero-title">
@@ -127,26 +138,42 @@ function Hero({ content, lang, setLang }: { content: PageContent; lang: Language
         <a className="start-link" href="#profile">{text.commandProfile}</a>
         <a href="#proof">{text.commandProof}</a>
         <a href="#work">{text.commandWork}</a>
+        <a href="#freelance">{text.freelance}</a>
         <a href="#stack">{text.commandStack}</a>
         <a href="#cv">{text.cv}</a>
         <a href="#contact">{text.contact}</a>
       </nav>
       <div className="hero-grid window-body">
-        <div>
+        <div className="hero-terminal">
           <p className="shell-line"><span>$</span> {text.commandProfile}</p>
           <p className="eyebrow">{content.hero.eyebrow}</p>
           <h1 id="hero-title">{content.hero.name}</h1>
+          <p className="shell-line"><span>$</span> {text.commandRole}</p>
           <p className="role">{content.hero.role}</p>
           <HtmlBlock html={content.hero.html} />
+          <p className="shell-line"><span>$</span> {text.commandContact}</p>
           <p className="shell-status">[{text.statusOk}] {text.shellReady}</p>
           <div className="actions">
             <a className="button primary" href={siteConfig.telegramUrl}>{content.hero.ctaLabel}</a>
             <a className="button" href={siteConfig.githubUrl}>{content.hero.secondaryLabel}</a>
           </div>
         </div>
-        <figure className="photo-window">
+        <figure
+          className={`photo-window ${showAnsi ? 'show-ansi' : ''}`}
+          onClick={() => setShowAnsi((value) => !value)}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              setShowAnsi((value) => !value);
+            }
+          }}
+          tabIndex={0}
+        >
           <figcaption className="mini-titlebar">{text.photoTitle}</figcaption>
-          <img src={siteConfig.photo} alt={text.photoAlt} width={480} height={480} />
+          <div className="photo-stack">
+            <img className="photo-original" src={siteConfig.photo} alt={text.photoAlt} width={480} height={480} />
+            <img className="photo-ansi" src={siteConfig.ansiPhoto} alt="" aria-hidden="true" width={480} height={480} />
+          </div>
         </figure>
       </div>
     </section>
@@ -166,14 +193,12 @@ function WorkGrid({ content, lang }: { content: PageContent; lang: Language }) {
         {content.work.map((item, index) => (
           <article className="project-card" key={item.slug}>
             <div className="project-titlebar">
-              <span className="file-icon" aria-hidden="true" />
+              <span className="file-icon" aria-hidden="true">&gt;</span>
               <span>{`services/${String(index + 1).padStart(2, '0')}-${item.slug}.yaml`}</span>
               <span className="project-priority">{item.priority}</span>
             </div>
             <div className="manifest-head">
-              <span className="project-meta">{text.explorerMeta}</span>
               <h3>{item.title}</h3>
-              <code>status: {text.statusOk.toLowerCase()}</code>
             </div>
             <dl className="manifest-body">
               {extractParagraphs(item.html).map((entry) => (
@@ -186,17 +211,29 @@ function WorkGrid({ content, lang }: { content: PageContent; lang: Language }) {
                 <dt>{text.yamlStack}:</dt>
                 <dd>{item.stack}</dd>
               </div>
-              <div>
-                <dt>{text.yamlRepo}:</dt>
-                <dd>{item.url.replace('https://github.com/', 'github:')}</dd>
-              </div>
             </dl>
             <div className="project-footer">
-              <a className="button small" href={item.url}>{text.openProject}</a>
+              {item.url ? <a className="button small" href={item.url}>{text.openProject}</a> : null}
+              {item.caseUrl ? <a className="button small" href={item.caseUrl}>{text.caseDetails}</a> : null}
+              {!item.url && !item.caseUrl ? <span className="case-note">{text.internalCase}</span> : null}
               {item.redditUrl ? <a className="button small" href={item.redditUrl}>{text.openRedditPost}</a> : null}
             </div>
           </article>
         ))}
+      </div>
+    </Window>
+  );
+}
+
+function FreelancePanel({ content, lang }: { content: PageContent; lang: Language }) {
+  const text = labels[lang];
+
+  return (
+    <Window title={content.freelance.title} id="freelance" className="freelance-window terminal-window" status="intake: scoped ops task">
+      <HtmlBlock html={content.freelance.html} />
+      <div className="actions compact equal-actions">
+        <a className="button" href={siteConfig.kworkUrl}>{text.contactViaKwork}</a>
+        <a className="button" href={siteConfig.telegramUrl}>{text.contactViaTelegram}</a>
       </div>
     </Window>
   );
@@ -207,8 +244,7 @@ function CvPanel({ lang }: { lang: Language }) {
   return (
     <Window title={text.cv} id="cv" className="cv-window">
       <div className="notepad-lines">
-        <p>{lang === 'en' ? 'Public CV without phone number.' : 'Публичное CV без телефона.'}</p>
-        <p className="muted-line">{text.cvStatus}</p>
+        <p>{lang === 'en' ? 'Download public CV.' : 'Скачать публичное CV.'}</p>
       </div>
       <div className="actions compact">
         <a className="button" href={siteConfig.cv.en}>{text.downloadEn}</a>
@@ -222,7 +258,6 @@ function ContactPanel({ content, lang }: { content: PageContent; lang: Language 
   const text = labels[lang];
   return (
     <>
-      <div className="dialog-badge" aria-hidden="true">&gt;_</div>
       <HtmlBlock html={content.contact.html} />
       <div className="link-list">
         <a href={siteConfig.telegramUrl}>Telegram</a>
@@ -231,7 +266,50 @@ function ContactPanel({ content, lang }: { content: PageContent; lang: Language 
         <a href={siteConfig.linkedinUrl}>{text.linkedin}</a>
         <a href={siteConfig.kworkUrl}>{text.kwork}</a>
       </div>
+      <div className="personal-links" aria-label={text.personal}>
+        <span>{text.personal}</span>
+        <a href={siteConfig.unsplashUrl}>Unsplash</a>
+        <a href={siteConfig.youtubeUrl}>YouTube</a>
+      </div>
     </>
+  );
+}
+
+const navItems = [
+  ['profile', 'commandProfile'],
+  ['proof', 'commandProof'],
+  ['work', 'commandWork'],
+  ['freelance', 'freelance'],
+  ['stack', 'commandStack'],
+  ['cv', 'cv'],
+  ['contact', 'contact'],
+] as const;
+
+function SideNav({ lang }: { lang: Language }) {
+  const text = labels[lang];
+  const [activeId, setActiveId] = useState('profile');
+
+  useEffect(() => {
+    if (!('IntersectionObserver' in window)) return undefined;
+    const sections = navItems.map(([id]) => document.getElementById(id)).filter((section): section is HTMLElement => Boolean(section));
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible?.target.id) setActiveId(visible.target.id);
+    }, { rootMargin: '-20% 0px -55% 0px', threshold: [0.1, 0.25, 0.5] });
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <nav className="side-nav" aria-label="Fixed page sections">
+      <span className="side-nav-title">nav</span>
+      {navItems.map(([id, key]) => (
+        <a key={id} href={`#${id}`} className={activeId === id ? 'active' : ''}>{text[key]}</a>
+      ))}
+    </nav>
   );
 }
 
@@ -255,6 +333,7 @@ function updateHead(lang: Language) {
 
 function installAnalytics() {
   const id = import.meta.env.VITE_GA_MEASUREMENT_ID;
+  if (window.location.hostname !== new URL(siteConfig.siteUrl).hostname) return;
   if (!id || document.querySelector(`[src*="${id}"]`)) return;
 
   window.dataLayer = window.dataLayer || [];
@@ -286,6 +365,7 @@ export function App() {
 
   return (
     <main className="desktop-shell">
+      <SideNav lang={lang} />
       <Hero content={content} lang={lang} setLang={setLang} />
       <div className="window-row">
         <Window title={content.proof.title} id="proof" className="proof-window terminal-window log-window" status={text.terminalReady}>
@@ -296,6 +376,7 @@ export function App() {
         </Window>
       </div>
       <WorkGrid content={content} lang={lang} />
+      <FreelancePanel content={content} lang={lang} />
       <div className="window-row bottom-row">
         <CvPanel lang={lang} />
         <Window title={text.contact} id="contact" className="contact-window" status={text.contactStatus}>

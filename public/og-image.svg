@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Nikita Chaturov - Infrastructure Engineer</title>
+  <desc id="desc">Dark terminal style portfolio preview.</desc>
+  <rect width="1200" height="630" fill="#0b0e13"/>
+  <path d="M0 0h1200v630H0z" fill="url(#grid)" opacity="0.5"/>
+  <defs>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0v32" fill="none" stroke="#263142" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect x="84" y="78" width="1032" height="474" fill="#131720" stroke="#2a3342" stroke-width="2"/>
+  <rect x="84" y="78" width="1032" height="44" fill="#1c2330" stroke="#2a3342" stroke-width="2"/>
+  <text x="112" y="107" fill="#4ade80" font-family="JetBrains Mono, Consolas, monospace" font-size="22" font-weight="700">$ nikchester@portfolio:~</text>
+  <text x="112" y="222" fill="#4ade80" font-family="JetBrains Mono, Consolas, monospace" font-size="28">&gt; ./whoami</text>
+  <text x="112" y="320" fill="#e6edf3" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="76" font-weight="700" letter-spacing="-4">Nikita Chaturov</text>
+  <text x="116" y="384" fill="#e3b341" font-family="JetBrains Mono, Consolas, monospace" font-size="34">Infrastructure Engineer</text>
+  <text x="116" y="450" fill="#9aa4b2" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="28">Linux production infrastructure, automation, monitoring, incidents</text>
+  <rect x="112" y="490" width="382" height="34" fill="#05070b" stroke="#2a3342"/>
+  <text x="128" y="514" fill="#4ade80" font-family="JetBrains Mono, Consolas, monospace" font-size="20">[OK] diagnostics complete</text>
+</svg>
