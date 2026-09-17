@@ -1,5 +1,5 @@
 ---
-title: Proof in numbers
+title: Operational scope
 ---
 
 - **15+** servers and virtual machines

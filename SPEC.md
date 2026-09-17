@@ -190,6 +190,113 @@ Technical requirements:
 - Add Playwright coverage for the new section anchor, Kwork CTA, Telegram CTA, and bilingual visible copy.
 - Link validation must include the Kwork URL, accepting known marketplace bot/protection behavior as a warning rather than a false broken-link failure.
 
+### 3.4.2 Planned Feature: Terminal Identity Hero And Desktop Side Navigation
+
+Goal: make the first screen more memorable as an engineer-native terminal identity without sacrificing contact clarity.
+
+Hero decisions:
+- Use a command-shell profile diagnostic metaphor.
+- The hero should start with command/output language such as `./whoami`, `cat role.txt`, or `./healthcheck --contact`.
+- Name, role, short value statement, and real CTA buttons must remain visible in the first screen on normal desktop widths.
+- Remove the phrase `Linux production infrastructure` from the hero copy specifically; the hero may still communicate infrastructure ownership through clearer wording such as administration, automation, monitoring, incidents, or infrastructure design.
+- Do not make the terminal interface purely decorative. Command-like items should support understanding or map to real navigation/contact actions.
+- Avoid a fake boot sequence, fake loading delays, sound, draggable windows, modal terminal traps, or anything that slows reading.
+
+Desktop navigation decisions:
+- Replace or supplement the compact hero navigation with a fixed left navigation rail on desktop only.
+- On mobile and narrow tablet widths, use the existing compact/wrapped navigation pattern rather than a left rail.
+- Desktop rail links must be real anchors to page sections.
+- Active-section highlighting should be implemented with `IntersectionObserver` where available.
+- If `IntersectionObserver` is unavailable or not initialized, links remain fixed and usable without active highlighting.
+- The side navigation must not cover content, create horizontal scrolling, or reduce the hero CTA visibility.
+
+### 3.4.3 Planned Feature: Personal Links In Contact
+
+Goal: add personal creative links without diluting the hiring-first portfolio flow.
+
+Decisions:
+- Do not create a separate Hobbies section.
+- Add Unsplash and YouTube as a separate `Personal` / `Личное` row inside Contact, below professional contact channels.
+- Professional contact links remain primary: Telegram, email, GitHub, LinkedIn, Kwork.
+- Personal links use these URLs:
+  - `https://unsplash.com/@nikchester`
+  - `https://www.youtube.com/@Chesterf1eld`
+- Personal links should be visually quieter than primary contact channels.
+
+### 3.4.4 Planned Feature: Russian Typography Guardrails
+
+Goal: reduce hanging short Russian prepositions/conjunctions without manually editing every content line.
+
+Decisions:
+- Implement a build-time transform for Russian Markdown content only: `content/ru/**/*.md` after Markdown parsing or during HTML generation.
+- Do not transform TypeScript labels, URLs, HTML attributes, code spans, fenced code, or non-Russian content.
+- Apply non-breaking spaces after short Russian prepositions/conjunctions: `в`, `и`, `с`, `к`, `у`, `о`, `а`, `но`, `на`, `по`, `за`, `из`, `от`, `до`, `для`.
+- The transform must preserve generated HTML validity and link behavior.
+- Add tests or e2e assertions sufficient to catch obvious regressions in Russian rendering.
+
+### 3.4.5 Planned Feature: ANSI Portrait Interaction
+
+Goal: add a memorable terminal-native interaction to the hero photo without hurting performance or accessibility.
+
+Decisions:
+- Use a static ASCII/ANSI portrait asset rather than runtime canvas generation.
+- On desktop, hovering or focusing the photo area reveals the ASCII/ANSI version.
+- On touch/mobile, tapping or focusing the photo area toggles the ASCII/ANSI version.
+- The ASCII/ANSI layer is decorative and must be hidden from screen readers; the original photo remains the meaningful image with alt text.
+- The interaction must not shift layout, block CTA visibility, or reduce Lighthouse scores below target.
+- If the ASCII asset is missing, fall back to the normal photo without broken UI.
+
+### 3.4.6 Planned Feature: Sanitized Production Case Pages
+
+Goal: turn the two blocked production proof items into public, sanitized Work cards with static EN/RU case pages.
+
+Scope for nearest implementation:
+- Implement both cases in the same release.
+- Add Work cards and static case pages for both `#4` web infrastructure case and `#5` `proverka-cheka.ru` abuse mitigation case.
+- Definition of done: Work cards, EN/RU case pages, case links, automated safety checks, e2e coverage, production build, link validation, and Lighthouse pass.
+
+Routing decisions:
+- Use language-prefixed static routes generated at build time.
+- Use short slugs:
+  - `/en/cases/web-cluster`
+  - `/ru/cases/web-cluster`
+  - `/en/cases/proverka-cheka`
+  - `/ru/cases/proverka-cheka`
+- Case page source of truth is Markdown: `content/{en,ru}/cases/*.md` with frontmatter.
+- Generate static HTML files for direct links and SEO rather than relying on SPA fallback.
+
+Case page content shape:
+- Each case page uses a `Diagram + brief` format.
+- The diagram is a sanitized text/TUI-style diagram rendered with HTML/CSS, not Mermaid/canvas/runtime generation.
+- The brief includes short sections: context, constraints, architecture summary, actions, results, stack, and safety note.
+- Keep pages concise and proof-oriented; avoid blog-style long-form writing.
+
+Work section decisions:
+- After adding both cases, promote the strongest incident/security proof first.
+- Top Work priority should favor incident and production resilience signals.
+- The `#4` web-cluster card can include two CTAs: GitHub repository and case details.
+- The `#5` `proverka-cheka.ru` card links only to the case page, not to code.
+
+`#4` Web infrastructure / web cluster public scope:
+- Primary proof angle: architecture resilience and automation depth.
+- Publicly safe components: Nginx/HAProxy, HestiaCP, WordPress/PHP-FPM, MySQL/MariaDB, DNS, backups/Object Storage, Bash/Ansible/WP-CLI where applicable.
+- Publicly safe results: faster and more predictable routine operations, reduced manual risk, recovery/redeploy workflows measured in hours instead of days, easier scaling of new sites/domains/backups through a standard process.
+- Do not publish private topology, exact provider setup, IPs, hostnames, customer names, private diagrams, credentials, allowlists, or operational logs.
+
+`#5` `proverka-cheka.ru` public scope:
+- The domain `proverka-cheka.ru` may be named publicly.
+- Primary proof angle: incident mitigation, defense-in-depth, and improved diagnostics clarity.
+- Publicly safe content: high-level architecture/components, incident symptoms, general mitigation layers, safe stack names, and result claims.
+- Publicly safe results: abuse stopped or was strongly reduced, external API limit usage was controlled, manual blocking decreased, diagnostics became clearer.
+- Do not publish IPs, providers, topology, firewall rules, nftables expressions, thresholds, regexes, fail2ban jail internals, allowlists, hostile subnet labels, logs, private service details, or exact defensive configuration.
+
+Automated safety checks:
+- Add build-time checks for case Markdown before publishing.
+- Fail build on forbidden patterns such as public/private IP-like literals, exact CIDR examples where not explicitly allowed, obvious token/secret formats, internal hostnames, non-allowlisted emails, and private domains.
+- Maintain a forbidden-terms list for sensitive internal/provider/service names, exact firewall chains/jails/rules, hostile subnet labels, and other project-specific terms.
+- Maintain a case allowlist for public links/domains and safe stack terms.
+- Automated checks reduce risk but do not permit publishing private details if a check misses them.
+
 ### 3.5 Future Considerations
 
 - Add Kubernetes/Terraform/SRE lab project once real proof exists.
@@ -248,7 +355,23 @@ WorkItem
 - stack[]
 - liveUrl?
 - githubUrl?
+- caseUrl?
 - visible
+
+CasePage
+- slug
+- language
+- title
+- summary
+- context
+- constraints
+- textDiagram
+- architectureSummary
+- actions[]
+- results[]
+- stack[]
+- safetyNote
+- relatedWorkSlug
 
 FreelanceSection
 - language
@@ -291,6 +414,7 @@ External links are static URLs only.
 | Styling | CSS modules or plain CSS | Small site, no heavy UI framework needed |
 | Content | Markdown at build time | Human-editable content, better than JSON for portfolio copy |
 | CV | Markdown to PDF | Single source for RU/EN CV content and downloadable PDFs |
+| Case pages | Markdown to static HTML | Direct links, SEO, and public-safe production proof |
 | Testing | ESLint, Playwright, Lighthouse | Required quality gates |
 | Deployment | GitHub Actions + GitHub Pages | Free hosting and automated deploy |
 | Analytics | Google Analytics | User-selected analytics tool |
@@ -299,6 +423,7 @@ External links are static URLs only.
 
 - Vite React is heavier than plain HTML/CSS, but gives better component structure and future flexibility.
 - Markdown at build time adds tooling, but keeps content maintainable.
+- Static generated case pages add build complexity, but provide direct SEO-friendly URLs and keep public proof separate from the main one-page flow.
 - GA via GitHub Secret improves config control, but can block deploy if the secret is missing.
 - Minimal accessibility is accepted for MVP, but must not break keyboard navigation or readability.
 
@@ -355,13 +480,14 @@ Approved redesign direction after MVP review:
 - Purely decorative chrome is allowed only when it clearly reads as non-interactive framing, not as a clickable control.
 
 Recommended section mapping (terminal/session style, supersedes the older app-window mapping):
-- Hero: full shell-session presentation (`./whoami`), but name, role, value statement, and primary CTAs stay immediately clear.
+- Hero: command-shell profile diagnostic presentation (`./whoami` / role/status output), but name, role, value statement, and primary CTAs stay visible in the first screen.
+- Hero photo: may include a static ANSI portrait hover/focus/tap interaction as decorative terminal-native detail.
 - Proof: log-style health events with `[OK]`/status patterns.
-- Work: readable YAML/service manifests with `problem`, `action`, `result`, `stack`, `repo`, and `status` keys.
+- Work: readable YAML/service manifests with `problem`, `action`, `result`, and `stack` keys. Do not show duplicated `repo` fields or repeated `status: ok` metadata if the same meaning is already conveyed by card status and CTA buttons.
 - Freelance: incident-intake style panel that communicates scoped ops help without emergency/SLA promises.
 - Stack: capability manifest / config-style block.
 - CV: file-listing style download block with EN/RU PDFs.
-- Contact: escalation-channel style endpoint list with Telegram as primary action.
+- Contact: escalation-channel style endpoint list with Telegram as primary action and a separate quieter personal-links row for Unsplash/YouTube.
 
 Log prefix location:
 - `[OK]`/status prefixes live in the UI render layer, not in Markdown content, so content files stay clean and bilingual.
@@ -384,12 +510,19 @@ Primary tradeoff:
 Updated terminal/infrastructure direction:
 - The preferred visual language is `Hybrid Ops Desk`: terminal session, infrastructure diagnostics, service records, and runbook/status patterns.
 - The hero uses a full shell-session presentation, but primary CTAs must remain obvious and real.
+- The hero must not use `Linux production infrastructure` as the visible value phrase; use clearer short wording around infrastructure administration, automation, monitoring, incidents, or design.
 - Command-like controls must be real anchors or real outbound/download links.
 - Proof metrics read like log output or health events, using concise `[OK]`/status patterns (no dynamic timestamps, to keep builds deterministic and tests stable).
 - Work cards should move toward readable YAML/service manifests with clear keys such as `problem`, `action`, `result`, `stack`, `repo`, and `status`.
+- Work cards must avoid redundant labels: remove `repo` when an `Open project` button already provides the repository action, and remove `status: ok` when it does not add meaningful proof.
 - Palette should be dark terminal first: graphite/black background, green OK accents, amber warning highlights, and restrained blue links. Avoid cyberpunk neon density.
 - Mobile must wrap cleanly with no horizontal scrolling; code/manifest styling should adapt to readable blocks instead of forcing side-scroll.
 - First terminal pass should prioritize Hero, Proof, and Work; Stack, CV, and Contact can be lightly adapted until a later pass.
+
+Desktop side navigation direction:
+- On desktop, use a fixed left navigation rail with real anchors and active-section highlighting.
+- On mobile, do not force a left rail; keep navigation compact and readable.
+- Active highlighting gracefully degrades to plain links when browser support or JS timing prevents section tracking.
 
 ### 5.4 Empty States
 
@@ -397,6 +530,7 @@ Updated terminal/infrastructure direction:
 - Missing project details: hide unavailable details rather than using `TBD` or `coming soon`.
 - Missing project links: hide link buttons until real URLs exist.
 - Missing CV PDFs: block release; CV is P0.
+- Personal links unavailable: keep professional contact links; hide or fix the failed personal link before release.
 
 ### 5.5 Error States
 
@@ -444,6 +578,8 @@ MVP accessibility target is minimal but responsible:
 | GitHub profile | Proof and source links | External URL | GitHub / Owner |
 | LinkedIn | Professional profile | External URL | LinkedIn / Owner |
 | Kwork | Freelance profile and scoped task intake | External URL | Kwork / Owner |
+| Unsplash | Personal photography profile | External URL | Unsplash / Owner |
+| YouTube | Personal music/covers profile | External URL | YouTube / Owner |
 
 ### 6.2 Data Flows
 
@@ -452,6 +588,7 @@ Markdown content -> Vite build -> static site -> GitHub Pages
 CV Markdown -> PDF generation -> public downloadable PDF assets
 Visitor browser -> GA script -> Google Analytics
 Visitor click -> Telegram/GitHub/LinkedIn/Kwork/email/project links
+Visitor click -> Unsplash/YouTube personal links
 ```
 
 ### 6.3 Failure Handling
@@ -466,6 +603,7 @@ Visitor click -> Telegram/GitHub/LinkedIn/Kwork/email/project links
 | Hero photo | Missing/unavailable | Show system-dialog style fallback |
 | Public link | Broken during validation | Release is blocked or link is hidden before release |
 | Kwork | Marketplace blocks CI/browser bot checks | Treat known protection as link-validation warning; UI link remains usable |
+| Unsplash/YouTube | External profile unavailable or protected | Treat as normal public links; if validation fails persistently, fix or hide before release |
 
 ---
 
@@ -486,6 +624,7 @@ Visitor click -> Telegram/GitHub/LinkedIn/Kwork/email/project links
 | Scenario | Expected Behavior |
 |----------|-------------------|
 | User switches language repeatedly | UI updates without layout break |
+| Fixed desktop side nav is unsupported or JS fails | Anchor links remain usable; active-section highlighting is simply absent |
 | Browser has JS disabled | Critical content should degrade as much as possible; site is primarily static but React JS is expected |
 | GA blocked by adblock | No visible error; site remains usable |
 | Hero photo not added yet | Placeholder/fallback shown |
@@ -493,6 +632,8 @@ Visitor click -> Telegram/GitHub/LinkedIn/Kwork/email/project links
 | Project code cannot be shown | Show sanitized case card without code link |
 | Freelance client wants emergency/24/7 support | UI must not imply SLA or emergency availability; Kwork/Telegram conversation defines scope |
 | Very small mobile viewport | Window panels stack vertically; no content overflow |
+| Russian typography transform encounters code/link content | Code, URLs, and attributes are preserved; only visible Russian prose is transformed |
+| ANSI portrait asset missing | Normal hero photo remains visible; no broken image or layout shift |
 
 ### 7.3 Partial Failure Handling
 
@@ -536,6 +677,7 @@ Privacy implications:
 - Google Analytics is included without consent banner by user decision.
 - Do not publish phone number.
 - Sanitize all work content before commit.
+- Case page Markdown must pass automated safety checks before build/deploy.
 
 ### 8.5 Audit Trail
 
@@ -550,6 +692,12 @@ Before committing public case content, remove:
 - private diagrams that reveal sensitive topology
 - customer/private company data
 - non-public incident details that could help attackers
+
+Additional case-page safety rules:
+- Case pages may name `proverka-cheka.ru`, but must not expose exact defensive configuration.
+- Do not publish nftables expressions, firewall chain names, fail2ban jail internals, thresholds, regexes, hostile subnet labels, or operational logs.
+- Do not publish exact topology, provider mapping, private diagrams, customer data, private hostnames, IPs, or allowlists.
+- Case page build checks must include forbidden patterns, forbidden terms, and public allowlists.
 
 ---
 
@@ -641,6 +789,9 @@ Do not use destructive git operations unless explicitly approved.
 | Responsive smoke | Required viewports | Playwright or manual browser check | `360`, `768`, `1366`, `1920` |
 | Lighthouse | Performance, Accessibility, Best Practices, SEO | Lighthouse CLI or equivalent | >= 90 each |
 | Link validation | All public links | Playwright/link checker | 0 broken links |
+| Typography transform | Russian Markdown rendering | Build/e2e assertion | Short Russian prepositions/conjunctions receive non-breaking spacing without corrupting links/code |
+| Case safety | Case Markdown and generated pages | Build-time safety checker | Forbidden patterns/terms fail build; public links/domains must be allowlisted |
+| Case routes | Static EN/RU case pages | Playwright | `/en/cases/web-cluster`, `/ru/cases/web-cluster`, `/en/cases/proverka-cheka`, `/ru/cases/proverka-cheka` load directly |
 
 ### 11.2 Test Data Strategy
 
@@ -659,6 +810,9 @@ MVP is done when:
 - Telegram CTA works
 - GitHub, LinkedIn, email, and public project links work
 - Kwork links work or are handled as known protected-host warnings in automated link validation
+- Unsplash and YouTube personal links are present in Contact only if valid
+- Case cards link to their static case pages; direct case URLs load without SPA fallback failure
+- Case pages contain no forbidden sensitive patterns or terms
 - RU and EN CV PDFs exist and contain no phone number
 - Lighthouse scores are >= 90 for Performance, Accessibility, Best Practices, SEO
 - Playwright smoke passes in Chromium, WebKit, Firefox

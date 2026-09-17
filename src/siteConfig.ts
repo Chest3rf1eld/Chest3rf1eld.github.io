@@ -7,8 +7,11 @@ export const siteConfig = {
   githubUrl: 'https://github.com/Chest3rf1eld',
   linkedinUrl: 'https://www.linkedin.com/in/nikita-chaturov-8625a5281/',
   kworkUrl: 'https://kwork.ru/user/nikchester',
+  unsplashUrl: 'https://unsplash.com/@nikchester',
+  youtubeUrl: 'https://www.youtube.com/@Chesterf1eld',
   email: 'nikchester01@gmail.com',
   photo: '/assets/hero-photo.jpg',
+  ansiPhoto: '/assets/hero-photo-ansi.svg',
   cv: {
     en: '/assets/cv/nikita-chaturov-cv.en.pdf',
     ru: '/assets/cv/nikita-chaturov-cv.ru.pdf',

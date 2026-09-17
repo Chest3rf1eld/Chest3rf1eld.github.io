@@ -1,12 +1,14 @@
 ---
 title: Bulk Web Infrastructure Automation
 priority: primary
+order: 2
 url: https://github.com/Chest3rf1eld/HestiaCP_scripts
+caseUrl: /en/cases/web-cluster/
 stack: Bash, HestiaCP, WordPress, WP-CLI, SSL, DNS, Yandex Object Storage
 ---
 
-**Problem:** operating many hosted websites creates repetitive and risky manual work.
+**Problem:** operating 170+ hosted websites creates repetitive manual work and recovery risk.
 
-**Action:** built standalone Bash scripts for SSL, redirects, migrations, permissions, cache/plugin maintenance, PHP backend changes, and backups.
+**Action:** built repeatable Bash and Ansible workflows for provisioning, SSL, redirects, migrations, permissions, cache/plugin maintenance, PHP backend changes, and backups.
 
-**Result:** routine operations across many sites became faster and more predictable.
+**Result:** routine operations became faster and more predictable, recovery moved toward hours instead of days, and scaling new sites became safer.
