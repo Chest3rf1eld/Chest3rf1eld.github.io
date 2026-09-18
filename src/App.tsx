@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { siteContent } from './generated/content';
 import { siteConfig } from './siteConfig';
 import type { Language, PageContent } from './types';
@@ -36,14 +36,14 @@ const labels = {
     commandProfile: './whoami',
     commandProof: './healthcheck --summary',
     commandWork: 'ls cases/*.yaml',
-    commandStack: 'cat stack.md',
-    commandRole: 'cat profile.txt',
-    statusOk: 'OK',
+    commandStack: 'Stack',
     yamlProblem: 'problem',
     yamlAction: 'action',
     yamlResult: 'result',
     yamlStack: 'stack',
     internalCase: 'Internal case',
+    priorityPrimary: 'Primary',
+    prioritySecondary: 'Secondary',
   },
   ru: {
     work: 'Кейсы',
@@ -77,14 +77,14 @@ const labels = {
     commandProfile: './whoami',
     commandProof: './healthcheck --summary',
     commandWork: 'ls cases/*.yaml',
-    commandStack: 'cat stack.md',
-    commandRole: 'cat profile.txt',
-    statusOk: 'OK',
+    commandStack: 'Стек',
     yamlProblem: 'problem',
     yamlAction: 'action',
     yamlResult: 'result',
     yamlStack: 'stack',
     internalCase: 'Внутренний кейс',
+    priorityPrimary: 'Основной',
+    prioritySecondary: 'Вторичный',
   },
 } as const;
 
@@ -99,10 +99,30 @@ function extractParagraphs(html: string) {
   }));
 }
 
-function TitleBar({ title, lang, setLang }: { title: string; lang: Language; setLang?: (lang: Language) => void }) {
+function protectEnglishHeading(value: string, lang: Language) {
+  if (lang !== 'en') return value;
+  return value.replace(/\b(a|an|and|as|at|for|from|in|of|on|or|the|to|with)\s+/gi, '$1\u00a0');
+}
+
+function sectionPath(id?: string) {
+  if (!id) return '';
+  return `~/${id === 'work' ? 'cases' : id}`;
+}
+
+function TitleBar({
+  title,
+  lang,
+  setLang,
+  titleId,
+}: {
+  title: string;
+  lang: Language;
+  setLang?: (lang: Language) => void;
+  titleId?: string;
+}) {
   return (
     <div className="titlebar">
-      <span>{title}</span>
+      <span id={titleId}>{protectEnglishHeading(title, lang)}</span>
       {setLang ? (
         <div className="titlebar-controls" aria-label="Language switch">
           <button className={lang === 'en' ? 'active' : ''} onClick={() => setLang('en')} type="button">EN</button>
@@ -128,10 +148,13 @@ function Window({
   id?: string;
   status?: string;
 }) {
+  const headingId = `${id ?? title.replace(/\W+/g, '-').toLowerCase()}-title`;
+  const displayTitle = sectionPath(id) || title;
+
   return (
-    <section id={id} className={`window ${className}`} aria-labelledby={`${title.replace(/\W+/g, '-').toLowerCase()}-title`}>
-      <TitleBar title={title} lang="en" />
-      <div className="window-body" id={`${title.replace(/\W+/g, '-').toLowerCase()}-title`}>{children}</div>
+    <section id={id} className={`window ${className}`} aria-labelledby={headingId}>
+      <TitleBar title={displayTitle} lang="en" titleId={headingId} />
+      <div className="window-body">{children}</div>
       {status ? <div className="statusbar">{status}</div> : null}
     </section>
   );
@@ -140,14 +163,22 @@ function Window({
 function Hero({ content, lang, setLang }: { content: PageContent; lang: Language; setLang: (lang: Language) => void }) {
   const text = labels[lang];
   const [showAnsi, setShowAnsi] = useState(false);
+  const [tapToggleEnabled, setTapToggleEnabled] = useState(false);
+
+  useEffect(() => {
+    const query = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const updatePointerMode = () => setTapToggleEnabled(!query.matches);
+    updatePointerMode();
+    query.addEventListener('change', updatePointerMode);
+    return () => query.removeEventListener('change', updatePointerMode);
+  }, []);
 
   return (
     <section id="profile" className="hero window" aria-labelledby="hero-title">
       <TitleBar title="nikchester@portfolio:~" lang={lang} setLang={setLang} />
       <div className="hero-grid window-body">
         <div className="hero-terminal">
-          <p className="shell-line"><span>$</span> {text.commandRole}</p>
-          <h1 id="hero-title">{content.hero.name}</h1>
+          <h1 id="hero-title">{protectEnglishHeading(content.hero.name, lang)}</h1>
           <p className="role">{content.hero.role}</p>
           <HtmlBlock html={content.hero.html} />
           <div className="actions">
@@ -157,12 +188,8 @@ function Hero({ content, lang, setLang }: { content: PageContent; lang: Language
         </div>
         <figure
           className={`photo-window ${showAnsi ? 'show-ansi' : ''}`}
-          onClick={() => setShowAnsi((value) => !value)}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter' || event.key === ' ') {
-              event.preventDefault();
-              setShowAnsi((value) => !value);
-            }
+          onClick={() => {
+            if (tapToggleEnabled) setShowAnsi((value) => !value);
           }}
           tabIndex={0}
         >
@@ -203,11 +230,11 @@ function WorkGrid({ content, lang }: { content: PageContent; lang: Language }) {
           <article className="project-card" key={item.slug}>
             <div className="project-titlebar">
               <span className="file-icon" aria-hidden="true">&gt;</span>
-              <span>{`services/${String(index + 1).padStart(2, '0')}-${item.slug}.yaml`}</span>
-              <span className="project-priority">{item.priority}</span>
+              <span>{`cases/${String(index + 1).padStart(2, '0')}-${item.slug}.yaml`}</span>
+              <span className="project-priority">{item.priority === 'primary' ? text.priorityPrimary : text.prioritySecondary}</span>
             </div>
             <div className="manifest-head">
-              <h3>{item.title}</h3>
+              <h3>{protectEnglishHeading(item.title, lang)}</h3>
             </div>
             <dl className="manifest-body">
               {extractParagraphs(item.html).map((entry) => (
@@ -301,22 +328,40 @@ function PersonalPanel({ lang }: { lang: Language }) {
 const navItems = [
   ['profile', 'profile'],
   ['proof', 'proof'],
+  ['stack', 'commandStack'],
   ['work', 'work'],
   ['freelance', 'freelance'],
-  ['stack', 'commandStack'],
   ['cv', 'cv'],
   ['contact', 'contact'],
   ['personal', 'personal'],
 ] as const;
 
-function SideNav({ lang }: { lang: Language }) {
-  const text = labels[lang];
+function useActiveSection() {
   const [activeId, setActiveId] = useState('profile');
+  const clickedOverrideUntil = useRef(0);
 
   useEffect(() => {
+    const sectionIds = navItems.map(([id]) => id);
+
+    const updateForBottom = () => {
+      const scrollBottom = window.scrollY + window.innerHeight;
+      const nearBottom = scrollBottom >= document.documentElement.scrollHeight - 8;
+      if (nearBottom) setActiveId(sectionIds[sectionIds.length - 1]);
+    };
+
+    window.addEventListener('scroll', updateForBottom, { passive: true });
+    window.addEventListener('resize', updateForBottom);
+    updateForBottom();
+
     if (!('IntersectionObserver' in window)) return undefined;
     const sections = navItems.map(([id]) => document.getElementById(id)).filter((section): section is HTMLElement => Boolean(section));
     const observer = new IntersectionObserver((entries) => {
+      if (Date.now() < clickedOverrideUntil.current) return;
+      const scrollBottom = window.scrollY + window.innerHeight;
+      if (scrollBottom >= document.documentElement.scrollHeight - 8) {
+        setActiveId(sectionIds[sectionIds.length - 1]);
+        return;
+      }
       const visible = entries
         .filter((entry) => entry.isIntersecting)
         .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
@@ -324,14 +369,30 @@ function SideNav({ lang }: { lang: Language }) {
     }, { rootMargin: '-20% 0px -55% 0px', threshold: [0.1, 0.25, 0.5] });
 
     sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', updateForBottom);
+      window.removeEventListener('resize', updateForBottom);
+    };
   }, []);
+
+  const setClickedActiveId = (id: string) => {
+    clickedOverrideUntil.current = Date.now() + 900;
+    setActiveId(id);
+  };
+
+  return { activeId, setClickedActiveId };
+}
+
+function SideNav({ lang }: { lang: Language }) {
+  const text = labels[lang];
+  const { activeId, setClickedActiveId } = useActiveSection();
 
   return (
     <nav className="side-nav" aria-label="Fixed page sections">
       <span className="side-nav-title">{text.sections}</span>
       {navItems.map(([id, key]) => (
-        <a key={id} href={`#${id}`} className={activeId === id ? 'active' : ''}>{text[key]}</a>
+        <a key={id} href={`#${id}`} className={activeId === id ? 'active' : ''} onClick={() => setClickedActiveId(id)}>{text[key]}</a>
       ))}
     </nav>
   );
@@ -340,13 +401,16 @@ function SideNav({ lang }: { lang: Language }) {
 function MobileNav({ lang }: { lang: Language }) {
   const text = labels[lang];
   const [open, setOpen] = useState(false);
+  const { activeId, setClickedActiveId } = useActiveSection();
 
   return (
     <nav className="mobile-nav" aria-label="Mobile page sections">
       <button className="button" type="button" aria-expanded={open} onClick={() => setOpen((value) => !value)}>{text.sections}</button>
       {open ? (
         <div className="mobile-nav-links">
-          {navItems.map(([id, key]) => <a key={id} href={`#${id}`} onClick={() => setOpen(false)}>{text[key]}</a>)}
+          {navItems.map(([id, key]) => (
+            <a key={id} href={`#${id}`} className={activeId === id ? 'active' : ''} onClick={() => { setClickedActiveId(id); setOpen(false); }}>{text[key]}</a>
+          ))}
         </div>
       ) : null}
     </nav>

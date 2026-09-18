@@ -1,9 +1,8 @@
 ---
-title: Operational scope
+title: Reliability signals
 ---
 
-- **15+** servers and virtual machines
-- **170+** websites operated and automated
-- **4** infrastructure providers
-- **Proxmox VE** home and office virtualization experience
-- **Hours, not days** for rebuild and recovery workflows
+- **Recovery** workflows measured in hours, not days
+- **Monitoring** with Prometheus, Grafana, Loki and blackbox checks
+- **Automation** for backups, SSL, migrations and routine web ops
+- **Scale** across 170+ websites, 15+ servers and 4 providers

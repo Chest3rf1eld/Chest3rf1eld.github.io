@@ -11,8 +11,8 @@ export const siteContent = {
       "html": "<p>I keep infrastructure understandable: servers, automation, monitoring, backups, networking, and incident troubleshooting.</p>\n<p>I like systems that are reproducible, observable, and documented - playbooks instead of manual steps, alerts instead of guessing, runbooks instead of tribal knowledge.</p>"
     },
     "proof": {
-      "title": "Operational scope",
-      "html": "<ul>\n<li><strong>15+</strong> servers and virtual machines</li>\n<li><strong>170+</strong> websites operated and automated</li>\n<li><strong>4</strong> infrastructure providers</li>\n<li><strong>Proxmox VE</strong> home and office virtualization experience</li>\n<li><strong>Hours, not days</strong> for rebuild and recovery workflows</li>\n</ul>"
+      "title": "Reliability signals",
+      "html": "<ul>\n<li><strong>Recovery</strong> workflows measured in hours, not days</li>\n<li><strong>Monitoring</strong> with Prometheus, Grafana, Loki and blackbox checks</li>\n<li><strong>Automation</strong> for backups, SSL, migrations and routine web ops</li>\n<li><strong>Scale</strong> across 170+ websites, 15+ servers and 4 providers</li>\n</ul>"
     },
     "freelance": {
       "title": "Freelance infrastructure tasks",
@@ -134,8 +134,8 @@ export const siteContent = {
       "html": "<p>Держу инфраструктуру понятной: серверы, автоматизацию, мониторинг, бэкапы, сети и разбор инцидентов.</p>\n<p>Люблю системы, которые можно повторить, наблюдать и передать другому человеку: плейбуки вместо ручных шагов, алерты вместо догадок, runbook вместо знаний в голове.</p>"
     },
     "proof": {
-      "title": "Масштаб эксплуатации",
-      "html": "<ul>\n<li><strong>15+</strong> серверов и виртуальных машин</li>\n<li><strong>170+</strong> сайтов в сопровождении и автоматизации</li>\n<li><strong>4</strong> инфраструктурных провайдера</li>\n<li><strong>Proxmox VE</strong> для виртуализации и миграций</li>\n<li><strong>Часы вместо дней</strong> на восстановление и повторное развертывание</li>\n</ul>"
+      "title": "Сигналы надежности",
+      "html": "<ul>\n<li><strong>Восстановление</strong>: часы вместо дней для rebuild/redeploy-процессов</li>\n<li><strong>Мониторинг</strong>: Prometheus, Grafana, Loki и blackbox-проверки</li>\n<li><strong>Автоматизация</strong>: бэкапы, SSL, миграции и routine web ops</li>\n<li><strong>Масштаб</strong>: 170+ сайтов, 15+ серверов и 4 провайдера</li>\n</ul>"
     },
     "freelance": {
       "title": "Фриланс-задачи по инфраструктуре",

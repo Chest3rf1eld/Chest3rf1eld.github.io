@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 824 845" role="img" aria-label="Decorative ANSI portrait">
   <rect width="824" height="845" fill="#05070b"/>
-  <g fill="#4ade80" font-family="JetBrains Mono, Consolas, monospace" font-size="17" xml:space="preserve">
+  <g transform="translate(24 -4)" fill="#4ade80" font-family="JetBrains Mono, Consolas, monospace" font-size="17" xml:space="preserve">
     <text x="16" y="28">---------- .  ......................................   --:::::::::-:------------</text>
     <text x="16" y="48">--------   ............................................ .::::::::::-------------</text>
     <text x="16" y="68">-------  .......................................:.........::::::::--------------</text>

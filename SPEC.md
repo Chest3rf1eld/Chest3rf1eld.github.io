@@ -262,8 +262,8 @@ Navigation decisions:
 
 Hero decisions:
 - Remove the visible `Диагностика инфраструктуры` / `Infrastructure diagnostics` eyebrow.
-- Remove the current `$ ./healthcheck --contact` and `[OK] profile loaded...` output.
-- Keep terminal identity with one cleaner command/status line only, such as `$ cat profile.txt`.
+- Remove the current `$ ./healthcheck --contact` and old profile-loaded status output.
+- Keep terminal identity through window chrome and layout; do not show a hero command line such as `$ cat profile.txt`.
 - Preserve name, role, short value statement, Telegram CTA, GitHub CTA, and readable first-screen layout.
 - Align hero spacing consistently; command/status blocks must use the same vertical rhythm as the rest of the hero.
 
@@ -287,6 +287,57 @@ Contact and personal content decisions:
 Layout decisions:
 - CV and Contact cards in the bottom area must top-align rather than stretching to equal height.
 - Do not add filler CV copy just to match Contact height.
+
+### 3.4.8 Planned Feature: Open Issue Polish Batch `#48-#59`
+
+Goal: resolve the current open UI/content polish issues as one cohesive pass, avoiding one-off visual tweaks that create inconsistent spacing, labels, or interaction rules.
+
+Scope:
+- Implement all current open issues `#48` through `#59` in one patch unless a regression forces splitting.
+- Treat these issues as `status:ready` after this spec update; no remaining product decisions are required before implementation.
+- Preserve the existing static architecture, GitHub Pages deployment, bilingual content model, privacy rules, and quality gates.
+
+Issue decisions:
+- `#48` Repeated touch tap on the hero image must toggle back to the original photo.
+- `#49` Navigation order must be: Profile, Proof, Stack, Cases, Freelance, CV, Contact, Personal. Change navigation order/labels only; do not change physical page section order as part of this issue.
+- `#49` Replace `cat stack.md` in navigation with human-readable `Stack` / `Стек`; command-style labels may still appear inside section chrome when useful.
+- `#50` Increase line-height for large headings only, especially where letters visually collide. Do not loosen compact titlebars or terminal chrome unless a heading remains unreadable.
+- `#51` Prevent awkward hanging short English words in headings only. Do not apply a broad English NBSP transform to all prose because it can produce unnatural wrapping.
+- `#52` Standardize mobile vertical rhythm through spacing tokens rather than isolated margin tweaks.
+- `#53` Rework proof metrics toward reliability signals with four buckets: recovery, monitoring, automation, and scale.
+- `#54` Primary/Secondary tags on mobile must align consistently with nearby card content using the same spacing tokens from `#52`.
+- `#55` Replace `Primary / Supporting` with `Primary / Secondary` in EN and the closest concise RU equivalent.
+- `#56` Active side/mobile navigation must support both bottom-proximity and click override rules. Do not add empty scroll space below the page.
+- `#57` Section headings should use Linux directory-style path prefixes, for example `~/profile`, `~/proof`, `~/stack`, `~/cases`, while preserving clear section meaning.
+- `#58` ANSI-art must be centered and scaled so the full art fits within the existing hero photo frame.
+- `#59` On desktop/fine-pointer devices, the hero image switches to ANSI only through hover/focus, not click. On touch/coarse-pointer devices, tap toggles the ANSI/original state.
+
+Interaction rules:
+- Device behavior for the hero image is based on pointer capabilities: `(hover: hover) and (pointer: fine)` gets hover/focus behavior; coarse/touch pointers get tap-toggle behavior.
+- If a device has mixed input, prefer the pointer-media behavior that best matches the active pointer rather than viewport width alone.
+- Repeated taps must never trap the user in ANSI mode.
+- Keyboard focus must still reveal the ANSI layer for accessibility and parity with hover.
+
+Navigation active-state rules:
+- Anchor links remain the source of navigation; active highlighting is enhancement only.
+- When a nav item is clicked, it may become active immediately even if scroll positioning cannot move the target into the observer's preferred zone.
+- Near the bottom of the document, the last visible section should win active state when normal intersection thresholds cannot mark it active.
+- The implementation must not add fake content, spacer blocks, or empty bottom padding solely to make the final section active.
+
+Typography rules:
+- Large headings prioritize readability over terminal compactness.
+- English heading widow control is allowed only for short function words in headings/section titles and must not affect URLs, code, attributes, or long body prose.
+- Russian typography guardrails remain broader for Russian Markdown prose as previously specified.
+
+Mobile spacing rules:
+- Introduce or reuse explicit CSS custom properties for mobile section gap, card padding, tag spacing, and compact inner gaps.
+- Mobile spacing should be consistent across windows/cards without making the page feel cramped.
+- Add Playwright coverage for representative mobile spacing/alignment where practical; visual-only details may be covered through layout assertions rather than screenshots.
+
+Proof metric direction:
+- Proof metrics should read as reliability signals, not artificial scores.
+- Preferred buckets: recovery, monitoring, automation, scale.
+- Claims must stay factual and safe; if exact numbers are not defensible, use concise qualitative copy instead of invented precision.
 
 ### 3.4.6 Planned Feature: Sanitized Production Case Pages
 
@@ -527,7 +578,7 @@ Approved redesign direction after MVP review:
 Recommended section mapping (terminal/session style, supersedes the older app-window mapping):
 - Hero: minimal command-shell identity with one clean command/status line, but name, role, value statement, and primary CTAs stay visible in the first screen.
 - Hero photo: may include a static ANSI portrait hover/focus/tap interaction as decorative terminal-native detail.
-- Proof: log-style health events with `[OK]`/status patterns.
+- Proof: concise reliability signals without repeated OK-style prefixes or noisy status badges.
 - Cases: readable YAML/service manifests with `problem`, `action`, `result`, and `stack` keys. Do not show duplicated `repo` fields or repeated `status: ok` metadata if the same meaning is already conveyed by card status and CTA buttons.
 - Freelance: incident-intake style panel that communicates scoped ops help without emergency/SLA promises.
 - Stack: capability manifest / config-style block.
@@ -535,8 +586,8 @@ Recommended section mapping (terminal/session style, supersedes the older app-wi
 - Contact: escalation-channel style endpoint list with Telegram as the only primary contact action.
 - Personal: separate quiet section explaining Unsplash photography and YouTube covers.
 
-Log prefix location:
-- `[OK]`/status prefixes live in the UI render layer, not in Markdown content, so content files stay clean and bilingual.
+Log prefix guardrail:
+- Do not add repeated OK-style prefixes in the UI render layer or Markdown content; they create visual noise without adding proof.
 
 Engineer-native language guardrail (decided):
 - Labels, statuses, and section chrome may use engineer-native CLI/log language.
@@ -558,7 +609,7 @@ Updated terminal/infrastructure direction:
 - The hero uses a restrained shell-session presentation, but primary CTAs must remain obvious and real.
 - The hero must not use `Linux production infrastructure` as the visible value phrase; use clearer short wording around infrastructure administration, automation, monitoring, incidents, or design.
 - Command-like controls must be real anchors or real outbound/download links.
-- Proof metrics read like log output or health events, using concise `[OK]`/status patterns (no dynamic timestamps, to keep builds deterministic and tests stable).
+- Proof metrics read like concise reliability signals without dynamic timestamps or repeated OK-style prefixes, keeping builds deterministic and tests stable.
 - Work cards should move toward readable YAML/service manifests with clear keys such as `problem`, `action`, `result`, `stack`, `repo`, and `status`.
 - Work cards must avoid redundant labels: remove `repo` when an `Open project` button already provides the repository action, and remove `status: ok` when it does not add meaningful proof.
 - Palette should be dark terminal first: graphite/black background, green OK accents, amber warning highlights, and restrained blue links. Avoid cyberpunk neon density.
@@ -569,9 +620,9 @@ Desktop side navigation direction:
 - On desktop, use a fixed left navigation rail with real anchors and active-section highlighting.
 - On mobile, do not force a left rail; use a button-controlled mobile menu with real anchors.
 - Active highlighting gracefully degrades to plain links when browser support or JS timing prevents section tracking.
-- Fixed rail positioning must be flush-left relative to the viewport, not calculated from centered content.
+- Fixed rail positioning must be attached to the main content block rather than floating independently at the far viewport edge.
 - The rail remains enabled from `1180px` viewport width and above; below `1180px`, use the mobile/button menu.
-- When the rail is visible, the main content may be intentionally off-center to the right.
+- When the rail is visible, the main content remains centered in the viewport.
 - Maintain at least `32px` horizontal gap between the rail's right edge and the content's left edge.
 - The 1536x864 laptop viewport is a required regression target for rail/content overlap.
 
