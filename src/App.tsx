@@ -1,11 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { siteContent } from './generated/content';
 import { siteConfig } from './siteConfig';
 import type { Language, PageContent } from './types';
 
 const labels = {
   en: {
-    work: 'Selected work',
+    work: 'Cases',
+    profile: 'Profile',
+    proof: 'Proof',
+    sections: 'Sections',
+    menu: 'Menu',
+    showMoreCases: 'Show more cases',
     stack: 'Stack',
     cv: 'CV',
     contact: 'Contact',
@@ -20,6 +25,8 @@ const labels = {
     contactViaTelegram: 'Contact via Telegram',
     caseDetails: 'Case details',
     personal: 'Personal',
+    personalTitle: 'Personal',
+    personalIntro: 'Photography lives on Unsplash. My music covers live on YouTube.',
     openProject: 'Open project',
     openRedditPost: 'Reddit post',
     photoTitle: 'photo.jpg',
@@ -28,20 +35,23 @@ const labels = {
     contactStatus: 'Primary channel: Telegram',
     commandProfile: './whoami',
     commandProof: './healthcheck --summary',
-    commandWork: 'ls services/*.yaml',
-    commandStack: 'cat stack.md',
-    shellReady: 'profile loaded / automation, monitoring, incidents',
-    commandRole: 'cat role.txt',
-    commandContact: './healthcheck --contact',
-    statusOk: 'OK',
+    commandWork: 'ls cases/*.yaml',
+    commandStack: 'Stack',
     yamlProblem: 'problem',
     yamlAction: 'action',
     yamlResult: 'result',
     yamlStack: 'stack',
     internalCase: 'Internal case',
+    priorityPrimary: 'Primary',
+    prioritySecondary: 'Secondary',
   },
   ru: {
-    work: 'Работы',
+    work: 'Кейсы',
+    profile: 'Профиль',
+    proof: 'Факты',
+    sections: 'Разделы',
+    menu: 'Меню',
+    showMoreCases: 'Показать ещё кейсы',
     stack: 'Стек',
     cv: 'CV',
     contact: 'Контакты',
@@ -56,6 +66,8 @@ const labels = {
     contactViaTelegram: 'Написать в Telegram',
     caseDetails: 'Подробнее',
     personal: 'Личное',
+    personalTitle: 'Личное',
+    personalIntro: 'Фотографии выкладываю на Unsplash. Мои каверы - на YouTube.',
     openProject: 'Открыть проект',
     openRedditPost: 'Пост на Reddit',
     photoTitle: 'photo.jpg',
@@ -64,17 +76,15 @@ const labels = {
     contactStatus: 'Основной канал: Telegram',
     commandProfile: './whoami',
     commandProof: './healthcheck --summary',
-    commandWork: 'ls services/*.yaml',
-    commandStack: 'cat stack.md',
-    shellReady: 'profile loaded / автоматизация, мониторинг, инциденты',
-    commandRole: 'cat role.txt',
-    commandContact: './healthcheck --contact',
-    statusOk: 'OK',
+    commandWork: 'ls cases/*.yaml',
+    commandStack: 'Стек',
     yamlProblem: 'problem',
     yamlAction: 'action',
     yamlResult: 'result',
     yamlStack: 'stack',
     internalCase: 'Внутренний кейс',
+    priorityPrimary: 'Основной',
+    prioritySecondary: 'Вторичный',
   },
 } as const;
 
@@ -89,10 +99,30 @@ function extractParagraphs(html: string) {
   }));
 }
 
-function TitleBar({ title, lang, setLang }: { title: string; lang: Language; setLang?: (lang: Language) => void }) {
+function protectEnglishHeading(value: string, lang: Language) {
+  if (lang !== 'en') return value;
+  return value.replace(/\b(a|an|and|as|at|for|from|in|of|on|or|the|to|with)\s+/gi, '$1\u00a0');
+}
+
+function sectionPath(id?: string) {
+  if (!id) return '';
+  return `~/${id === 'work' ? 'cases' : id}`;
+}
+
+function TitleBar({
+  title,
+  lang,
+  setLang,
+  titleId,
+}: {
+  title: string;
+  lang: Language;
+  setLang?: (lang: Language) => void;
+  titleId?: string;
+}) {
   return (
     <div className="titlebar">
-      <span>{title}</span>
+      <span id={titleId}>{protectEnglishHeading(title, lang)}</span>
       {setLang ? (
         <div className="titlebar-controls" aria-label="Language switch">
           <button className={lang === 'en' ? 'active' : ''} onClick={() => setLang('en')} type="button">EN</button>
@@ -118,10 +148,13 @@ function Window({
   id?: string;
   status?: string;
 }) {
+  const headingId = `${id ?? title.replace(/\W+/g, '-').toLowerCase()}-title`;
+  const displayTitle = sectionPath(id) || title;
+
   return (
-    <section id={id} className={`window ${className}`} aria-labelledby={`${title.replace(/\W+/g, '-').toLowerCase()}-title`}>
-      <TitleBar title={title} lang="en" />
-      <div className="window-body" id={`${title.replace(/\W+/g, '-').toLowerCase()}-title`}>{children}</div>
+    <section id={id} className={`window ${className}`} aria-labelledby={headingId}>
+      <TitleBar title={displayTitle} lang="en" titleId={headingId} />
+      <div className="window-body">{children}</div>
       {status ? <div className="statusbar">{status}</div> : null}
     </section>
   );
@@ -130,29 +163,24 @@ function Window({
 function Hero({ content, lang, setLang }: { content: PageContent; lang: Language; setLang: (lang: Language) => void }) {
   const text = labels[lang];
   const [showAnsi, setShowAnsi] = useState(false);
+  const [tapToggleEnabled, setTapToggleEnabled] = useState(false);
+
+  useEffect(() => {
+    const query = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const updatePointerMode = () => setTapToggleEnabled(!query.matches);
+    updatePointerMode();
+    query.addEventListener('change', updatePointerMode);
+    return () => query.removeEventListener('change', updatePointerMode);
+  }, []);
 
   return (
     <section id="profile" className="hero window" aria-labelledby="hero-title">
       <TitleBar title="nikchester@portfolio:~" lang={lang} setLang={setLang} />
-      <nav className="menu-bar" aria-label="Page sections">
-        <a className="start-link" href="#profile">{text.commandProfile}</a>
-        <a href="#proof">{text.commandProof}</a>
-        <a href="#work">{text.commandWork}</a>
-        <a href="#freelance">{text.freelance}</a>
-        <a href="#stack">{text.commandStack}</a>
-        <a href="#cv">{text.cv}</a>
-        <a href="#contact">{text.contact}</a>
-      </nav>
       <div className="hero-grid window-body">
         <div className="hero-terminal">
-          <p className="shell-line"><span>$</span> {text.commandProfile}</p>
-          <p className="eyebrow">{content.hero.eyebrow}</p>
-          <h1 id="hero-title">{content.hero.name}</h1>
-          <p className="shell-line"><span>$</span> {text.commandRole}</p>
+          <h1 id="hero-title">{protectEnglishHeading(content.hero.name, lang)}</h1>
           <p className="role">{content.hero.role}</p>
           <HtmlBlock html={content.hero.html} />
-          <p className="shell-line"><span>$</span> {text.commandContact}</p>
-          <p className="shell-status">[{text.statusOk}] {text.shellReady}</p>
           <div className="actions">
             <a className="button primary" href={siteConfig.telegramUrl}>{content.hero.ctaLabel}</a>
             <a className="button" href={siteConfig.githubUrl}>{content.hero.secondaryLabel}</a>
@@ -160,12 +188,8 @@ function Hero({ content, lang, setLang }: { content: PageContent; lang: Language
         </div>
         <figure
           className={`photo-window ${showAnsi ? 'show-ansi' : ''}`}
-          onClick={() => setShowAnsi((value) => !value)}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter' || event.key === ' ') {
-              event.preventDefault();
-              setShowAnsi((value) => !value);
-            }
+          onClick={() => {
+            if (tapToggleEnabled) setShowAnsi((value) => !value);
           }}
           tabIndex={0}
         >
@@ -182,23 +206,35 @@ function Hero({ content, lang, setLang }: { content: PageContent; lang: Language
 
 function WorkGrid({ content, lang }: { content: PageContent; lang: Language }) {
   const text = labels[lang];
+  const [expanded, setExpanded] = useState(false);
+  const [mobileLimit, setMobileLimit] = useState(false);
+  const collapsedLimit = mobileLimit ? 2 : 4;
+  const visibleWork = expanded ? content.work : content.work.slice(0, collapsedLimit);
+
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 780px)');
+    const updateLimit = () => setMobileLimit(query.matches);
+    updateLimit();
+    query.addEventListener('change', updateLimit);
+    return () => query.removeEventListener('change', updateLimit);
+  }, []);
   return (
     <Window
       title={text.work}
       id="work"
       className="work-window explorer-window"
-      status={`${content.work.length} objects selected`}
+      status={expanded ? `${content.work.length} cases visible` : `${visibleWork.length}/${content.work.length} cases visible`}
     >
       <div className="work-grid">
-        {content.work.map((item, index) => (
+        {visibleWork.map((item, index) => (
           <article className="project-card" key={item.slug}>
             <div className="project-titlebar">
               <span className="file-icon" aria-hidden="true">&gt;</span>
-              <span>{`services/${String(index + 1).padStart(2, '0')}-${item.slug}.yaml`}</span>
-              <span className="project-priority">{item.priority}</span>
+              <span>{`cases/${String(index + 1).padStart(2, '0')}-${item.slug}.yaml`}</span>
+              <span className="project-priority">{item.priority === 'primary' ? text.priorityPrimary : text.prioritySecondary}</span>
             </div>
             <div className="manifest-head">
-              <h3>{item.title}</h3>
+              <h3>{protectEnglishHeading(item.title, lang)}</h3>
             </div>
             <dl className="manifest-body">
               {extractParagraphs(item.html).map((entry) => (
@@ -221,6 +257,11 @@ function WorkGrid({ content, lang }: { content: PageContent; lang: Language }) {
           </article>
         ))}
       </div>
+      {!expanded && content.work.length > visibleWork.length ? (
+        <div className="show-more-row">
+          <button className="button" type="button" onClick={() => setExpanded(true)}>{text.showMoreCases}</button>
+        </div>
+      ) : null}
     </Window>
   );
 }
@@ -260,39 +301,67 @@ function ContactPanel({ content, lang }: { content: PageContent; lang: Language 
     <>
       <HtmlBlock html={content.contact.html} />
       <div className="link-list">
-        <a href={siteConfig.telegramUrl}>Telegram</a>
-        <a href={`mailto:${siteConfig.email}`}>{text.email}</a>
-        <a href={siteConfig.githubUrl}>{text.github}</a>
-        <a href={siteConfig.linkedinUrl}>{text.linkedin}</a>
-        <a href={siteConfig.kworkUrl}>{text.kwork}</a>
-      </div>
-      <div className="personal-links" aria-label={text.personal}>
-        <span>{text.personal}</span>
-        <a href={siteConfig.unsplashUrl}>Unsplash</a>
-        <a href={siteConfig.youtubeUrl}>YouTube</a>
+        <a className="button primary" href={siteConfig.telegramUrl}>Telegram</a>
+        <a className="button" href={`mailto:${siteConfig.email}`}>{text.email}</a>
+        <a className="button" href={siteConfig.githubUrl}>{text.github}</a>
+        <a className="button" href={siteConfig.linkedinUrl}>{text.linkedin}</a>
+        <a className="button" href={siteConfig.kworkUrl}>{text.kwork}</a>
       </div>
     </>
   );
 }
 
+function PersonalPanel({ lang }: { lang: Language }) {
+  const text = labels[lang];
+
+  return (
+    <Window title={text.personalTitle} id="personal" className="personal-window">
+      <p>{text.personalIntro}</p>
+      <div className="personal-link-grid">
+        <a className="button" href={siteConfig.unsplashUrl}>{lang === 'en' ? 'Unsplash / photos' : 'Unsplash / фото'}</a>
+        <a className="button" href={siteConfig.youtubeUrl}>{lang === 'en' ? 'YouTube / covers' : 'YouTube / каверы'}</a>
+      </div>
+    </Window>
+  );
+}
+
 const navItems = [
-  ['profile', 'commandProfile'],
-  ['proof', 'commandProof'],
-  ['work', 'commandWork'],
-  ['freelance', 'freelance'],
+  ['profile', 'profile'],
+  ['proof', 'proof'],
   ['stack', 'commandStack'],
+  ['work', 'work'],
+  ['freelance', 'freelance'],
   ['cv', 'cv'],
   ['contact', 'contact'],
+  ['personal', 'personal'],
 ] as const;
 
-function SideNav({ lang }: { lang: Language }) {
-  const text = labels[lang];
+function useActiveSection() {
   const [activeId, setActiveId] = useState('profile');
+  const clickedOverrideUntil = useRef(0);
 
   useEffect(() => {
+    const sectionIds = navItems.map(([id]) => id);
+
+    const updateForBottom = () => {
+      const scrollBottom = window.scrollY + window.innerHeight;
+      const nearBottom = scrollBottom >= document.documentElement.scrollHeight - 8;
+      if (nearBottom) setActiveId(sectionIds[sectionIds.length - 1]);
+    };
+
+    window.addEventListener('scroll', updateForBottom, { passive: true });
+    window.addEventListener('resize', updateForBottom);
+    updateForBottom();
+
     if (!('IntersectionObserver' in window)) return undefined;
     const sections = navItems.map(([id]) => document.getElementById(id)).filter((section): section is HTMLElement => Boolean(section));
     const observer = new IntersectionObserver((entries) => {
+      if (Date.now() < clickedOverrideUntil.current) return;
+      const scrollBottom = window.scrollY + window.innerHeight;
+      if (scrollBottom >= document.documentElement.scrollHeight - 8) {
+        setActiveId(sectionIds[sectionIds.length - 1]);
+        return;
+      }
       const visible = entries
         .filter((entry) => entry.isIntersecting)
         .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
@@ -300,15 +369,50 @@ function SideNav({ lang }: { lang: Language }) {
     }, { rootMargin: '-20% 0px -55% 0px', threshold: [0.1, 0.25, 0.5] });
 
     sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', updateForBottom);
+      window.removeEventListener('resize', updateForBottom);
+    };
   }, []);
+
+  const setClickedActiveId = (id: string) => {
+    clickedOverrideUntil.current = Date.now() + 900;
+    setActiveId(id);
+  };
+
+  return { activeId, setClickedActiveId };
+}
+
+function SideNav({ lang }: { lang: Language }) {
+  const text = labels[lang];
+  const { activeId, setClickedActiveId } = useActiveSection();
 
   return (
     <nav className="side-nav" aria-label="Fixed page sections">
-      <span className="side-nav-title">nav</span>
+      <span className="side-nav-title">{text.sections}</span>
       {navItems.map(([id, key]) => (
-        <a key={id} href={`#${id}`} className={activeId === id ? 'active' : ''}>{text[key]}</a>
+        <a key={id} href={`#${id}`} className={activeId === id ? 'active' : ''} onClick={() => setClickedActiveId(id)}>{text[key]}</a>
       ))}
+    </nav>
+  );
+}
+
+function MobileNav({ lang }: { lang: Language }) {
+  const text = labels[lang];
+  const [open, setOpen] = useState(false);
+  const { activeId, setClickedActiveId } = useActiveSection();
+
+  return (
+    <nav className="mobile-nav" aria-label="Mobile page sections">
+      <button className="button" type="button" aria-expanded={open} onClick={() => setOpen((value) => !value)}>{text.sections}</button>
+      {open ? (
+        <div className="mobile-nav-links">
+          {navItems.map(([id, key]) => (
+            <a key={id} href={`#${id}`} className={activeId === id ? 'active' : ''} onClick={() => { setClickedActiveId(id); setOpen(false); }}>{text[key]}</a>
+          ))}
+        </div>
+      ) : null}
     </nav>
   );
 }
@@ -366,6 +470,7 @@ export function App() {
   return (
     <main className="desktop-shell">
       <SideNav lang={lang} />
+      <MobileNav lang={lang} />
       <Hero content={content} lang={lang} setLang={setLang} />
       <div className="window-row">
         <Window title={content.proof.title} id="proof" className="proof-window terminal-window log-window" status={text.terminalReady}>
@@ -383,6 +488,7 @@ export function App() {
           <ContactPanel content={content} lang={lang} />
         </Window>
       </div>
+      <PersonalPanel lang={lang} />
     </main>
   );
 }

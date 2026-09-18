@@ -21,27 +21,34 @@ test('renders English portfolio by default and switches to Russian', async ({ pa
 
   await expect(page.getByRole('heading', { name: 'Nikita Chaturov' })).toBeVisible();
   await expect(page.getByText('Infrastructure Engineer').first()).toBeVisible();
-  await expect(page.getByText('15+')).toBeVisible();
-  await expect(page.locator('#work').getByText('Selected work')).toBeVisible();
+  await expect(page.locator('#proof strong').filter({ hasText: /^Recovery$/ })).toBeVisible();
+  await expect(page.locator('#proof strong').filter({ hasText: /^Monitoring$/ })).toBeVisible();
+  await expect(page.locator('#work .titlebar').getByText('~/cases', { exact: true })).toBeVisible();
   await expect(page.getByText('Proverka-cheka.ru Abuse Mitigation')).toBeVisible();
   await expect(page.getByText('Download public CV.')).toBeVisible();
-  await expect(page.getByText('Freelance infrastructure tasks')).toBeVisible();
+  await expect(page.locator('#freelance .titlebar').getByText('~/freelance', { exact: true })).toBeVisible();
   await expect(page.getByText('Linux production infrastructure')).toHaveCount(0);
+  await expect(page.getByText('Infrastructure diagnostics')).toHaveCount(0);
+  await expect(page.getByText('cat profile.txt')).toHaveCount(0);
+  await expect(page.getByText('./healthcheck --contact')).toHaveCount(0);
+  await expect(page.getByText(`[${'OK'}]`)).toHaveCount(0);
 
   await expect(page.getByRole('img', { name: 'Nikita Chaturov, Infrastructure Engineer' })).toBeVisible();
   await page.getByRole('button', { name: 'RU' }).click();
   await expect(page.getByRole('heading', { name: 'Никита Чатуров' })).toBeVisible();
-  await expect(page.locator('#contact').getByText('Контакты')).toBeVisible();
+  await expect(page.locator('#contact .titlebar').getByText('~/contact', { exact: true })).toBeVisible();
 });
 
 test('has required public links and CV downloads', async ({ page }) => {
   await page.goto('/');
 
+  await page.getByRole('button', { name: 'Show more cases' }).click();
+
   for (const href of publicLinks) {
     await expect(page.locator(`a[href="${href}"]`).first()).toBeVisible();
   }
 
-  for (const href of ['#profile', '#proof', '#work', '#freelance', '#stack', '#cv', '#contact']) {
+  for (const href of ['#profile', '#proof', '#work', '#freelance', '#stack', '#cv', '#contact', '#personal']) {
     await expect(page.locator(`nav a[href="${href}"]`).first()).toBeVisible();
   }
   await expect(page.getByRole('link', { name: 'Start' })).toHaveCount(0);
@@ -65,15 +72,155 @@ test('does not render duplicated repo field or contact prompt badge', async ({ p
   await expect(page.locator('.project-titlebar .file-icon').first()).toHaveText('>');
 });
 
-test('renders personal links and ANSI portrait interaction', async ({ page }) => {
+test('renders personal section and ANSI portrait interaction', async ({ page }) => {
   await page.goto('/');
 
-  await expect(page.locator('#contact').getByText('Personal')).toBeVisible();
-  await expect(page.locator('#contact a[href="https://unsplash.com/@nikchester"]')).toBeVisible();
-  await expect(page.locator('#contact a[href="https://www.youtube.com/@Chesterf1eld"]')).toBeVisible();
+  await expect(page.locator('#personal').getByText('Photography lives on Unsplash')).toBeVisible();
+  await expect(page.locator('#personal a[href="https://unsplash.com/@nikchester"]')).toBeVisible();
+  await expect(page.locator('#personal a[href="https://www.youtube.com/@Chesterf1eld"]')).toBeVisible();
+  await expect(page.locator('#contact a[href="https://unsplash.com/@nikchester"]')).toHaveCount(0);
   await expect(page.locator('.photo-ansi')).toHaveAttribute('aria-hidden', 'true');
   await page.locator('.photo-window').click();
-  await expect(page.locator('.photo-window')).toHaveClass(/show-ansi/);
+  await expect(page.locator('.photo-window')).not.toHaveClass(/show-ansi/);
+});
+
+test('toggles ANSI portrait on touch only and fits the full art', async ({ browser }) => {
+  const context = await browser.newContext({ hasTouch: true, isMobile: true, viewport: { width: 390, height: 844 } });
+  const page = await context.newPage();
+  await page.goto('/');
+  const photoWindow = page.locator('.photo-window');
+
+  await photoWindow.click();
+  await expect(photoWindow).toHaveClass(/show-ansi/);
+  await photoWindow.click();
+  await expect(photoWindow).not.toHaveClass(/show-ansi/);
+  await expect(page.locator('.photo-ansi')).toHaveCSS('object-fit', 'contain');
+  await context.close();
+});
+
+test('uses desktop side nav and mobile toggle menu', async ({ page }) => {
+  await page.setViewportSize({ width: 1366, height: 900 });
+  await page.goto('/');
+  await expect(page.locator('.side-nav')).toBeVisible();
+  await expect(page.locator('.side-nav-title')).toHaveText('Sections');
+  await expect(page.locator('.side-nav a')).toHaveText(['Profile', 'Proof', 'Stack', 'Cases', 'Freelance', 'CV', 'Contact', 'Personal']);
+  await expect(page.locator('.hero .menu-bar')).toHaveCount(0);
+
+  await page.setViewportSize({ width: 360, height: 900 });
+  await page.goto('/');
+  await expect(page.locator('.side-nav')).toBeHidden();
+  await page.getByRole('button', { name: 'Sections' }).click();
+  await expect(page.locator('.mobile-nav-links a[href="#personal"]')).toBeVisible();
+});
+
+test('keeps hero actions at panel bottom on desktop only', async ({ page }) => {
+  await page.setViewportSize({ width: 1366, height: 900 });
+  await page.goto('/');
+
+  const panel = await page.locator('.hero-terminal').boundingBox();
+  const actions = await page.locator('.hero-terminal .actions').boundingBox();
+  expect(panel).not.toBeNull();
+  expect(actions).not.toBeNull();
+  const desktopGap = Math.round(panel!.y + panel!.height - actions!.y - actions!.height);
+  expect(desktopGap).toBeGreaterThanOrEqual(20);
+  expect(desktopGap).toBeLessThanOrEqual(24);
+
+  await page.setViewportSize({ width: 360, height: 900 });
+  await page.goto('/');
+  const mobileMarginTop = await page.locator('.hero-terminal .actions').evaluate((element) => getComputedStyle(element).marginTop);
+  expect(mobileMarginTop).toBe('22px');
+});
+
+test('keeps role badge fitted to text', async ({ page }) => {
+  await page.setViewportSize({ width: 1366, height: 900 });
+  await page.goto('/');
+
+  const badgeWidth = await page.locator('.role').evaluate((element) => element.getBoundingClientRect().width);
+  const panelWidth = await page.locator('.hero-terminal').evaluate((element) => element.getBoundingClientRect().width);
+  expect(badgeWidth).toBeLessThan(panelWidth * 0.55);
+});
+
+test('uses readable hero heading tracking', async ({ page }) => {
+  await page.setViewportSize({ width: 1366, height: 900 });
+  await page.goto('/');
+
+  const styles = await page.locator('#hero-title').evaluate((element) => {
+    const computed = getComputedStyle(element);
+    return {
+      fontSize: parseFloat(computed.fontSize),
+      letterSpacing: parseFloat(computed.letterSpacing),
+      lineHeight: parseFloat(computed.lineHeight),
+    };
+  });
+
+  expect(styles.letterSpacing / styles.fontSize).toBeGreaterThanOrEqual(-0.04);
+  expect(styles.lineHeight / styles.fontSize).toBeGreaterThanOrEqual(1.03);
+});
+
+test('marks clicked nav item active and makes bottom section active without extra scroll space', async ({ page }) => {
+  await page.setViewportSize({ width: 1366, height: 900 });
+  await page.goto('/');
+
+  await page.locator('.side-nav a[href="#contact"]').click();
+  await expect(page.locator('.side-nav a[href="#contact"]')).toHaveClass(/active/);
+
+  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+  await expect(page.locator('.side-nav a[href="#personal"]')).toHaveClass(/active/);
+  const bottomGap = await page.evaluate(() => document.documentElement.scrollHeight - (window.scrollY + window.innerHeight));
+  expect(Math.abs(bottomGap)).toBeLessThanOrEqual(2);
+});
+
+test('uses directory-style section titlebars and Primary/Secondary tags', async ({ page }) => {
+  await page.goto('/');
+
+  for (const title of ['~/proof', '~/stack', '~/cases', '~/freelance', '~/cv', '~/contact', '~/personal']) {
+    await expect(page.locator('.titlebar').getByText(title, { exact: true })).toBeVisible();
+  }
+  await expect(page.locator('.project-priority').first()).toHaveText('Primary');
+  await page.getByRole('button', { name: 'Show more cases' }).click();
+  await expect(page.locator('.project-priority').filter({ hasText: 'Supporting' })).toHaveCount(0);
+  await expect(page.locator('.project-priority').filter({ hasText: 'Secondary' }).first()).toBeVisible();
+});
+
+for (const viewport of [
+  { width: 1536, height: 864 },
+  { width: 1920, height: 1080 },
+  { width: 2560, height: 1440 },
+  { width: 3440, height: 1440 },
+]) {
+  test(`keeps side nav clear and content centered at ${viewport.width}x${viewport.height}`, async ({ page }) => {
+    await page.setViewportSize(viewport);
+    await page.goto('/');
+
+    const nav = page.locator('.side-nav').first();
+    const content = page.locator('.desktop-shell').first();
+    await expect(nav).toBeVisible();
+    await expect(content).toBeVisible();
+
+    const navBox = await nav.boundingBox();
+    const contentBox = await content.boundingBox();
+
+    expect(navBox).not.toBeNull();
+    expect(contentBox).not.toBeNull();
+    const navContentGap = contentBox!.x - (navBox!.x + navBox!.width);
+    expect(navContentGap).toBeGreaterThanOrEqual(32);
+    expect(navContentGap).toBeLessThanOrEqual(34);
+
+    const contentCenter = contentBox!.x + (contentBox!.width / 2);
+    expect(Math.abs(contentCenter - (viewport.width / 2))).toBeLessThanOrEqual(1);
+  });
+}
+
+test('collapses and expands cases by viewport', async ({ page }) => {
+  await page.setViewportSize({ width: 1366, height: 900 });
+  await page.goto('/');
+  await expect(page.locator('#work .project-card')).toHaveCount(4);
+  await page.getByRole('button', { name: 'Show more cases' }).click();
+  await expect(page.locator('#work .project-card')).toHaveCount(7);
+
+  await page.setViewportSize({ width: 360, height: 900 });
+  await page.goto('/');
+  await expect(page.locator('#work .project-card')).toHaveCount(2);
 });
 
 test('serves static case pages directly', async ({ page }) => {

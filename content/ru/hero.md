@@ -1,5 +1,5 @@
 ---
-eyebrow: Диагностика инфраструктуры
+eyebrow: ''
 name: Никита Чатуров
 role: Infrastructure Engineer
 ctaLabel: Написать в Telegram

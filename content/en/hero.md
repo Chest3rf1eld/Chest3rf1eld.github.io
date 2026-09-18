@@ -1,5 +1,5 @@
 ---
-eyebrow: Infrastructure diagnostics
+eyebrow: ''
 name: Nikita Chaturov
 role: Infrastructure Engineer
 ctaLabel: Write in Telegram

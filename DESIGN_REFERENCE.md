@@ -29,7 +29,7 @@ The site should feel:
 
 Use terminal/session language as structure:
 - hero reads as a shell session (`./whoami`) with real CTA commands
-- proof reads as log-style health events with `[OK]`/status prefixes
+- proof reads as concise reliability signals without repeated OK-style prefixes
 - project cards read as YAML/service manifests with metadata keys
 - the contact block reads as an escalation-channel endpoint list
 - navigation reuses menu/toolbar patterns as real anchor links
