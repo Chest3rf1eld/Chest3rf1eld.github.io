@@ -3,7 +3,7 @@
 export const siteContent = {
   "en": {
     "hero": {
-      "eyebrow": "Infrastructure diagnostics",
+      "eyebrow": "",
       "name": "Nikita Chaturov",
       "role": "Infrastructure Engineer",
       "ctaLabel": "Write in Telegram",
@@ -126,7 +126,7 @@ export const siteContent = {
   },
   "ru": {
     "hero": {
-      "eyebrow": "Диагностика инфраструктуры",
+      "eyebrow": "",
       "name": "Никита Чатуров",
       "role": "Infrastructure Engineer",
       "ctaLabel": "Написать в Telegram",

@@ -5,7 +5,12 @@ import type { Language, PageContent } from './types';
 
 const labels = {
   en: {
-    work: 'Selected work',
+    work: 'Cases',
+    profile: 'Profile',
+    proof: 'Proof',
+    sections: 'Sections',
+    menu: 'Menu',
+    showMoreCases: 'Show more cases',
     stack: 'Stack',
     cv: 'CV',
     contact: 'Contact',
@@ -20,6 +25,8 @@ const labels = {
     contactViaTelegram: 'Contact via Telegram',
     caseDetails: 'Case details',
     personal: 'Personal',
+    personalTitle: 'Personal',
+    personalIntro: 'Photography lives on Unsplash. My music covers live on YouTube.',
     openProject: 'Open project',
     openRedditPost: 'Reddit post',
     photoTitle: 'photo.jpg',
@@ -28,11 +35,9 @@ const labels = {
     contactStatus: 'Primary channel: Telegram',
     commandProfile: './whoami',
     commandProof: './healthcheck --summary',
-    commandWork: 'ls services/*.yaml',
+    commandWork: 'ls cases/*.yaml',
     commandStack: 'cat stack.md',
-    shellReady: 'profile loaded / automation, monitoring, incidents',
-    commandRole: 'cat role.txt',
-    commandContact: './healthcheck --contact',
+    commandRole: 'cat profile.txt',
     statusOk: 'OK',
     yamlProblem: 'problem',
     yamlAction: 'action',
@@ -41,7 +46,12 @@ const labels = {
     internalCase: 'Internal case',
   },
   ru: {
-    work: 'Работы',
+    work: 'Кейсы',
+    profile: 'Профиль',
+    proof: 'Факты',
+    sections: 'Разделы',
+    menu: 'Меню',
+    showMoreCases: 'Показать ещё кейсы',
     stack: 'Стек',
     cv: 'CV',
     contact: 'Контакты',
@@ -56,6 +66,8 @@ const labels = {
     contactViaTelegram: 'Написать в Telegram',
     caseDetails: 'Подробнее',
     personal: 'Личное',
+    personalTitle: 'Личное',
+    personalIntro: 'Фотографии выкладываю на Unsplash. Мои каверы - на YouTube.',
     openProject: 'Открыть проект',
     openRedditPost: 'Пост на Reddit',
     photoTitle: 'photo.jpg',
@@ -64,11 +76,9 @@ const labels = {
     contactStatus: 'Основной канал: Telegram',
     commandProfile: './whoami',
     commandProof: './healthcheck --summary',
-    commandWork: 'ls services/*.yaml',
+    commandWork: 'ls cases/*.yaml',
     commandStack: 'cat stack.md',
-    shellReady: 'profile loaded / автоматизация, мониторинг, инциденты',
-    commandRole: 'cat role.txt',
-    commandContact: './healthcheck --contact',
+    commandRole: 'cat profile.txt',
     statusOk: 'OK',
     yamlProblem: 'problem',
     yamlAction: 'action',
@@ -134,25 +144,12 @@ function Hero({ content, lang, setLang }: { content: PageContent; lang: Language
   return (
     <section id="profile" className="hero window" aria-labelledby="hero-title">
       <TitleBar title="nikchester@portfolio:~" lang={lang} setLang={setLang} />
-      <nav className="menu-bar" aria-label="Page sections">
-        <a className="start-link" href="#profile">{text.commandProfile}</a>
-        <a href="#proof">{text.commandProof}</a>
-        <a href="#work">{text.commandWork}</a>
-        <a href="#freelance">{text.freelance}</a>
-        <a href="#stack">{text.commandStack}</a>
-        <a href="#cv">{text.cv}</a>
-        <a href="#contact">{text.contact}</a>
-      </nav>
       <div className="hero-grid window-body">
         <div className="hero-terminal">
-          <p className="shell-line"><span>$</span> {text.commandProfile}</p>
-          <p className="eyebrow">{content.hero.eyebrow}</p>
-          <h1 id="hero-title">{content.hero.name}</h1>
           <p className="shell-line"><span>$</span> {text.commandRole}</p>
+          <h1 id="hero-title">{content.hero.name}</h1>
           <p className="role">{content.hero.role}</p>
           <HtmlBlock html={content.hero.html} />
-          <p className="shell-line"><span>$</span> {text.commandContact}</p>
-          <p className="shell-status">[{text.statusOk}] {text.shellReady}</p>
           <div className="actions">
             <a className="button primary" href={siteConfig.telegramUrl}>{content.hero.ctaLabel}</a>
             <a className="button" href={siteConfig.githubUrl}>{content.hero.secondaryLabel}</a>
@@ -182,15 +179,27 @@ function Hero({ content, lang, setLang }: { content: PageContent; lang: Language
 
 function WorkGrid({ content, lang }: { content: PageContent; lang: Language }) {
   const text = labels[lang];
+  const [expanded, setExpanded] = useState(false);
+  const [mobileLimit, setMobileLimit] = useState(false);
+  const collapsedLimit = mobileLimit ? 2 : 4;
+  const visibleWork = expanded ? content.work : content.work.slice(0, collapsedLimit);
+
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 780px)');
+    const updateLimit = () => setMobileLimit(query.matches);
+    updateLimit();
+    query.addEventListener('change', updateLimit);
+    return () => query.removeEventListener('change', updateLimit);
+  }, []);
   return (
     <Window
       title={text.work}
       id="work"
       className="work-window explorer-window"
-      status={`${content.work.length} objects selected`}
+      status={expanded ? `${content.work.length} cases visible` : `${visibleWork.length}/${content.work.length} cases visible`}
     >
       <div className="work-grid">
-        {content.work.map((item, index) => (
+        {visibleWork.map((item, index) => (
           <article className="project-card" key={item.slug}>
             <div className="project-titlebar">
               <span className="file-icon" aria-hidden="true">&gt;</span>
@@ -221,6 +230,11 @@ function WorkGrid({ content, lang }: { content: PageContent; lang: Language }) {
           </article>
         ))}
       </div>
+      {!expanded && content.work.length > visibleWork.length ? (
+        <div className="show-more-row">
+          <button className="button" type="button" onClick={() => setExpanded(true)}>{text.showMoreCases}</button>
+        </div>
+      ) : null}
     </Window>
   );
 }
@@ -260,29 +274,39 @@ function ContactPanel({ content, lang }: { content: PageContent; lang: Language 
     <>
       <HtmlBlock html={content.contact.html} />
       <div className="link-list">
-        <a href={siteConfig.telegramUrl}>Telegram</a>
-        <a href={`mailto:${siteConfig.email}`}>{text.email}</a>
-        <a href={siteConfig.githubUrl}>{text.github}</a>
-        <a href={siteConfig.linkedinUrl}>{text.linkedin}</a>
-        <a href={siteConfig.kworkUrl}>{text.kwork}</a>
-      </div>
-      <div className="personal-links" aria-label={text.personal}>
-        <span>{text.personal}</span>
-        <a href={siteConfig.unsplashUrl}>Unsplash</a>
-        <a href={siteConfig.youtubeUrl}>YouTube</a>
+        <a className="button primary" href={siteConfig.telegramUrl}>Telegram</a>
+        <a className="button" href={`mailto:${siteConfig.email}`}>{text.email}</a>
+        <a className="button" href={siteConfig.githubUrl}>{text.github}</a>
+        <a className="button" href={siteConfig.linkedinUrl}>{text.linkedin}</a>
+        <a className="button" href={siteConfig.kworkUrl}>{text.kwork}</a>
       </div>
     </>
   );
 }
 
+function PersonalPanel({ lang }: { lang: Language }) {
+  const text = labels[lang];
+
+  return (
+    <Window title={text.personalTitle} id="personal" className="personal-window">
+      <p>{text.personalIntro}</p>
+      <div className="personal-link-grid">
+        <a className="button" href={siteConfig.unsplashUrl}>{lang === 'en' ? 'Unsplash / photos' : 'Unsplash / фото'}</a>
+        <a className="button" href={siteConfig.youtubeUrl}>{lang === 'en' ? 'YouTube / covers' : 'YouTube / каверы'}</a>
+      </div>
+    </Window>
+  );
+}
+
 const navItems = [
-  ['profile', 'commandProfile'],
-  ['proof', 'commandProof'],
-  ['work', 'commandWork'],
+  ['profile', 'profile'],
+  ['proof', 'proof'],
+  ['work', 'work'],
   ['freelance', 'freelance'],
   ['stack', 'commandStack'],
   ['cv', 'cv'],
   ['contact', 'contact'],
+  ['personal', 'personal'],
 ] as const;
 
 function SideNav({ lang }: { lang: Language }) {
@@ -305,10 +329,26 @@ function SideNav({ lang }: { lang: Language }) {
 
   return (
     <nav className="side-nav" aria-label="Fixed page sections">
-      <span className="side-nav-title">nav</span>
+      <span className="side-nav-title">{text.sections}</span>
       {navItems.map(([id, key]) => (
         <a key={id} href={`#${id}`} className={activeId === id ? 'active' : ''}>{text[key]}</a>
       ))}
+    </nav>
+  );
+}
+
+function MobileNav({ lang }: { lang: Language }) {
+  const text = labels[lang];
+  const [open, setOpen] = useState(false);
+
+  return (
+    <nav className="mobile-nav" aria-label="Mobile page sections">
+      <button className="button" type="button" aria-expanded={open} onClick={() => setOpen((value) => !value)}>{text.sections}</button>
+      {open ? (
+        <div className="mobile-nav-links">
+          {navItems.map(([id, key]) => <a key={id} href={`#${id}`} onClick={() => setOpen(false)}>{text[key]}</a>)}
+        </div>
+      ) : null}
     </nav>
   );
 }
@@ -366,6 +406,7 @@ export function App() {
   return (
     <main className="desktop-shell">
       <SideNav lang={lang} />
+      <MobileNav lang={lang} />
       <Hero content={content} lang={lang} setLang={setLang} />
       <div className="window-row">
         <Window title={content.proof.title} id="proof" className="proof-window terminal-window log-window" status={text.terminalReady}>
@@ -383,6 +424,7 @@ export function App() {
           <ContactPanel content={content} lang={lang} />
         </Window>
       </div>
+      <PersonalPanel lang={lang} />
     </main>
   );
 }
