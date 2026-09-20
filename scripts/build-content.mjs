@@ -9,6 +9,14 @@ const outDir = path.join(root, 'src', 'generated');
 const publicDir = path.join(root, 'public');
 
 marked.setOptions({ gfm: true, breaks: false });
+marked.use({
+  renderer: {
+    code(token) {
+      if (token.lang === 'mermaid') return `<pre class="mermaid">${token.text}</pre>`;
+      return false;
+    },
+  },
+});
 
 const ruShortWords = ['в', 'и', 'с', 'к', 'у', 'о', 'а', 'но', 'на', 'по', 'за', 'из', 'от', 'до', 'для'];
 const ruShortWordPattern = new RegExp(`(^|[\\s(])(${ruShortWords.join('|')})\\s+`, 'giu');
@@ -181,7 +189,10 @@ function renderCasePage(lang, caseItem) {
       .body { padding: clamp(18px, 4vw, 34px); }
       h2 { color: var(--green); font-family: var(--mono); font-size: 1rem; margin-top: 28px; }
       p, li { line-height: 1.55; }
-      pre { background: var(--terminal); border: 1px solid var(--line); color: var(--green); overflow-x: auto; padding: 16px; }
+      pre:not(.mermaid) { background: var(--terminal); border: 1px solid var(--line); color: var(--green); overflow-x: auto; padding: 16px; }
+      pre.mermaid { background: var(--terminal); border: 1px solid var(--line); overflow-x: auto; padding: 16px; }
+      pre.mermaid svg { display: block; margin: 0 auto; min-width: 640px; height: auto; }
+      @media (min-width: 700px) { pre.mermaid svg { min-width: 0; max-width: 100%; } }
       a { color: #6ea8fe; font-weight: 700; }
       .back { display: inline-flex; margin-bottom: 12px; text-decoration: none; }
       .badge { color: var(--amber); font-family: var(--mono); font-size: .78rem; }
@@ -199,6 +210,27 @@ function renderCasePage(lang, caseItem) {
         </header>
         <div class="body">${caseItem.html}</div>
       </article>
+      <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+          startOnLoad: true,
+          theme: 'base',
+          themeVariables: {
+            fontFamily: '"JetBrains Mono", Consolas, monospace',
+            fontSize: '14px',
+            background: '#05070b',
+            primaryColor: '#131720',
+            primaryTextColor: '#e6edf3',
+            primaryBorderColor: '#2a3342',
+            lineColor: '#4ade80',
+            secondaryColor: '#131720',
+            tertiaryColor: '#131720',
+            clusterBkg: '#0b0e13',
+            clusterBorder: '#2a3342',
+            edgeLabelBackground: '#05070b',
+          },
+        });
+      </script>
     </main>
   </body>
 </html>`;

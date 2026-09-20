@@ -50,6 +50,17 @@ export const siteContent = {
         "html": "<p><strong>Problem:</strong> operating 170+ hosted websites creates repetitive manual work and recovery risk.</p>\n<p><strong>Action:</strong> built repeatable Bash and Ansible workflows for provisioning, SSL, redirects, migrations, permissions, cache/plugin maintenance, PHP backend changes, and backups.</p>\n<p><strong>Result:</strong> routine operations became faster and more predictable, recovery moved toward hours instead of days, and scaling new sites became safer.</p>"
       },
       {
+        "slug": "minecraft-server",
+        "title": "Minecraft Server Infrastructure",
+        "priority": "primary",
+        "order": 50,
+        "url": "https://github.com/Chest3rf1eld/minecraft-server",
+        "caseUrl": "/en/cases/minecraft-server/",
+        "redditUrl": "",
+        "stack": "Debian, Paper, Ansible, GitHub Actions, restic, rclone, Yandex Disk, Telegram, Healthchecks.io",
+        "html": "<p><strong>Problem:</strong> a private server for friends still needed safe deploys, working backups, and real alerting.</p>\n<p><strong>Action:</strong> built Ansible provisioning, a GitHub Actions deploy pipeline with a pre-deploy backup gate, restic/rclone backups to Yandex Disk, and Telegram/Healthchecks.io monitoring.</p>\n<p><strong>Result:</strong> provision, deploy, backup, and restore run end to end, and a real restore has been verified on production.</p>"
+      },
+      {
         "slug": "monitoring-stack",
         "title": "Monitoring Stack as Code",
         "priority": "primary",
@@ -106,6 +117,14 @@ export const siteContent = {
       }
     ],
     "cases": [
+      {
+        "slug": "minecraft-server",
+        "title": "Minecraft Server Infrastructure",
+        "summary": "Production-like infrastructure for a private Minecraft server.",
+        "relatedWorkSlug": "minecraft-server",
+        "stack": "Debian, Paper, Ansible, GitHub Actions, restic, rclone, Yandex Disk, Telegram, Healthchecks.io, AuthMeReloaded, CoreProtect",
+        "html": "<pre class=\"mermaid\">flowchart LR\n    subgraph CICD [CI/CD]\n        GHA[GitHub Actions] --> ANS[Ansible]\n    end\n\n    ANS --> VPS[Debian VPS]\n\n    subgraph Runtime\n        VPS --> SVC[systemd minecraft.service]\n        SVC --> PAPER[Paper server]\n        PAPER --> AUTH[AuthMeReloaded]\n        PAPER --> CP[CoreProtect]\n    end\n\n    subgraph Network\n        VPS --> FW[Firewall - SSH and game port only]\n        FW --> RCON[RCON - localhost only]\n    end\n\n    subgraph Monitoring\n        VPS --> TG[Telegram alerts]\n        VPS --> HC[Healthchecks.io]\n    end\n\n    subgraph \"Backup and recovery\"\n        GHA --> GATE[Pre-deploy backup gate]\n        GATE --> RESTIC[restic snapshot]\n        RESTIC --> RCLONE[rclone]\n        RCLONE --> YADISK[Yandex Disk]\n    end</pre><h2>Context</h2>\n<p>A private Minecraft server for friends still needed real operational discipline: safe deploys, backups that actually restore, and alerts when something breaks, without infrastructure the project didn&#39;t need.</p>\n<h2>Constraints</h2>\n<p>No Docker or Kubernetes, no public RCON, and no secrets, worlds, or backups in Git. A failed pre-deploy backup blocks the deploy. Player identities, whitelist contents, the VPS address, and exact file paths are not part of the public case.</p>\n<h2>Architecture Summary</h2>\n<p>A single Debian VPS runs Paper as a native systemd service, with AuthMeReloaded for login and CoreProtect for rollback logging. Ansible provisions the host; GitHub Actions validates and deploys. Backups run through restic and rclone to Yandex Disk, with Telegram and Healthchecks.io covering monitoring and alerting.</p>\n<h2>Actions</h2>\n<ul>\n<li>Built Ansible playbooks that provision the VPS and configure the Paper service end to end.</li>\n<li>Built a GitHub Actions pipeline that validates, provisions, and deploys, gated on a successful pre-deploy backup.</li>\n<li>Set up restic and rclone backups to Yandex Disk and exercised a full restore against a real snapshot.</li>\n<li>Added Telegram and Healthchecks.io alerting, including a direct alert on backup failure.</li>\n<li>Added release management that prunes old releases while protecting the current and previous release.</li>\n</ul>\n<h2>Results</h2>\n<ul>\n<li>The full pipeline, provision, deploy, backup, and verify, runs end to end without manual steps.</li>\n<li>A real restore was tested and confirmed to preserve player accounts and the whitelist.</li>\n<li>Failures reach a person directly instead of failing silently.</li>\n<li>Deploys cannot proceed on a failed backup, removing a class of data-loss risk.</li>\n</ul>\n<h2>Safety Note</h2>\n<p>This case intentionally omits the VPS address, player identities and whitelist contents, secret names and values, and exact file paths.</p>"
+      },
       {
         "slug": "proverka-cheka",
         "title": "Proverka-cheka.ru Abuse Mitigation",
@@ -173,6 +192,17 @@ export const siteContent = {
         "html": "<p><strong>Проблема:</strong> сопровождение 170+ сайтов быстро превращается в ручную рутину и риск при восстановлении.</p>\n<p><strong>Действие:</strong> собрал повторяемые Bash и Ansible workflows для подготовки, SSL, редиректов, миграций, прав, cache/plugin maintenance, смены PHP backend и бэкапов.</p>\n<p><strong>Результат:</strong> типовые операции стали быстрее и предсказуемее, восстановление приблизилось к часам вместо дней, а подключение новых сайтов стало безопаснее.</p>"
       },
       {
+        "slug": "minecraft-server",
+        "title": "Minecraft Server Infrastructure",
+        "priority": "primary",
+        "order": 50,
+        "url": "https://github.com/Chest3rf1eld/minecraft-server",
+        "caseUrl": "/ru/cases/minecraft-server/",
+        "redditUrl": "",
+        "stack": "Debian, Paper, Ansible, GitHub Actions, restic, rclone, Yandex Disk, Telegram, Healthchecks.io",
+        "html": "<p><strong>Проблема:</strong> приватному серверу для друзей всё равно нужны безопасные деплои, рабочие бэкапы и реальный алертинг.</p>\n<p><strong>Действие:</strong> собрал Ansible-провижининг, GitHub Actions deploy pipeline с обязательным backup gate перед деплоем, restic/rclone бэкапы в Yandex Disk и мониторинг через Telegram/Healthchecks.io.</p>\n<p><strong>Результат:</strong> provision, deploy, backup и restore проходят end-to-end, а реальный restore проверен на production.</p>"
+      },
+      {
         "slug": "monitoring-stack",
         "title": "Monitoring Stack as Code",
         "priority": "primary",
@@ -229,6 +259,14 @@ export const siteContent = {
       }
     ],
     "cases": [
+      {
+        "slug": "minecraft-server",
+        "title": "Minecraft Server Infrastructure",
+        "summary": "Production-like инфраструктура для приватного Minecraft-сервера.",
+        "relatedWorkSlug": "minecraft-server",
+        "stack": "Debian, Paper, Ansible, GitHub Actions, restic, rclone, Yandex Disk, Telegram, Healthchecks.io, AuthMeReloaded, CoreProtect",
+        "html": "<pre class=\"mermaid\">flowchart LR\n    subgraph CICD [CI/CD]\n        GHA[GitHub Actions] --> ANS[Ansible]\n    end\n\n    ANS --> VPS[Debian VPS]\n\n    subgraph Runtime\n        VPS --> SVC[systemd minecraft.service]\n        SVC --> PAPER[Paper server]\n        PAPER --> AUTH[AuthMeReloaded]\n        PAPER --> CP[CoreProtect]\n    end\n\n    subgraph Network\n        VPS --> FW[Firewall - SSH and game port only]\n        FW --> RCON[RCON - localhost only]\n    end\n\n    subgraph Monitoring\n        VPS --> TG[Telegram alerts]\n        VPS --> HC[Healthchecks.io]\n    end\n\n    subgraph \"Backup and recovery\"\n        GHA --> GATE[Pre-deploy backup gate]\n        GATE --> RESTIC[restic snapshot]\n        RESTIC --> RCLONE[rclone]\n        RCLONE --> YADISK[Yandex Disk]\n    end</pre><h2>Контекст</h2>\n<p>Приватному Minecraft-серверу для друзей всё равно нужна реальная операционная дисциплина: безопасные деплои, бэкапы, которые действительно восстанавливаются, и алерты, когда что-то ломается, без лишней инфраструктуры, которая проекту не нужна.</p>\n<h2>Ограничения</h2>\n<p>Без Docker и Kubernetes, без публичного RCON, без секретов, миров и бэкапов в Git. Упавший pre-deploy backup блокирует деплой. Никнеймы игроков, содержимое whitelist, адрес VPS и точные пути к файлам не входят в публичный кейс.</p>\n<h2>Архитектура</h2>\n<p>Один Debian VPS запускает Paper как нативный systemd-сервис, с AuthMeReloaded для логина и CoreProtect для rollback-логирования. Ansible провижинит хост; GitHub Actions валидирует и деплоит. Бэкапы идут через restic и rclone в Yandex Disk, а Telegram и Healthchecks.io закрывают мониторинг и алертинг.</p>\n<h2>Действия</h2>\n<ul>\n<li>Собрал Ansible playbooks, которые провижинят VPS и настраивают Paper-сервис end-to-end.</li>\n<li>Собрал GitHub Actions pipeline, который валидирует, провижинит и деплоит, с гейтом на успешный pre-deploy backup.</li>\n<li>Настроил restic и rclone бэкапы в Yandex Disk и прогнал полный restore на реальном снапшоте.</li>\n<li>Добавил алертинг через Telegram и Healthchecks.io, включая прямой алерт при падении бэкапа.</li>\n<li>Добавил release management, который чистит старые релизы, защищая текущий и предыдущий.</li>\n</ul>\n<h2>Результаты</h2>\n<ul>\n<li>Весь pipeline — provision, deploy, backup, verify — проходит end-to-end без ручных шагов.</li>\n<li>Реальный restore проверен и подтвердил сохранность аккаунтов игроков и whitelist.</li>\n<li>Сбои доходят до человека напрямую, а не теряются молча.</li>\n<li>Деплой не может пройти при упавшем бэкапе — это убирает целый класс риска потери данных.</li>\n</ul>\n<h2>Safety Note</h2>\n<p>Кейс намеренно не раскрывает адрес VPS, никнеймы игроков и содержимое whitelist, имена и значения секретов, а также точные пути к файлам.</p>"
+      },
       {
         "slug": "proverka-cheka",
         "title": "Proverka-cheka.ru Abuse Mitigation",

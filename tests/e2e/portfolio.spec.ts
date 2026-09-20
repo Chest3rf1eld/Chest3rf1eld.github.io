@@ -216,7 +216,7 @@ test('collapses and expands cases by viewport', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('#work .project-card')).toHaveCount(4);
   await page.getByRole('button', { name: 'Show more cases' }).click();
-  await expect(page.locator('#work .project-card')).toHaveCount(7);
+  await expect(page.locator('#work .project-card')).toHaveCount(8);
 
   await page.setViewportSize({ width: 360, height: 900 });
   await page.goto('/');

@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Production-like инфраструктура для приватного Minecraft-сервера." />
+    <meta name="theme-color" content="#050807" />
+    <link rel="canonical" href="https://nikchester.ru/ru/cases/minecraft-server/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Minecraft Server Infrastructure" />
+    <meta property="og:description" content="Production-like инфраструктура для приватного Minecraft-сервера." />
+    <meta property="og:url" content="https://nikchester.ru/ru/cases/minecraft-server/" />
+    <meta property="og:image" content="https://nikchester.ru/og-image.svg" />
+    <title>Minecraft Server Infrastructure - Nikita Chaturov</title>
+    <style>
+      :root { color: #e6edf3; background: #0b0e13; font-family: Inter, Segoe UI, Arial, sans-serif; --terminal: #05070b; --panel: #131720; --line: #2a3342; --green: #4ade80; --amber: #e3b341; --muted: #9aa4b2; --mono: "JetBrains Mono", Consolas, monospace; }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-width: 320px; background: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px), #0b0e13; background-size: 32px 32px; }
+      main { width: min(920px, calc(100% - 28px)); margin: 0 auto; padding: 28px 0 40px; }
+      article { background: var(--panel); border: 1px solid var(--line); box-shadow: 3px 3px 0 #000; }
+      header { border-bottom: 1px solid var(--line); padding: clamp(18px, 4vw, 34px); }
+      .prompt, pre, code { font-family: var(--mono); }
+      .prompt { color: var(--green); font-size: .85rem; margin-bottom: 14px; }
+      h1 { font-size: clamp(2rem, 6vw, 4rem); line-height: .95; letter-spacing: -.06em; margin: 0 0 12px; }
+      .summary { color: var(--muted); font-size: 1.05rem; max-width: 70ch; }
+      .stack { color: var(--amber); font-family: var(--mono); font-size: .82rem; margin-top: 18px; overflow-wrap: anywhere; }
+      .body { padding: clamp(18px, 4vw, 34px); }
+      h2 { color: var(--green); font-family: var(--mono); font-size: 1rem; margin-top: 28px; }
+      p, li { line-height: 1.55; }
+      pre:not(.mermaid) { background: var(--terminal); border: 1px solid var(--line); color: var(--green); overflow-x: auto; padding: 16px; }
+      pre.mermaid { background: var(--terminal); border: 1px solid var(--line); overflow-x: auto; padding: 16px; }
+      pre.mermaid svg { display: block; margin: 0 auto; min-width: 640px; height: auto; }
+      @media (min-width: 700px) { pre.mermaid svg { min-width: 0; max-width: 100%; } }
+      a { color: #6ea8fe; font-weight: 700; }
+      .back { display: inline-flex; margin-bottom: 12px; text-decoration: none; }
+      .badge { color: var(--amber); font-family: var(--mono); font-size: .78rem; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <a class="back" href="/#work">&lt; Назад к портфолио</a>
+      <article>
+        <header>
+          <div class="prompt">RU case :: minecraft-server</div>
+          <h1>Minecraft Server Infrastructure</h1>
+          <p class="summary">Production-like инфраструктура для приватного Minecraft-сервера.</p>
+          <div class="stack">stack: Debian, Paper, Ansible, GitHub Actions, restic, rclone, Yandex Disk, Telegram, Healthchecks.io, AuthMeReloaded, CoreProtect</div>
+        </header>
+        <div class="body"><pre class="mermaid">flowchart LR
+    subgraph CICD [CI/CD]
+        GHA[GitHub Actions] --> ANS[Ansible]
+    end
+
+    ANS --> VPS[Debian VPS]
+
+    subgraph Runtime
+        VPS --> SVC[systemd minecraft.service]
+        SVC --> PAPER[Paper server]
+        PAPER --> AUTH[AuthMeReloaded]
+        PAPER --> CP[CoreProtect]
+    end
+
+    subgraph Network
+        VPS --> FW[Firewall - SSH and game port only]
+        FW --> RCON[RCON - localhost only]
+    end
+
+    subgraph Monitoring
+        VPS --> TG[Telegram alerts]
+        VPS --> HC[Healthchecks.io]
+    end
+
+    subgraph "Backup and recovery"
+        GHA --> GATE[Pre-deploy backup gate]
+        GATE --> RESTIC[restic snapshot]
+        RESTIC --> RCLONE[rclone]
+        RCLONE --> YADISK[Yandex Disk]
+    end</pre><h2>Контекст</h2>
+<p>Приватному Minecraft-серверу для друзей всё равно нужна реальная операционная дисциплина: безопасные деплои, бэкапы, которые действительно восстанавливаются, и алерты, когда что-то ломается, без лишней инфраструктуры, которая проекту не нужна.</p>
+<h2>Ограничения</h2>
+<p>Без Docker и Kubernetes, без публичного RCON, без секретов, миров и бэкапов в Git. Упавший pre-deploy backup блокирует деплой. Никнеймы игроков, содержимое whitelist, адрес VPS и точные пути к файлам не входят в публичный кейс.</p>
+<h2>Архитектура</h2>
+<p>Один Debian VPS запускает Paper как нативный systemd-сервис, с AuthMeReloaded для логина и CoreProtect для rollback-логирования. Ansible провижинит хост; GitHub Actions валидирует и деплоит. Бэкапы идут через restic и rclone в Yandex Disk, а Telegram и Healthchecks.io закрывают мониторинг и алертинг.</p>
+<h2>Действия</h2>
+<ul>
+<li>Собрал Ansible playbooks, которые провижинят VPS и настраивают Paper-сервис end-to-end.</li>
+<li>Собрал GitHub Actions pipeline, который валидирует, провижинит и деплоит, с гейтом на успешный pre-deploy backup.</li>
+<li>Настроил restic и rclone бэкапы в Yandex Disk и прогнал полный restore на реальном снапшоте.</li>
+<li>Добавил алертинг через Telegram и Healthchecks.io, включая прямой алерт при падении бэкапа.</li>
+<li>Добавил release management, который чистит старые релизы, защищая текущий и предыдущий.</li>
+</ul>
+<h2>Результаты</h2>
+<ul>
+<li>Весь pipeline — provision, deploy, backup, verify — проходит end-to-end без ручных шагов.</li>
+<li>Реальный restore проверен и подтвердил сохранность аккаунтов игроков и whitelist.</li>
+<li>Сбои доходят до человека напрямую, а не теряются молча.</li>
+<li>Деплой не может пройти при упавшем бэкапе — это убирает целый класс риска потери данных.</li>
+</ul>
+<h2>Safety Note</h2>
+<p>Кейс намеренно не раскрывает адрес VPS, никнеймы игроков и содержимое whitelist, имена и значения секретов, а также точные пути к файлам.</p></div>
+      </article>
+      <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+          startOnLoad: true,
+          theme: 'base',
+          themeVariables: {
+            fontFamily: '"JetBrains Mono", Consolas, monospace',
+            fontSize: '14px',
+            background: '#05070b',
+            primaryColor: '#131720',
+            primaryTextColor: '#e6edf3',
+            primaryBorderColor: '#2a3342',
+            lineColor: '#4ade80',
+            secondaryColor: '#131720',
+            tertiaryColor: '#131720',
+            clusterBkg: '#0b0e13',
+            clusterBorder: '#2a3342',
+            edgeLabelBackground: '#05070b',
+          },
+        });
+      </script>
+    </main>
+  </body>
+</html>

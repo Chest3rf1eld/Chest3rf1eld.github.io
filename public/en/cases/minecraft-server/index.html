@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Production-like infrastructure for a private Minecraft server." />
+    <meta name="theme-color" content="#050807" />
+    <link rel="canonical" href="https://nikchester.ru/en/cases/minecraft-server/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Minecraft Server Infrastructure" />
+    <meta property="og:description" content="Production-like infrastructure for a private Minecraft server." />
+    <meta property="og:url" content="https://nikchester.ru/en/cases/minecraft-server/" />
+    <meta property="og:image" content="https://nikchester.ru/og-image.svg" />
+    <title>Minecraft Server Infrastructure - Nikita Chaturov</title>
+    <style>
+      :root { color: #e6edf3; background: #0b0e13; font-family: Inter, Segoe UI, Arial, sans-serif; --terminal: #05070b; --panel: #131720; --line: #2a3342; --green: #4ade80; --amber: #e3b341; --muted: #9aa4b2; --mono: "JetBrains Mono", Consolas, monospace; }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-width: 320px; background: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px), #0b0e13; background-size: 32px 32px; }
+      main { width: min(920px, calc(100% - 28px)); margin: 0 auto; padding: 28px 0 40px; }
+      article { background: var(--panel); border: 1px solid var(--line); box-shadow: 3px 3px 0 #000; }
+      header { border-bottom: 1px solid var(--line); padding: clamp(18px, 4vw, 34px); }
+      .prompt, pre, code { font-family: var(--mono); }
+      .prompt { color: var(--green); font-size: .85rem; margin-bottom: 14px; }
+      h1 { font-size: clamp(2rem, 6vw, 4rem); line-height: .95; letter-spacing: -.06em; margin: 0 0 12px; }
+      .summary { color: var(--muted); font-size: 1.05rem; max-width: 70ch; }
+      .stack { color: var(--amber); font-family: var(--mono); font-size: .82rem; margin-top: 18px; overflow-wrap: anywhere; }
+      .body { padding: clamp(18px, 4vw, 34px); }
+      h2 { color: var(--green); font-family: var(--mono); font-size: 1rem; margin-top: 28px; }
+      p, li { line-height: 1.55; }
+      pre:not(.mermaid) { background: var(--terminal); border: 1px solid var(--line); color: var(--green); overflow-x: auto; padding: 16px; }
+      pre.mermaid { background: var(--terminal); border: 1px solid var(--line); overflow-x: auto; padding: 16px; }
+      pre.mermaid svg { display: block; margin: 0 auto; min-width: 640px; height: auto; }
+      @media (min-width: 700px) { pre.mermaid svg { min-width: 0; max-width: 100%; } }
+      a { color: #6ea8fe; font-weight: 700; }
+      .back { display: inline-flex; margin-bottom: 12px; text-decoration: none; }
+      .badge { color: var(--amber); font-family: var(--mono); font-size: .78rem; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <a class="back" href="/#work">&lt; Back to portfolio</a>
+      <article>
+        <header>
+          <div class="prompt">EN case :: minecraft-server</div>
+          <h1>Minecraft Server Infrastructure</h1>
+          <p class="summary">Production-like infrastructure for a private Minecraft server.</p>
+          <div class="stack">stack: Debian, Paper, Ansible, GitHub Actions, restic, rclone, Yandex Disk, Telegram, Healthchecks.io, AuthMeReloaded, CoreProtect</div>
+        </header>
+        <div class="body"><pre class="mermaid">flowchart LR
+    subgraph CICD [CI/CD]
+        GHA[GitHub Actions] --> ANS[Ansible]
+    end
+
+    ANS --> VPS[Debian VPS]
+
+    subgraph Runtime
+        VPS --> SVC[systemd minecraft.service]
+        SVC --> PAPER[Paper server]
+        PAPER --> AUTH[AuthMeReloaded]
+        PAPER --> CP[CoreProtect]
+    end
+
+    subgraph Network
+        VPS --> FW[Firewall - SSH and game port only]
+        FW --> RCON[RCON - localhost only]
+    end
+
+    subgraph Monitoring
+        VPS --> TG[Telegram alerts]
+        VPS --> HC[Healthchecks.io]
+    end
+
+    subgraph "Backup and recovery"
+        GHA --> GATE[Pre-deploy backup gate]
+        GATE --> RESTIC[restic snapshot]
+        RESTIC --> RCLONE[rclone]
+        RCLONE --> YADISK[Yandex Disk]
+    end</pre><h2>Context</h2>
+<p>A private Minecraft server for friends still needed real operational discipline: safe deploys, backups that actually restore, and alerts when something breaks, without infrastructure the project didn&#39;t need.</p>
+<h2>Constraints</h2>
+<p>No Docker or Kubernetes, no public RCON, and no secrets, worlds, or backups in Git. A failed pre-deploy backup blocks the deploy. Player identities, whitelist contents, the VPS address, and exact file paths are not part of the public case.</p>
+<h2>Architecture Summary</h2>
+<p>A single Debian VPS runs Paper as a native systemd service, with AuthMeReloaded for login and CoreProtect for rollback logging. Ansible provisions the host; GitHub Actions validates and deploys. Backups run through restic and rclone to Yandex Disk, with Telegram and Healthchecks.io covering monitoring and alerting.</p>
+<h2>Actions</h2>
+<ul>
+<li>Built Ansible playbooks that provision the VPS and configure the Paper service end to end.</li>
+<li>Built a GitHub Actions pipeline that validates, provisions, and deploys, gated on a successful pre-deploy backup.</li>
+<li>Set up restic and rclone backups to Yandex Disk and exercised a full restore against a real snapshot.</li>
+<li>Added Telegram and Healthchecks.io alerting, including a direct alert on backup failure.</li>
+<li>Added release management that prunes old releases while protecting the current and previous release.</li>
+</ul>
+<h2>Results</h2>
+<ul>
+<li>The full pipeline, provision, deploy, backup, and verify, runs end to end without manual steps.</li>
+<li>A real restore was tested and confirmed to preserve player accounts and the whitelist.</li>
+<li>Failures reach a person directly instead of failing silently.</li>
+<li>Deploys cannot proceed on a failed backup, removing a class of data-loss risk.</li>
+</ul>
+<h2>Safety Note</h2>
+<p>This case intentionally omits the VPS address, player identities and whitelist contents, secret names and values, and exact file paths.</p></div>
+      </article>
+      <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+          startOnLoad: true,
+          theme: 'base',
+          themeVariables: {
+            fontFamily: '"JetBrains Mono", Consolas, monospace',
+            fontSize: '14px',
+            background: '#05070b',
+            primaryColor: '#131720',
+            primaryTextColor: '#e6edf3',
+            primaryBorderColor: '#2a3342',
+            lineColor: '#4ade80',
+            secondaryColor: '#131720',
+            tertiaryColor: '#131720',
+            clusterBkg: '#0b0e13',
+            clusterBorder: '#2a3342',
+            edgeLabelBackground: '#05070b',
+          },
+        });
+      </script>
+    </main>
+  </body>
+</html>
